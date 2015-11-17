@@ -1,0 +1,48 @@
+<div class="LoginPanel">
+    <div class="transition-container transition-base" transition="top-slide" :style="{top: offset + 'px'}">
+        <div class="pane-content" v-show="active">
+            <div v-if="user">
+                <form class="login-panel-form profile-form" @submit.stop.prevent="save">
+                    <button class="logout-button button pull-right" type="button" @click.stop.prevent="logout">
+                        <span class="logout-text">Logout</span> 
+                        <i class="fa fa-sign-out"></i>
+                    </button>
+
+                    <label>Email</label>
+                    <input class="u-full-width" type="text" name="email" v-model="user.email" readonly/>
+
+                    <div class="row">
+                        <div class="six columns">
+                            <label>First Name</label>
+                            <input class="u-full-width" type="text" name="firstname" v-model="user.firstname" />
+                        </div>
+                        <div class="six columns">
+                            <label>Last Name</label>
+                            <input class="u-full-width" type="text" name="lastname" v-model="user.lastname" />
+                        </div>
+                    </div>
+                    <button class="button button-primary u-full-width" type="submit">Save Changes</button>
+                </form>
+            </div>
+            <div v-else>
+                <form class="login-panel-form login-form" @submit.stop.prevent="login">
+                    <label>Email</label>
+                    <input class="u-full-width" type="text" placeholder="Your email address" name="email" v-model="email" v-el:email_input/>
+
+                    <label>Password</label>
+                    <input class="u-full-width" type="password" name="password" placeholder="Your account password" v-model="password" />
+
+                    <button class="button button-primary u-full-width" type="submit">Login</button>
+                </form>
+            </div>
+            <div class="error" v-if="error">
+                {{error}}
+            </div>
+        </div>
+        <div class="pane-footer" v-el:footer>
+            <button class="button-tab button" type="button" @click.prevent="toggle" v-el:toggle_btn>
+                <span>{{ active ? "Close" : user? "Profile" : "Login" }}</span>
+            </button>
+        </div>
+    </div>
+</div>

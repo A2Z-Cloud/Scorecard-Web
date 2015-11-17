@@ -1,0 +1,136 @@
+.ProjectGrid {
+	position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #E0E0E0;
+}
+
+.ProjectGrid
+table {
+	margin-bottom: 0px;
+	border: 0px;
+}
+
+.ProjectGrid
+table
+td,
+.ProjectGrid
+table
+th {
+	width: 200px;
+	text-align: center;
+}
+
+.ProjectGrid 
+.project-header {
+	width: 100%;
+
+	padding: 5px 15px;
+	box-sizing: border-box;
+	
+	color: #6D5886;
+	background-color: #FFFFFC;
+	margin-bottom: 0px;
+}
+
+.ProjectGrid 
+.grid-panel {
+	width: 100%;
+	background-color: #FFFFFC;
+}
+
+.ProjectGrid 
+.grid-panel
+td, 
+.ProjectGrid 
+.grid-panel
+th {
+	min-width: 15px;
+	max-width: 30px;
+	box-sizing: border-box;
+}
+
+.ProjectGrid 
+.grid-panel
+thead {
+	background-color: #A290B6;
+}
+
+.ProjectGrid
+.grid-panel
+input {
+	margin: 0px;
+	border-radius: 0px;
+	border: none;
+	text-align: center;
+}
+
+.ProjectGrid
+.corner-label {
+	padding: 0px 10px;
+	color: #fff;
+}
+
+.ProjectGrid
+.row-label {
+	margin: 0px;
+	padding-left: 10px;
+	text-align: left;
+}
+
+.ProjectGrid
+.row-label
+input {
+	text-align: left;
+}
+
+.ProjectGrid
+.column-label {
+	margin: 0px;
+	background-color: #A290B6;
+	color: #fff;
+}
+
+.ProjectGrid
+.column-label
+input {
+	background-color: #A290B6;
+	color: #fff;
+}
+
+.ProjectGrid
+.score-value {
+	font-size: 1.4em;
+}
+
+
+/* Footer Panel */
+
+.ProjectGrid 
+.grid-footer {
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+}
+
+.ProjectGrid 
+.grid-footer
+table {
+	width: 100%;
+	background-color: #A290B6;
+	color: #fff;
+}
+
+.ProjectGrid 
+.grid-footer
+th {
+	border: 0px;
+	box-sizing: border-box;
+}
+
+.ProjectGrid
+.grid-footer
+.total-value {
+	padding: 6px 10px;
+	font-size: 1.4em;
+}
