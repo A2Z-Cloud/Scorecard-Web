@@ -24,7 +24,7 @@
             </tr>
             <tr>
                 <td class="row-label">
-                    <button v-on:click="add_requirement">Add Requirement</button>
+                    <button @click="add_requirement">Add Requirement</button>
                     <!-- <input class="u-full-width" type="text"></input> -->
                 <!-- </td>
                 <td v-for="_ in sorted_providers"></td>
@@ -36,9 +36,13 @@
         <table>
             <thead>
                 <tr>
-                    <th class="row-label">Total Score</th>
+                    <th class="row-label">
+                        <select v-model="selected_scoring_method">
+                            <option v-for="method in scoring_methods" v-bind:value="method.value"> {{ method.text }} </option>
+                        </select>
+                    </th>
                     <th v-for="provider in sorted_providers">
-                        <span class="total-value" v-text="total_for(provider)"></span>
+                        <span class="total-value" v-text="selected_scoring_method(provider)"></span>
                     </th>
                     <th class="corner-label"></th>
                 </tr>

@@ -7,6 +7,15 @@ var ProjectGrid = Vue.extend({
   	props: [
   		"project"
   	],
+    data() {
+        return {
+            selected_scoring_method: this.total_for,
+            scoring_methods: [
+                { text: 'Total Score', value: this.total_for },
+                { text: 'Average Score', value: this.average_for }
+            ]
+        }
+    },
     methods:{
         score_for(provider,requirement) {
             var result = this.project.scores.find((item)=>{
@@ -22,6 +31,9 @@ var ProjectGrid = Vue.extend({
             return this.project.scores.filter( score  => score.provider_id == provider.id )
                                       .map   ( score  => { return parseFloat(score.score) ? parseFloat(score.score) : 0 } )
                                       .reduce( (a, b) => a + b )
+        },
+        average_for(provider) {
+            return this.total_for(provider) / this.project.requirements.length
         },
         add_requirement() {
             // get new requirement id - in no way actual solution hack job for demo
@@ -52,7 +64,9 @@ var ProjectGrid = Vue.extend({
             this.project.scores.push(...new_scores)
 
             // wait for dom to render and focus new field
-            
+            Vue.nextTick(function() {
+
+            })
         }
     },
     computed: {
