@@ -13,7 +13,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="req in sorted_requirements">
+            <tr v-for="(index, req) in sorted_requirements">
                 <td class="row-label">
                     <input class="u-full-width" type="text" v-model='req.requirement' placeholder="Add Requirement">
                 </td>
@@ -24,10 +24,11 @@
             </tr>
             <tr>
                 <td class="row-label">
-                    <input class="u-full-width" type="text"></input>
-                </td>
+                    <button v-on:click="add_requirement">Add Requirement</button>
+                    <!-- <input class="u-full-width" type="text"></input> -->
+                <!-- </td>
                 <td v-for="_ in sorted_providers"></td>
-                <td></td>
+                <td></td> -->
             </tr>
         </tbody>
     </table>
