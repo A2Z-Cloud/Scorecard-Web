@@ -143,3 +143,21 @@ th {
     color: #fff;
     background: #A290B6;
 }
+
+.ProjectGrid
+.won
+input {
+	color: green;
+}
+
+.ProjectGrid
+.drew
+input {
+	color: yellow;
+}
+
+.ProjectGrid
+.lost
+input {
+	color: red;
+}

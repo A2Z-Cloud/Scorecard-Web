@@ -3,29 +3,66 @@ import tmpl from './main-tmpl.html!text';
 import Vue from 'vue';
 
 var ProjectGrid = Vue.extend({
-  	template: tmpl,
-  	props: [
-  		"project"
-  	],
+    template: tmpl,
+    props: [
+        "project"
+    ],
     data() {
         return {
             selected_scoring_method: this.total_for,
             scoring_methods: [
-                { text: 'Total Score', value: this.total_for },
+                { text: 'Total Score',   value: this.total_for   },
                 { text: 'Average Score', value: this.average_for }
             ]
         }
     },
     methods:{
-        score_for(provider,requirement) {
-            var result = this.project.scores.find((item)=>{
-                return item.requirement_id==requirement.requirement_id &&
-                    item.provider_id==provider.id;
-            });
-            if(!result){
-                result = {score:'n/a'};
+        score_for(provider, requirement) {
+            var result = this.project.scores.find( item => {
+                return item.requirement_id == requirement.requirement_id 
+                    && item.provider_id    == provider.id
+            })
+            return (result) ? result : {score:'n/a'}
+        },
+        providers_scores_for(requirement) {
+            return this.project.providers.map( provider => {
+                return {
+                    id: provider.id,
+                    score: this.score_for(provider, requirement).score
+                }
+            })
+        },
+        class_for(provider, requirement) {
+            // Get all scores for providers (keyed by provider id)
+            // As well as the passed providers score
+            var providers_scores = this.providers_scores_for(requirement)
+            var provider_score   = this.score_for(provider, requirement).score
+
+            var provider_count_by_scores = providers_scores.reduce( (carry, i) => {
+                // Add key if doesn't exist
+                if (carry[i.score] == undefined) {
+                    carry[i.score] = 0
+                } 
+                // Add provider id to score key
+                carry[i.score]++
+                return carry
+            }, {})
+            
+            // Figure out placement
+            var decending_scores = Object.keys(provider_count_by_scores) // Get all scores
+                                         .map (k     => parseFloat(k))    // Make them floats
+                                         .sort((a,b) => a<b)              // Sort descending
+            var high_score       = decending_scores[0]
+            var winner           = (provider_score == high_score)
+            var multiple_winners = (provider_count_by_scores[high_score] > 1)
+
+            if (winner && multiple_winners) {
+                return 'drew'
+            } else if (winner) {
+                return 'won'
+            } else {
+                return 'lost'
             }
-            return result;
         },
         total_for(provider) {
             return this.project.scores.filter( score  => score.provider_id == provider.id )

@@ -17,8 +17,13 @@
                 <td class="row-label">
                     <input class="u-full-width" type="text" v-model='req.requirement' placeholder="Add Requirement">
                 </td>
-                <td v-for="provider in sorted_providers"> 
-                    <input class="score-value u-full-width" type='number' v-model='score_for(provider,req).score'></input> 
+                <td 
+                    v-for="provider in sorted_providers" 
+                    v-bind:class="class_for(provider, req)"> 
+
+                        <input  class="score-value u-full-width" 
+                                type='number' 
+                                v-model='score_for(provider,req).score'></input> 
                 </td>
                 <!-- <td></td> -->
             </tr>
