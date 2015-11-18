@@ -7,9 +7,9 @@
                 <th class="column-label" v-for="provider in sorted_providers">
                     <input class="u-full-width" type="text" v-model='provider.name'>
                 </th>
-                <th class="column-label">
+                <!-- <th class="column-label">
                     <input class="u-full-width" type="text"></input>
-                </th>
+                </th> -->
             </tr>
         </thead>
         <tbody>
@@ -20,11 +20,12 @@
                 <td v-for="provider in sorted_providers"> 
                     <input class="score-value u-full-width" type='number' v-model='score_for(provider,req).score'></input> 
                 </td>
-                <td></td>
+                <!-- <td></td> -->
             </tr>
             <tr>
                 <td class="row-label">
                     <button @click="add_requirement">Add Requirement</button>
+                </td>
                     <!-- <input class="u-full-width" type="text"></input> -->
                 <!-- </td>
                 <td v-for="_ in sorted_providers"></td>
@@ -37,14 +38,14 @@
             <thead>
                 <tr>
                     <th class="row-label">
-                        <select v-model="selected_scoring_method">
+                        <select class="scoring-options" v-model="selected_scoring_method">
                             <option v-for="method in scoring_methods" v-bind:value="method.value"> {{ method.text }} </option>
                         </select>
                     </th>
                     <th v-for="provider in sorted_providers">
                         <span class="total-value" v-text="selected_scoring_method(provider)"></span>
                     </th>
-                    <th class="corner-label"></th>
+                    <!-- <th class="corner-label"></th> -->
                 </tr>
             </thead>
         </table>
