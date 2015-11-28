@@ -134,3 +134,30 @@ th {
 	padding: 6px 10px;
 	font-size: 1.4em;
 }
+
+.ProjectGrid
+.scoring-options {
+	margin: 0px;
+    border: 0px;
+
+    color: #fff;
+    background: #A290B6;
+}
+
+.ProjectGrid
+.won
+input {
+	color: green;
+}
+
+.ProjectGrid
+.drew
+input {
+	color: gold;
+}
+
+.ProjectGrid
+.lost
+input {
+	color: red;
+}

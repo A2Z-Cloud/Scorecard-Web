@@ -46,7 +46,7 @@ router.start({
 				}
 			});
 			this.control.send("get_scorecard",{zoho_id:project_id},(request,response)=>{
-				debugger
+				// debugger
 				if(response.error){
 					this.error=response.error;
 					return;
@@ -59,7 +59,9 @@ router.start({
 		}
 	},
 	created() {
-		this.control = new Control(this,"ws://localhost:8081/websocket");
+		// var url = "ws://localhost:8081/websocket"
+		var url = "wss://a2z-scorecard-server.herokuapp.com/websocket"
+		this.control = new Control(this, url);
 	},
     ready() {
     	var appl = window.appl = this;
