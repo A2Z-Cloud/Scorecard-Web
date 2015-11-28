@@ -60,7 +60,7 @@ router.start({
 	},
 	created() {
 		// var url = "ws://localhost:8081/websocket"
-		var url = "wss://a2z-scorecard-server.herokuapp.com/websocket"
+		var url = "wss://a2z-scorecard.herokuapp.com/websocket"
 		this.control = new Control(this, url);
 	},
     ready() {
