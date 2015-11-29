@@ -1,4 +1,4 @@
-<div class="ProjectGrid" v-if="scorecard">
+<div class="ProjectGrid" v-if="store && scorecard">
     <h4 class="project-header" v-text="scorecard.name"></h4>
 
     <table class="grid-panel">
@@ -51,45 +51,7 @@
             </tr>
         </tbody>
     </table>
-
-    <!-- <table class="grid-panel">
-        <thead>
-            <tr>
-                <th class="row-label corner-label">Requirements</th>
-                <th class="column-label" v-for="provider in sorted_providers">
-                    <input class="u-full-width" type="text" v-model='provider.name'>
-                </th> -->
-                <!-- <th class="column-label">
-                    <input class="u-full-width" type="text"></input>
-                </th> -->
-            <!-- </tr>
-        </thead>
-        <tbody>
-            <tr v-for="(index, req) in sorted_requirements">
-                <td class="row-label">
-                    <input class="u-full-width" type="text" v-model='req.requirement' placeholder="Add Requirement">
-                </td>
-                <td 
-                    v-for="provider in sorted_providers" 
-                    v-bind:class="class_for(provider, req)"> 
-
-                        <input  class="score-value u-full-width" 
-                                type='number' 
-                                v-model='score_for(provider,req).score'></input> 
-                </td> -->
-                <!-- <td></td> -->
-            <!-- </tr>
-            <tr>
-                <td class="row-label">
-                    <button @click="add_requirement">Add Requirement</button>
-                </td> -->
-                    <!-- <input class="u-full-width" type="text"></input> -->
-                <!-- </td>
-                <td v-for="_ in sorted_providers"></td>
-                <td></td> -->
-            <!-- </tr>
-        </tbody>
-    </table> -->
+    
     <div class="grid-footer">
         <table>
             <thead>

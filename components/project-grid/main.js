@@ -5,8 +5,7 @@ import Vue from 'vue';
 var ProjectGrid = Vue.extend({
     template: tmpl,
     props: [
-        "store",
-        "project"
+        "store"
     ],
     data() {
         return {
@@ -23,11 +22,11 @@ var ProjectGrid = Vue.extend({
     },
     methods:{
         score_for(provider, requirement) {
-            var result = this.scorecard.scores.find( item => {
-                return item.requirement_id == requirement.requirement_id 
-                    && item.provider_id    == provider.id
+            var result = this.scorecard.scores.find( score => {
+                return score.requirement_id == requirement.requirement_id 
+                    && score.provider_id    == provider.id
             })
-            return (result) ? result : {score:'n/a'}
+            return (result) ? result : {score: 0}
         },
         providers_scores_for(requirement) {
             return this.scorecard.providers.map( provider => {
@@ -81,9 +80,16 @@ var ProjectGrid = Vue.extend({
     computed: {
         remaining_providers: function() {
             // All providers minus those already assigned to the scorecard
-            if (this.scorecard && this.scorecard.providers && this.store.providers) {
+            if (this.scorecard.providers && this.store.providers) {
                 var selected_providers_ids = this.scorecard.providers.map(p => p.id)
                 return this.store.providers.filter(p => selected_providers_ids.indexOf(p.id) == -1)
+            }
+        },
+        remaining_requirements: function() {
+            // All requirements minus those already assigned to the scorecard
+            if (this.scorecard.requirements && this.store.requirements) {
+                var selected_requirements_ids = this.scorecard.requirements.map(r => r.requirement_id)
+                return this.store.requirements.filter(r => selected_requirements_ids.indexOf(r.id) == -1)
             }
         },
         scorecard: function() {
@@ -119,7 +125,10 @@ var ProjectGrid = Vue.extend({
         },
         'selected.requirement': function(requirement) {
             if (requirement) {
-                this.scorecard.requirements.push(requirement)
+                this.scorecard.requirements.push({
+                    name: requirement.name,
+                    requirement_id: requirement.id
+                })
                 // Make default scores for each provider for new requirement
                 var scores = this.scorecard.providers.map(provider => {
                     return {
@@ -168,7 +177,7 @@ var ProjectGrid = Vue.extend({
         }
     },
     ready() {
-        this.store   = window.appl.get_store()
+        this.store = window.appl.get_store()
     }
 });
 

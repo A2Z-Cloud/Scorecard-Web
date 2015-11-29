@@ -28,7 +28,6 @@ router.start({
 	data() {
 		return {
 			store: null,
-			project: null,
 	        loading: true,
 			user: null,
 			error: null
@@ -65,31 +64,7 @@ router.start({
 				}
 				store.projects = response.result
 			})
-
 			return store
-		},
-
-		get_score_cards(project_id) {
-			var project = new Vue({
-				data:{
-					id:null,
-					zoho_id: null,
-					name: null,
-					requirements: null,
-					scores: null,
-					providers: null
-				}
-			});
-			this.control.send("get_scorecard",{zoho_id:project_id},(request,response)=>{
-				if(response.error){
-					this.error=response.error;
-					return;
-				}
-				for(var key in response.result) {
-					project[key]=response.result[key];
-				}
-			});
-			return project;
 		}
 	},
 	created() {
