@@ -126,6 +126,7 @@ var ProjectGrid = Vue.extend({
         'selected.requirement': function(requirement) {
             if (requirement) {
                 this.scorecard.requirements.push({
+                    id: requirement.id,
                     name: requirement.name,
                     requirement_id: requirement.id
                 })
