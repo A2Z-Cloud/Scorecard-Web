@@ -15,9 +15,9 @@
                     {{ selected_provider.name }}
                 </th>
                 <!-- Add new provider selector -->
-                <th>
-                    <select v-model="selected.provider">
-                        <option value=""> Add Provider... </option>
+                <th id="add-provider-cell">
+                    <select class="add-selector" v-model="selected.provider">
+                        <option value=""> Add Competitor... </option>
                         <option v-for="provider in remaining_providers" 
                                 v-bind:value="provider"> {{ provider.name }} 
                         </option>
@@ -40,8 +40,8 @@
             </tr>
             <!-- Add New Requirement selector -->
             <tr>
-                <td>
-                    <select v-model="selected.requirement">
+                <td id="add-requirement-cell">
+                    <select class="add-selector" v-model="selected.requirement">
                         <option value=""> Add Requirement... </option>
                         <option v-for="requirement in remaining_requirements" 
                                 v-bind:value="requirement"> {{ requirement.name }} 
