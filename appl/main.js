@@ -27,6 +27,7 @@ router.map({
 router.start({
 	data() {
 		return {
+			store: null,
 			project: null,
 	        loading: true,
 			user: null,
@@ -34,6 +35,40 @@ router.start({
 		}
     },
 	methods:{
+		get_store() {
+			var store = new Vue({
+				data: {
+					providers: null,
+					requirements: null,
+					projects: null,
+				}
+			})
+
+			this.control.send("get_providers", null, (request, response) => {
+				if (response.error) {
+					this.error = response.error
+					return
+				}
+				store.providers = response.result
+			})
+			this.control.send("get_requirements", null, (request, response) => {
+				if (response.error) {
+					this.error = response.error
+					return
+				}
+				store.requirements = response.result
+			})
+			this.control.send("get_projects", null, (request, response) => {
+				if (response.error) {
+					this.error = response.error
+					return
+				}
+				store.projects = response.result
+			})
+
+			return store
+		},
+
 		get_score_cards(project_id) {
 			var project = new Vue({
 				data:{
@@ -46,7 +81,6 @@ router.start({
 				}
 			});
 			this.control.send("get_scorecard",{zoho_id:project_id},(request,response)=>{
-				// debugger
 				if(response.error){
 					this.error=response.error;
 					return;
@@ -59,13 +93,12 @@ router.start({
 		}
 	},
 	created() {
-		// var url = "ws://localhost:8081/websocket"
-		var url = "wss://a2z-scorecard.herokuapp.com/websocket"
+		var url = "ws://localhost:8081/websocket"
+		// var url = "wss://a2z-scorecard.herokuapp.com/websocket"
 		this.control = new Control(this, url);
 	},
     ready() {
     	var appl = window.appl = this;
         this.loading = false;
-		// this.project = this.get_score_cards(4768000000041086);
     }
 }, '#scorecard');

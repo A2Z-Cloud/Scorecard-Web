@@ -5,10 +5,15 @@ import Vue from 'vue';
 var ProjectGrid = Vue.extend({
     template: tmpl,
     props: [
+        "store",
         "project"
     ],
     data() {
         return {
+            selected: {
+                provider: "",
+                requirement: "",
+            },
             selected_scoring_method: this.total_for,
             scoring_methods: [
                 { text: 'Total Score',   value: this.total_for   },
@@ -18,14 +23,14 @@ var ProjectGrid = Vue.extend({
     },
     methods:{
         score_for(provider, requirement) {
-            var result = this.project.scores.find( item => {
+            var result = this.scorecard.scores.find( item => {
                 return item.requirement_id == requirement.requirement_id 
                     && item.provider_id    == provider.id
             })
             return (result) ? result : {score:'n/a'}
         },
         providers_scores_for(requirement) {
-            return this.project.providers.map( provider => {
+            return this.scorecard.providers.map( provider => {
                 return {
                     id: provider.id,
                     score: this.score_for(provider, requirement).score
@@ -65,60 +70,107 @@ var ProjectGrid = Vue.extend({
             }
         },
         total_for(provider) {
-            return this.project.scores.filter( score  => score.provider_id == provider.id )
-                                      .map   ( score  => { return parseFloat(score.score) ? parseFloat(score.score) : 0 } )
-                                      .reduce( (a, b) => a + b )
+            return this.scorecard.scores.filter( score  => score.provider_id == provider.id )
+                                        .map   ( score  => { return parseFloat(score.score) ? parseFloat(score.score) : 0 } )
+                                        .reduce( (a, b) => a + b )
         },
         average_for(provider) {
-            return this.total_for(provider) / this.project.requirements.length
-        },
-        add_requirement() {
-            // get new requirement id - in no way actual solution hack job for demo
-            var latest_imp = this.project.requirements.reduce( (a, b) => {
-                return (a.id > b.id) ? a.id : b.id
-            }, {id: 0})
-            var latest_req = this.project.requirements.reduce( (a, b) => {
-                return (a.requirement_id > b.requirement_id) ? a.requirement_id : b.requirement_id
-            }, {id: 0})
-            var new_req_id = latest_req + 1
-            var new_imp_id = latest_imp + 1
-
-            var new_req = {
-                id: new_imp_id,
-                requirement_id: new_req_id,
-                requirement: '',
-                sort_order: this.project.requirements.length + 1
-            }
-            var new_scores = this.project.providers.map( provider => { 
-                return {
-                    provider_id: provider.id,
-                    requirement_id: new_req_id,
-                    score: 0
-                }
-            } )
-
-            this.project.requirements.push(new_req)
-            this.project.scores.push(...new_scores)
-
-            // wait for dom to render and focus new field
-            Vue.nextTick(function() {
-
-            })
+            return this.total_for(provider) / this.scorecard.requirements.length
         }
     },
     computed: {
+        remaining_providers: function() {
+            // All providers minus those already assigned to the scorecard
+            if (this.scorecard && this.scorecard.providers && this.store.providers) {
+                var selected_providers_ids = this.scorecard.providers.map(p => p.id)
+                return this.store.providers.filter(p => selected_providers_ids.indexOf(p.id) == -1)
+            }
+        },
+        scorecard: function() {
+            // Get scorecard based on url parms
+            var proj_id = this.$route.query.id
+            var zoho_id = this.$route.query.zoho_id
+            if (this.store.projects && proj_id) return this.store.projects.find(p => p.id      == proj_id)
+            if (this.store.projects && zoho_id) return this.store.projects.find(p => p.zoho_id == zoho_id)
+        },
         sorted_providers: function() {
-            return this.project.providers ? this.project.providers.sort( (a,b) => a.id - b.id ) : []
+            // Sort scorecard providers by id
+            return this.scorecard.providers ? this.scorecard.providers.sort( (a,b) => a.id - b.id ) : []
         },
         sorted_requirements: function() {
-            return this.project.requirements ? this.project.requirements.sort( (a,b) => a.sort_order - b.sort_order ) : []
+            // Sort scorecard requirements by id
+            return this.scorecard.requirements ? this.scorecard.requirements.sort( (a,b) => a.sort_order - b.sort_order ) : []
+        }
+    },
+    watch: {
+        'selected.provider': function(provider) {
+            if (provider) {
+                this.scorecard.providers.push(provider)
+                // Make default scores for each requirement for new provider
+                var scores = this.scorecard.requirements.map(requirement => {
+                    return {
+                        score: 0,
+                        requirement_id: requirement.id,
+                        provider_id: provider.id
+                    }
+                })
+                this.scorecard.scores.push(...scores)
+            }
+        },
+        'selected.requirement': function(requirement) {
+            if (requirement) {
+                this.scorecard.requirements.push(requirement)
+                // Make default scores for each provider for new requirement
+                var scores = this.scorecard.providers.map(provider => {
+                    return {
+                        score: 0,
+                        requirement_id: requirement.id,
+                        provider_id: provider.id
+                    }
+                })
+                this.scorecard.scores.push(...scores)
+            }
+        }
+    },
+    events: {
+        'insert_provider': function(provider) {
+            this.store.providers.push(provider)
+        },
+        'update_provider': function(provider) {
+            var index = this.store.providers.findIndex(p => p.id == provider.id)
+            this.store.providers.$set(index, provider)
+        },
+        'delete_provider': function(id) {
+            var index = this.store.providers.findIndex(p => p.id == id)
+            this.store.providers.splice(index, 1)
+        },
+        'insert_requirement': function(requirement) {
+            this.store.requirements.push(requirement)
+        },
+        'update_requirement': function(requirement) {
+            var index = this.store.requirements.findIndex(r => r.id == requirement.id)
+            this.store.requirements.$set(index, provider)
+        },
+        'delete_requirement': function(id) {
+            var index = this.store.requirements.findIndex(r => r.id == id)
+            this.store.requirements.splice(index, 1)
+        },
+        'insert_project': function(project) {
+            this.store.projects.push(project)
+        },
+        'update_project': function(project) {
+            var index = this.store.projects.findIndex(p => p.id == project.id)
+            this.store.projects.$set(index, project)
+        },
+        'delete_project': function(id) {
+            var index = this.store.projects.findIndex(p => p.id == id)
+            this.store.projects.splice(index, 1)
         }
     },
     ready() {
-        this.project = window.appl.get_score_cards(this.$route.query.zoho_id)
+        this.store   = window.appl.get_store()
     }
 });
-// Vue.component('project-grid', ProjectGrid);
 
 export default {
     component: ProjectGrid
