@@ -11,6 +11,13 @@ export default class Connection{
 		this._send_timeout = null;
 		this._connected = false;
 		this.connect();
+
+		// ping to keep connection alive
+        setInterval( () => {
+            if(this._connected) {
+                this.send("ping")
+            }
+        }, 30000);
 	}
 
 	connect(){
