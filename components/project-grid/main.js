@@ -159,7 +159,7 @@ var ProjectGrid = Vue.extend({
         },
         'update_requirement': function(requirement) {
             var index = this.store.requirements.findIndex(r => r.id == requirement.id)
-            this.store.requirements.$set(index, provider)
+            this.store.requirements.$set(index, requirement)
         },
         'delete_requirement': function(id) {
             var index = this.store.requirements.findIndex(r => r.id == id)
