@@ -67,7 +67,7 @@ export default class Connection{
 		}
 	}
 
-	_send(){
+	_send() {
 		this._send_timeout = null;
 		this._ws.send(JSON.stringify({
 			requests: this._pending_request.map(item=>{

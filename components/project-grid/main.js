@@ -75,6 +75,22 @@ var ProjectGrid = Vue.extend({
         },
         average_for(provider) {
             return this.total_for(provider) / this.scorecard.requirements.length
+        },
+        remove_requirement(requirement) {
+            if (requirement) {
+                this.$root.control.send("remove_requirement_from_project", {
+                    project_id: this.scorecard.id,
+                    requirement_id: requirement.id
+                })
+            }
+        },
+        remove_provider(provider) {
+            if (provider) {
+                this.$root.control.send("remove_provider_from_project", {
+                    project_id: this.scorecard.id,
+                    provider_id: provider.id
+                })
+            }
         }
     },
     computed: {
@@ -111,34 +127,21 @@ var ProjectGrid = Vue.extend({
     watch: {
         'selected.provider': function(provider) {
             if (provider) {
-                this.scorecard.providers.push(provider)
-                // Make default scores for each requirement for new provider
-                var scores = this.scorecard.requirements.map(requirement => {
-                    return {
-                        score: 0,
-                        requirement_id: requirement.id,
-                        provider_id: provider.id
-                    }
+                this.$root.control.send("add_provider_to_project", {
+                    project_id: this.scorecard.id,
+                    provider_id: provider.id
                 })
-                this.scorecard.scores.push(...scores)
             }
         },
         'selected.requirement': function(requirement) {
             if (requirement) {
-                this.scorecard.requirements.push({
-                    id: requirement.id,
-                    name: requirement.name,
-                    requirement_id: requirement.id
+                var requirements = this.scorecard.requirements
+                var sort_index   = requirements ? requirements.length : 0
+                this.$root.control.send("add_requirement_to_project", {
+                    project_id: this.scorecard.id,
+                    requirement_id: requirement.id,
+                    sort_order: 0
                 })
-                // Make default scores for each provider for new requirement
-                var scores = this.scorecard.providers.map(provider => {
-                    return {
-                        score: 0,
-                        requirement_id: requirement.id,
-                        provider_id: provider.id
-                    }
-                })
-                this.scorecard.scores.push(...scores)
             }
         }
     },

@@ -13,6 +13,7 @@
                         <option v-for="provider in remaining_providers" v-bind:value="provider"> {{ provider.name }} </option>
                     </select> -->
                     {{ selected_provider.name }}
+                    <div @click="remove_provider(selected_provider)">x</div>
                 </th>
                 <!-- Add new provider selector -->
                 <th id="add-provider-cell">
@@ -26,16 +27,19 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(index, req) in sorted_requirements">
-                <td class="row-label"> {{ req.name }} </td>
+            <tr v-for="requirement in sorted_requirements">
+                <td class="row-label"> {{ requirement.name }} </td>
 
                 <td v-for="provider in sorted_providers" 
-                    v-bind:class="class_for(provider, req)"> 
+                    v-bind:class="class_for(provider, requirement)"> 
 
                         <input  class="score-value u-full-width" 
                                 type='number' 
-                                v-model='score_for(provider,req).score'>
+                                v-model='score_for(provider,requirement).score'>
                         </input> 
+                </td>
+                <td>
+                    <div @click="remove_requirement(requirement)">X</div>
                 </td>
             </tr>
             <!-- Add New Requirement selector -->
