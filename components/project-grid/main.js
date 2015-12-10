@@ -12,12 +12,17 @@ var ProjectGrid = Vue.extend({
             selected: {
                 provider: "",
                 requirement: "",
+                perspective: null,
+                scoring_method: this.total_for
             },
-            selected_scoring_method: this.total_for,
             scoring_methods: [
                 { text: 'Total Score',   value: this.total_for   },
                 { text: 'Average Score', value: this.average_for }
-            ]
+            ],
+            save_state: {
+                text: "Saved",
+                error: false
+            }
         }
     },
     methods:{
@@ -53,13 +58,27 @@ var ProjectGrid = Vue.extend({
             }, {})
             
             // Figure out placement
-            var decending_scores = Object.keys(provider_count_by_scores) // Get all scores
-                                         .map (k     => parseFloat(k))    // Make them floats
+            var decending_scores = Object.keys(provider_count_by_scores)  // Get all scores
+                                         .map (  k   => parseFloat(k))    // Make them floats
                                          .sort((a,b) => a<b)              // Sort descending
             var high_score       = decending_scores[0]
             var winner           = (provider_score == high_score)
             var multiple_winners = (provider_count_by_scores[high_score] > 1)
 
+            // From the perspective of a selected company?
+            if (this.selected.perspective) {
+                var perspective_score = this.score_for(this.selected.perspective, requirement).score
+
+                if (perspective_score == high_score && multiple_winners) {
+                    return 'drew'
+                } else if (perspective_score == high_score) {
+                    return 'won'
+                } else {
+                    return 'lost'
+                }
+            }
+
+            // Objective placement
             if (winner && multiple_winners) {
                 return 'drew'
             } else if (winner) {
@@ -91,6 +110,25 @@ var ProjectGrid = Vue.extend({
                     provider_id: provider.id
                 })
             }
+        },
+        save_scores() {
+            this.save_state.text = "Saving..."
+            this.$root.control.send("update_scores", {scores: this.scorecard.scores}, (request, response) => {
+                this.save_state.text  = (response.error) ? "ERROR SAVING" : "Saved"
+                this.save_state.error = response.error
+            })
+        },
+        save_comment(requirement_id, comment) {
+            this.save_state.text = "Saving..."
+            var payload = {
+                requirement_id: requirement_id, 
+                comment: comment
+            }
+
+            this.$root.control.send("update_comment", payload, (request, response) => {
+                this.save_state.text  = (response.error) ? "ERROR SAVING" : "Saved"
+                this.save_state.error = response.error
+            })
         }
     },
     computed: {
@@ -112,8 +150,8 @@ var ProjectGrid = Vue.extend({
             // Get scorecard based on url parms
             var proj_id = this.$route.query.id
             var zoho_id = this.$route.query.zoho_id
-            if (this.store.projects && proj_id) return this.store.projects.find(p => p.id      == proj_id)
-            if (this.store.projects && zoho_id) return this.store.projects.find(p => p.zoho_id == zoho_id)
+            if (this.store && this.store.projects && proj_id) return this.store.projects.find(p => p.id      == proj_id)
+            if (this.store && this.store.projects && zoho_id) return this.store.projects.find(p => p.zoho_id == zoho_id)
         },
         sorted_providers: function() {
             // Sort scorecard providers by id

@@ -7,17 +7,17 @@
                 <th class="row-label corner-label">Requirements</th>
                 <!-- Currently selected providers -->
                 <th v-for="selected_provider in scorecard.providers">
-                    <!-- REMOVED: logic needed to reassign the current scores for provider to newly selected provider -->
-                    <!-- <select v-model="selected_provider">
-                        <option v-bind:value="selected_provider"> {{ selected_provider.name }} </option>
-                        <option v-for="provider in remaining_providers" v-bind:value="provider"> {{ provider.name }} </option>
-                    </select> -->
+                    <input  type="radio" 
+                            id="{{selected_provider.name}}-perspective"
+                            class="perspective" 
+                            value="{{selected_provider}}" 
+                            v-model="selected.perspective">
                     {{ selected_provider.name }}
-                    <div @click="remove_provider(selected_provider)">x</div>
+                    <span class="delete fa fa-times" @click="remove_provider(selected_provider)"></span>
                 </th>
                 <!-- Add new provider selector -->
                 <th id="add-provider-cell">
-                    <select class="add-selector" v-model="selected.provider">
+                    <select v-if="sorted_requirements.length" class="add-selector" v-model="selected.provider">
                         <option value=""> Add Competitor... </option>
                         <option v-for="provider in remaining_providers" 
                                 v-bind:value="provider"> {{ provider.name }} 
@@ -28,25 +28,32 @@
         </thead>
         <tbody>
             <tr v-for="requirement in sorted_requirements">
-                <td class="row-label"> {{ requirement.name }} </td>
+                <td class="row-label"> 
+                    {{ requirement.name }}
+                    <span class="delete fa fa-times" @click="remove_requirement(requirement)"></span>
+                </td>
 
                 <td v-for="provider in sorted_providers" 
                     v-bind:class="class_for(provider, requirement)"> 
 
-                        <input  class="score-value u-full-width" 
-                                type='number' 
-                                v-model='score_for(provider,requirement).score'>
-                        </input> 
+                    <input  class="score-value u-full-width" 
+                            type='number' 
+                            v-model='score_for(provider,requirement).score'
+                            @keyup="save_scores | debounce 500"/>
                 </td>
                 <td>
-                    <div @click="remove_requirement(requirement)">X</div>
+                    <input  class="comment-input" 
+                            type="text"
+                            placeholder="comment..."
+                            v-model="requirement.comment"
+                            @keyup="save_comment(requirement.id, requirement.comment) | debounce 500"/>
                 </td>
             </tr>
             <!-- Add New Requirement selector -->
             <tr>
                 <td id="add-requirement-cell">
                     <select class="add-selector" v-model="selected.requirement">
-                        <option value=""> Add Requirement... </option>
+                        <option value=""> Add Most Important Requirement... </option>
                         <option v-for="requirement in remaining_requirements" 
                                 v-bind:value="requirement"> {{ requirement.name }} 
                         </option>
@@ -61,14 +68,16 @@
             <thead>
                 <tr>
                     <th class="row-label">
-                        <select class="scoring-options" v-model="selected_scoring_method">
+                        <select class="scoring-options" v-model="selected.scoring_method">
                             <option v-for="method in scoring_methods" v-bind:value="method.value"> {{ method.text }} </option>
                         </select>
                     </th>
                     <th v-for="provider in sorted_providers">
-                        <span class="total-value" v-text="selected_scoring_method(provider)"></span>
+                        <span class="total-value" v-text="selected.scoring_method(provider)"></span>
                     </th>
-                    <th class="corner-label"></th>
+                    <th v-bind:class="{ 'error-message': save_state.error }">
+                        {{ save_state.text }}
+                    </th>
                 </tr>
             </thead>
         </table>

@@ -122,6 +122,15 @@ button.button-primary:focus, a.button-primary:focus, .button.button-primary:focu
             transition: 1s;
 }
 
+/* Hide number field buttons */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
+}
+
 
 /* ---- Media Queries ---- */
 
