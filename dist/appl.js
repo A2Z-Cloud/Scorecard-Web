@@ -10916,8 +10916,8 @@ $__System.register("1", ["5", "6", "7", "8", "72", "75", "78", "4d", "7b", "7d"]
 					}
 				},
 				created: function created() {
-					var url = "ws://localhost:8081/websocket";
-					// var url = "wss://a2z-scorecard.herokuapp.com/websocket"
+					// var url = "ws://localhost:8081/websocket"
+					var url = "wss://a2z-scorecard.herokuapp.com/websocket";
 					this.control = new Control(this, url);
 				},
 				ready: function ready() {
