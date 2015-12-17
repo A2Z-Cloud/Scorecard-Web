@@ -6,6 +6,12 @@
 }
 
 .ProjectGrid
+.not-found-notice {
+	text-align: center;
+	width: 100%;
+}
+
+.ProjectGrid
 table {
 	margin-bottom: 0px;
 	border: 0px;

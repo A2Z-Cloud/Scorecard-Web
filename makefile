@@ -7,3 +7,7 @@ build:
 	mkdir -p dist/images
 	cp -r images/* dist/images/
 	cp loading.css dist/loading.css
+	mkdir -p dist/jspm_packages/npm/font-awesome@4.4.0/fonts 
+	cp -r jspm_packages/npm/font-awesome@4.4.0/fonts/* dist/jspm_packages/npm/font-awesome@4.4.0/fonts/
+deploy:
+	scp -r -i ~/.ssh/i-Dynamics/idynamics-aws.pem dist/* root@54.171.121.214:/var/www/scorecard/

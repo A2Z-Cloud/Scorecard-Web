@@ -22,7 +22,8 @@ var ProjectGrid = Vue.extend({
             save_state: {
                 text: "Saved",
                 error: false
-            }
+            },
+            no_project: false
         }
     },
     methods:{
@@ -132,46 +133,56 @@ var ProjectGrid = Vue.extend({
         }
     },
     computed: {
-        remaining_providers: function() {
+        remaining_providers() {
             // All providers minus those already assigned to the scorecard
             if (this.scorecard.providers && this.store.providers) {
                 var selected_providers_ids = this.scorecard.providers.map(p => p.id)
                 return this.store.providers.filter(p => selected_providers_ids.indexOf(p.id) == -1)
             }
         },
-        remaining_requirements: function() {
+        remaining_requirements() {
             // All requirements minus those already assigned to the scorecard
             if (this.scorecard.requirements && this.store.requirements) {
                 var selected_requirements_ids = this.scorecard.requirements.map(r => r.requirement_id)
                 return this.store.requirements.filter(r => selected_requirements_ids.indexOf(r.id) == -1)
             }
         },
-        scorecard: function() {
+        scorecard() {
             // Get scorecard based on url parms
-            var proj_id = this.$route.query.id
-            var zoho_id = this.$route.query.zoho_id
-            if (this.store && this.store.projects && proj_id) return this.store.projects.find(p => p.id      == proj_id)
-            if (this.store && this.store.projects && zoho_id) return this.store.projects.find(p => p.zoho_id == zoho_id)
+            this.no_project = false
+
+            var scorecard = null
+            var proj_id   = this.$route.query.id
+            var zoho_id   = this.$route.query.zoho_id
+
+            if (this.store && this.store.projects && proj_id) scorecard = this.store.projects.find(p => p.id      == proj_id)
+            if (this.store && this.store.projects && zoho_id) scorecard = this.store.projects.find(p => p.zoho_id == zoho_id)
+            if (this.store && this.store.projects && !scorecard) {
+                this.no_project = true
+            }
+
+            return scorecard
         },
-        sorted_providers: function() {
+        sorted_providers() {
             // Sort scorecard providers by id
             return this.scorecard.providers ? this.scorecard.providers.sort( (a,b) => a.id - b.id ) : []
         },
-        sorted_requirements: function() {
+        sorted_requirements() {
             // Sort scorecard requirements by id
             return this.scorecard.requirements ? this.scorecard.requirements.sort( (a,b) => a.sort_order - b.sort_order ) : []
         }
     },
     watch: {
-        'selected.provider': function(provider) {
+        'selected.provider'(provider) {
             if (provider) {
                 this.$root.control.send("add_provider_to_project", {
                     project_id: this.scorecard.id,
                     provider_id: provider.id
                 })
+                this.selected.provider = ""
             }
         },
-        'selected.requirement': function(requirement) {
+        'selected.requirement'(requirement) {
             if (requirement) {
                 var requirements = this.scorecard.requirements
                 var sort_index   = requirements ? requirements.length : 0
@@ -180,40 +191,41 @@ var ProjectGrid = Vue.extend({
                     requirement_id: requirement.id,
                     sort_order: 0
                 })
+                this.selected.requirement = ""
             }
         }
     },
     events: {
-        'insert_provider': function(provider) {
+        insert_provider(provider) {
             this.store.providers.push(provider)
         },
-        'update_provider': function(provider) {
+        update_provider(provider) {
             var index = this.store.providers.findIndex(p => p.id == provider.id)
             this.store.providers.$set(index, provider)
         },
-        'delete_provider': function(id) {
+        delete_provider(id) {
             var index = this.store.providers.findIndex(p => p.id == id)
             this.store.providers.splice(index, 1)
         },
-        'insert_requirement': function(requirement) {
+        insert_requirement(requirement) {
             this.store.requirements.push(requirement)
         },
-        'update_requirement': function(requirement) {
+        update_requirement(requirement) {
             var index = this.store.requirements.findIndex(r => r.id == requirement.id)
             this.store.requirements.$set(index, requirement)
         },
-        'delete_requirement': function(id) {
+        delete_requirement(id) {
             var index = this.store.requirements.findIndex(r => r.id == id)
             this.store.requirements.splice(index, 1)
         },
-        'insert_project': function(project) {
+        insert_project(project) {
             this.store.projects.push(project)
         },
-        'update_project': function(project) {
+        update_project(project) {
             var index = this.store.projects.findIndex(p => p.id == project.id)
             this.store.projects.$set(index, project)
         },
-        'delete_project': function(id) {
+        delete_project(id) {
             var index = this.store.projects.findIndex(p => p.id == id)
             this.store.projects.splice(index, 1)
         }
