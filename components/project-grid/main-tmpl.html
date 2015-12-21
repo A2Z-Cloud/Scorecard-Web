@@ -37,7 +37,8 @@
 
                         <input  class="score-value u-full-width" 
                                 type='number'
-                                v-model='score_for(provider,requirement).score'
+                                v-model='score_for(provider,requirement).score' number
+                                @click="selected_score($event)"
                                 @keyup="save_scores | debounce 500"/>
                     </td>
                     <td>
