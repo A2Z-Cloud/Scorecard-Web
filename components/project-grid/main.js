@@ -105,9 +105,8 @@ var ProjectGrid = Vue.extend({
             this.save_state.text = "Saving..."
 
             // Make all scores between 0 and 5
-            debugger
             this.scorecard.scores = this.scorecard.scores.map(score => this.constrain_score(score))
-            debugger
+            
             this.$root.control.send("update_scores", {scores: this.scorecard.scores}, (request, response) => {
                 this.save_state.text  = (response.error) ? "ERROR SAVING" : "Saved"
                 this.save_state.error = response.error

@@ -10336,7 +10336,7 @@ $__System.register("79", [], function() { return { setters: [], execute: functio
 (function() {
 var _removeDefine = $__System.get("@@amd-helpers").createDefine();
 define("7a", [], function() {
-  return "<div class=\"ProjectGrid\" v-if=\"store\">\n\n    <div class=\"not-found-notice\" v-if=\"no_project\"> Can't Find Scorecard </div>\n\n    <div v-if=\"scorecard\"> \n        <h4 class=\"project-header\" v-text=\"scorecard.name\"></h4>\n        <table class=\"grid-panel\">\n            <thead>\n                <tr>\n                    <th class=\"row-label corner-label\">Requirements</th>\n                    <!-- Currently selected providers -->\n                    <th v-for=\"selected_provider in scorecard.providers\">\n                        <input  type=\"radio\" \n                                id=\"{{selected_provider.name}}-perspective\"\n                                class=\"perspective\" \n                                value=\"{{selected_provider}}\" \n                                v-model=\"selected.perspective\">\n                        {{ selected_provider.name }}\n                        <span class=\"delete fa fa-times\" @click=\"remove_provider(selected_provider)\"></span>\n                    </th>\n                    <!-- Add new provider selector -->\n                    <th id=\"add-provider-cell\">\n                        <select v-if=\"sorted_requirements.length\" class=\"add-selector\" v-model=\"selected.provider\">\n                            <option value=\"\"> Add Competitor... </option>\n                            <option v-for=\"provider in remaining_providers\" \n                                    v-bind:value=\"provider\"> {{ provider.name }} \n                            </option>\n                        </select>\n                    </th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr v-for=\"requirement in sorted_requirements\">\n                    <td class=\"row-label\"> \n                        {{ requirement.name }}\n                        <span class=\"delete fa fa-times\" @click=\"remove_requirement(requirement)\"></span>\n                    </td>\n\n                    <td v-for=\"provider in sorted_providers\" \n                        v-bind:class=\"class_for(provider, requirement)\"> \n\n                        <input  class=\"score-value u-full-width\" \n                                type='number' \n                                v-model='score_for(provider,requirement).score'\n                                @keyup=\"save_scores | debounce 500\"/>\n                    </td>\n                    <td>\n                        <input  class=\"comment-input\" \n                                type=\"text\"\n                                placeholder=\"comment...\"\n                                v-model=\"requirement.comment\"\n                                @keyup=\"save_comment(requirement.id, requirement.comment) | debounce 500\"/>\n                    </td>\n                </tr>\n                <!-- Add New Requirement selector -->\n                <tr>\n                    <td id=\"add-requirement-cell\">\n                        <select class=\"add-selector\" v-model=\"selected.requirement\">\n                            <option value=\"\"> Add Most Important Requirement... </option>\n                            <option v-for=\"requirement in remaining_requirements\" \n                                    v-bind:value=\"requirement\"> {{ requirement.name }} \n                            </option>\n                        </select>\n                    </td>\n                </tr>\n            </tbody>\n        </table>\n        \n        <div class=\"grid-footer\">\n            <table>\n                <thead>\n                    <tr>\n                        <th class=\"row-label\">\n                            <select class=\"scoring-options\" v-model=\"selected.scoring_method\">\n                                <option v-for=\"method in scoring_methods\" v-bind:value=\"method.value\"> {{ method.text }} </option>\n                            </select>\n                        </th>\n                        <th v-for=\"provider in sorted_providers\">\n                            <span class=\"total-value\" v-text=\"selected.scoring_method(provider) | round '2' \"></span>\n                        </th>\n                        <th v-bind:class=\"{ 'error-message': save_state.error }\">\n                            {{ save_state.text }}\n                        </th>\n                    </tr>\n                </thead>\n            </table>\n        </div>\n    </div>\n\n</div>\n";
+  return "<div class=\"ProjectGrid\" v-if=\"store\">\n\n    <div class=\"not-found-notice\" v-if=\"no_project\"> Can't Find Scorecard </div>\n\n    <div v-if=\"scorecard\"> \n        <h4 class=\"project-header\" v-text=\"scorecard.name\"></h4>\n        <table class=\"grid-panel\">\n            <thead>\n                <tr>\n                    <th class=\"row-label corner-label\">Requirements</th>\n                    <!-- Currently selected providers -->\n                    <th v-for=\"selected_provider in scorecard.providers\">\n                        {{ selected_provider.name }}\n                        <span class=\"delete fa fa-times\" @click=\"remove_provider(selected_provider)\"></span>\n                    </th>\n                    <!-- Add new provider selector -->\n                    <th id=\"add-provider-cell\">\n                        <select v-if=\"sorted_requirements.length\" class=\"add-selector\" v-model=\"selected.provider\">\n                            <option value=\"\"> Add Competitor... </option>\n                            <option v-for=\"provider in remaining_providers\" \n                                    v-bind:value=\"provider\"> {{ provider.name }} \n                            </option>\n                        </select>\n                    </th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr v-for=\"requirement in sorted_requirements\">\n                    <td class=\"row-label\"> \n                        {{ requirement.name }} \n                        <span v-if=\"requirement.unit\">({{ requirement.unit }})</span>\n                        <span class=\"delete fa fa-times\" @click=\"remove_requirement(requirement)\"></span>\n                    </td>\n\n                    <td v-for=\"provider in sorted_providers\" \n                        v-bind:class=\"class_for(provider, requirement)\"> \n\n                        <input  class=\"score-value u-full-width\" \n                                type='number'\n                                v-model='score_for(provider,requirement).score' number\n                                @click=\"selected_score($event)\"\n                                @keyup=\"save_scores | debounce 500\"/>\n                    </td>\n                    <td>\n                        <input  class=\"comment-input\" \n                                type=\"text\"\n                                placeholder=\"comment...\"\n                                v-model=\"requirement.comment\"\n                                @keyup=\"save_comment(requirement.id, requirement.comment) | debounce 500\"/>\n                    </td>\n                </tr>\n                <!-- Add New Requirement selector -->\n                <tr>\n                    <td id=\"add-requirement-cell\">\n                        <select class=\"add-selector\" v-model=\"selected.requirement\">\n                            <option value=\"\"> Add Most Important Requirement... </option>\n                            <option v-for=\"requirement in remaining_requirements\" \n                                    v-bind:value=\"requirement\"> {{ requirement.name }}\n                            </option>\n                        </select>\n                    </td>\n                </tr>\n            </tbody>\n        </table>\n        \n        <div class=\"grid-footer\">\n            <table>\n                <thead>\n                    <tr>\n                        <th class=\"row-label\">\n                            <select class=\"scoring-options\" v-model=\"selected.scoring_method\">\n                                <option v-for=\"method in scoring_methods\" v-bind:value=\"method.value\"> {{ method.text }} </option>\n                            </select>\n                        </th>\n                        <th v-for=\"provider in sorted_providers\">\n                            <span class=\"total-value\" v-text=\"selected.scoring_method(provider) | round '2' \"></span>\n                        </th>\n                        <th v-bind:class=\"{ 'error-message': save_state.error }\">\n                            {{ save_state.text }}\n                        </th>\n                    </tr>\n                </thead>\n            </table>\n        </div>\n    </div>\n\n</div>\n";
 });
 
 _removeDefine();
@@ -10363,7 +10363,6 @@ $__System.register('7b', ['67', '79', '7a', '4d'], function (_export) {
                         selected: {
                             provider: "",
                             requirement: "",
-                            perspective: null,
                             scoring_method: this.total_for
                         },
                         scoring_methods: [{ text: 'Total Score', value: this.total_for }, { text: 'Average Score', value: this.average_for }],
@@ -10419,19 +10418,6 @@ $__System.register('7b', ['67', '79', '7a', '4d'], function (_export) {
                         var winner = provider_score == high_score;
                         var multiple_winners = provider_count_by_scores[high_score] > 1;
 
-                        // From the perspective of a selected company?
-                        if (this.selected.perspective) {
-                            var perspective_score = this.score_for(this.selected.perspective, requirement).score;
-
-                            if (perspective_score == high_score && multiple_winners) {
-                                return 'drew';
-                            } else if (perspective_score == high_score) {
-                                return 'won';
-                            } else {
-                                return 'lost';
-                            }
-                        }
-
                         // Objective placement
                         if (winner && multiple_winners) {
                             return 'drew';
@@ -10469,10 +10455,19 @@ $__System.register('7b', ['67', '79', '7a', '4d'], function (_export) {
                             });
                         }
                     },
+                    selected_score: function selected_score(event) {
+                        event.srcElement.select();
+                    },
                     save_scores: function save_scores() {
                         var _this2 = this;
 
                         this.save_state.text = "Saving...";
+
+                        // Make all scores between 0 and 5
+                        this.scorecard.scores = this.scorecard.scores.map(function (score) {
+                            return _this2.constrain_score(score);
+                        });
+
                         this.$root.control.send("update_scores", { scores: this.scorecard.scores }, function (request, response) {
                             _this2.save_state.text = response.error ? "ERROR SAVING" : "Saved";
                             _this2.save_state.error = response.error;
@@ -10491,6 +10486,10 @@ $__System.register('7b', ['67', '79', '7a', '4d'], function (_export) {
                             _this3.save_state.text = response.error ? "ERROR SAVING" : "Saved";
                             _this3.save_state.error = response.error;
                         });
+                    },
+                    constrain_score: function constrain_score(score) {
+                        score.score = Math.max(0, Math.min(score.score, 5));
+                        return score;
                     }
                 },
                 computed: {
@@ -10537,10 +10536,22 @@ $__System.register('7b', ['67', '79', '7a', '4d'], function (_export) {
                         return scorecard;
                     },
                     sorted_providers: function sorted_providers() {
-                        // Sort scorecard providers by id
-                        return this.scorecard.providers ? this.scorecard.providers.sort(function (a, b) {
-                            return a.id - b.id;
+                        var _this4 = this;
+
+                        var result = this.scorecard.providers ? this.scorecard.providers.sort(function (a, b) {
+                            return a.name > b.name;
                         }) : [];
+
+                        if (this.$root.user) {
+                            var users_provider = result.findIndex(function (p) {
+                                return p.id == _this4.$root.user.company.id;
+                            });
+                            if (users_provider != -1) {
+                                result.splice(0, 0, result.splice(users_provider, 1)[0]);
+                            }
+                        }
+
+                        return result;
                     },
                     sorted_requirements: function sorted_requirements() {
                         // Sort scorecard requirements by id
@@ -10736,7 +10747,6 @@ $__System.register("7d", ["51", "52", "7c"], function (_export) {
 					_classCallCheck(this, Connection);
 
 					this._url = url;
-					this._appl = appl;
 					this._ws = null;
 					this._next_id = 1;
 					this._pending_request = [];
@@ -10776,14 +10786,14 @@ $__System.register("7d", ["51", "52", "7c"], function (_export) {
 									_this2.send("cookie", { value: value });
 								}
 							} else if (message.signal == "user") {
-								_this2._appl.user = message.message;
+								appl.user = message.message;
 								if (message.cookie) {
 									var expires = new Date();
 									expires.setMonth(expires.getMonth() + 1);
 									docCookies.setItem(message.cookie_name, message.cookie, expires.toGMTString());
 								}
 							} else {
-								_this2._appl.$broadcast(message.signal, message.message);
+								appl.$broadcast(message.signal, message.message);
 							}
 						};
 						this._ws.onclose = function () {
@@ -10832,8 +10842,6 @@ $__System.register("7d", ["51", "52", "7c"], function (_export) {
 				}, {
 					key: "logout",
 					value: function logout(err_back) {
-						var _this4 = this;
-
 						this.send("logout", {}, function (request, response) {
 							if (response.error) {
 								if (err_back) {
@@ -10841,7 +10849,7 @@ $__System.register("7d", ["51", "52", "7c"], function (_export) {
 								}
 								return;
 							}
-							_this4._appl.user = null;
+							appl.user = null;
 							docCookies.removeItem(response.result);
 						});
 					}
@@ -10932,12 +10940,12 @@ $__System.register("1", ["5", "6", "7", "8", "72", "75", "78", "4d", "7b", "7d"]
 					}
 				},
 				created: function created() {
-					// var url = "ws://localhost:8081/websocket"
+					var appl = window.appl = this;
+					// var url  = "ws://localhost:8081/websocket"
 					var url = "wss://a2z-scorecard.herokuapp.com/websocket";
 					this.control = new Control(this, url);
 				},
 				ready: function ready() {
-					var appl = window.appl = this;
 					this.loading = false;
 				}
 			}, '#scorecard');

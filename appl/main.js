@@ -72,8 +72,8 @@ router.start({
 	},
 	created() {
 		var appl = window.appl = this;
-		var url  = "ws://localhost:8081/websocket"
-		// var url = "wss://a2z-scorecard.herokuapp.com/websocket"
+		// var url  = "ws://localhost:8081/websocket"
+		var url = "wss://a2z-scorecard.herokuapp.com/websocket"
 		this.control = new Control(this, url);
 	},
     ready() {
