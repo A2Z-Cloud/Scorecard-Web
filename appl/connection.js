@@ -3,7 +3,6 @@ import docCookies from "./utils";
 export default class Connection{
 	constructor(appl, url){
 		this._url = url;
-		this._appl = appl;
 		this._ws = null;
 		this._next_id = 1;
 		this._pending_request = [];
@@ -39,14 +38,14 @@ export default class Connection{
 					this.send("cookie",{value: value});
 				}
 			} else if(message.signal == "user") {
-				this._appl.user = message.message;
+				appl.user = message.message;
 				if(message.cookie){
 					var expires = new Date();
 					expires.setMonth( expires.getMonth( ) + 1 );
 					docCookies.setItem(message.cookie_name, message.cookie,expires.toGMTString());
 				}
 			} else {
-				this._appl.$broadcast(message.signal, message.message);
+				appl.$broadcast(message.signal, message.message);
 			}
 		};
 		this._ws.onclose = () =>{
@@ -82,7 +81,7 @@ export default class Connection{
 
 	login(email, password, err_back){
 		this.send("login",{ email:email, password:password },(request,response)=>{
-			if(response.error && err_back){
+			if(response.error && err_back) {
 				err_back(response.error);
 			}
 		});
@@ -96,7 +95,7 @@ export default class Connection{
 				}
 				return;
 			}
-			this._appl.user = null;
+			appl.user = null;
 			docCookies.removeItem(response.result);
 		});
 	}

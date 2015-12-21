@@ -10,11 +10,6 @@
                     <th class="row-label corner-label">Requirements</th>
                     <!-- Currently selected providers -->
                     <th v-for="selected_provider in scorecard.providers">
-                        <input  type="radio" 
-                                id="{{selected_provider.name}}-perspective"
-                                class="perspective" 
-                                value="{{selected_provider}}" 
-                                v-model="selected.perspective">
                         {{ selected_provider.name }}
                         <span class="delete fa fa-times" @click="remove_provider(selected_provider)"></span>
                     </th>
@@ -32,7 +27,8 @@
             <tbody>
                 <tr v-for="requirement in sorted_requirements">
                     <td class="row-label"> 
-                        {{ requirement.name }}
+                        {{ requirement.name }} 
+                        <span v-if="requirement.unit">({{ requirement.unit }})</span>
                         <span class="delete fa fa-times" @click="remove_requirement(requirement)"></span>
                     </td>
 
@@ -40,7 +36,7 @@
                         v-bind:class="class_for(provider, requirement)"> 
 
                         <input  class="score-value u-full-width" 
-                                type='number' 
+                                type='number'
                                 v-model='score_for(provider,requirement).score'
                                 @keyup="save_scores | debounce 500"/>
                     </td>
@@ -58,7 +54,7 @@
                         <select class="add-selector" v-model="selected.requirement">
                             <option value=""> Add Most Important Requirement... </option>
                             <option v-for="requirement in remaining_requirements" 
-                                    v-bind:value="requirement"> {{ requirement.name }} 
+                                    v-bind:value="requirement"> {{ requirement.name }}
                             </option>
                         </select>
                     </td>
@@ -76,7 +72,7 @@
                             </select>
                         </th>
                         <th v-for="provider in sorted_providers">
-                            <span class="total-value" v-text="selected.scoring_method(provider)"></span>
+                            <span class="total-value" v-text="selected.scoring_method(provider) | round '2' "></span>
                         </th>
                         <th v-bind:class="{ 'error-message': save_state.error }">
                             {{ save_state.text }}

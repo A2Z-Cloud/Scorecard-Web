@@ -15,9 +15,12 @@ import Control from "./connection";
 Vue.use(VueRouter);
 Vue.config.debug=true;
 
-var Foo = Vue.extend({
-    template: '<p>This is foo!</p>'
-})
+Vue.filter('round', function(value, decimals) {
+	if(!value || !decimals) {
+		value = 0
+	}
+	return Math.round(value * Math.pow(10, decimals)) / Math.pow(10, decimals)
+});
 
 var router = new VueRouter()
 router.map({
@@ -68,12 +71,12 @@ router.start({
 		}
 	},
 	created() {
-		// var url = "ws://localhost:8081/websocket"
-		var url = "wss://a2z-scorecard.herokuapp.com/websocket"
+		var appl = window.appl = this;
+		var url  = "ws://localhost:8081/websocket"
+		// var url = "wss://a2z-scorecard.herokuapp.com/websocket"
 		this.control = new Control(this, url);
 	},
     ready() {
-    	var appl = window.appl = this;
         this.loading = false;
     }
 }, '#scorecard');

@@ -12,7 +12,6 @@ var ProjectGrid = Vue.extend({
             selected: {
                 provider: "",
                 requirement: "",
-                perspective: null,
                 scoring_method: this.total_for
             },
             scoring_methods: [
@@ -65,19 +64,6 @@ var ProjectGrid = Vue.extend({
             var high_score       = decending_scores[0]
             var winner           = (provider_score == high_score)
             var multiple_winners = (provider_count_by_scores[high_score] > 1)
-
-            // From the perspective of a selected company?
-            if (this.selected.perspective) {
-                var perspective_score = this.score_for(this.selected.perspective, requirement).score
-
-                if (perspective_score == high_score && multiple_winners) {
-                    return 'drew'
-                } else if (perspective_score == high_score) {
-                    return 'won'
-                } else {
-                    return 'lost'
-                }
-            }
 
             // Objective placement
             if (winner && multiple_winners) {
@@ -164,8 +150,16 @@ var ProjectGrid = Vue.extend({
             return scorecard
         },
         sorted_providers() {
-            // Sort scorecard providers by id
-            return this.scorecard.providers ? this.scorecard.providers.sort( (a,b) => a.id - b.id ) : []
+            var result = this.scorecard.providers ? this.scorecard.providers.sort( (a,b) => a.name > b.name ) : []
+
+            if (this.$root.user) {
+                var users_provider = result.findIndex(p => p.id == this.$root.user.company.id)
+                if (users_provider != -1) {
+                    result.splice(0, 0, result.splice(users_provider, 1)[0])
+                }
+            }
+
+            return result
         },
         sorted_requirements() {
             // Sort scorecard requirements by id
