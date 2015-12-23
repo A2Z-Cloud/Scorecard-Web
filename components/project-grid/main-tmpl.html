@@ -32,7 +32,7 @@
                         <span class="delete fa fa-times" @click="remove_requirement(requirement)"></span>
                     </td>
 
-                    <td v-for="provider in sorted_providers" 
+                    <td v-if="selected.comment_type == null" v-for="provider in sorted_providers" 
                         v-bind:class="class_for(provider, requirement)"> 
 
                         <input  class="score-value u-full-width" 
@@ -41,12 +41,37 @@
                                 @click="selected_score($event)"
                                 @keyup="save_scores | debounce 500"/>
                     </td>
-                    <td>
+
+                    <td v-if="selected.comment_type != null" colspan="{{ sorted_providers.length }}">
                         <input  class="comment-input" 
                                 type="text"
-                                placeholder="comment..."
-                                v-model="requirement.comment"
-                                @keyup="save_comment(requirement.id, requirement.comment) | debounce 500"/>
+                                placeholder="{{ selected.comment_type | pretty_var}} comment..."
+                                v-model="requirement[selected.comment_type]"
+                                @keyup="save_comment(requirement.id, requirement[selected.comment_type]) | debounce 500"
+                                @keyup.enter="save_comment(requirement.id, requirement[selected.comment_type], true)"/>
+                    </td>
+
+                    <td class="noselect">
+                        <div class="action-panel">
+                            <div 
+                                title="Action Plan" 
+                                class="action-button"
+                                @click="select_comment_type('action_plan')">
+                                <i :class="['fa', selected.comment_type == 'action_plan' ? 'fa-times' : 'fa-bolt']"></i>
+                            </div>
+                            <div 
+                                title="Lobby Plan" 
+                                class="action-button" 
+                                @click="select_comment_type('lobby_plan')">
+                                <i :class="['fa', selected.comment_type == 'lobby_plan' ? 'fa-times' : 'fa-bank']"></i>
+                            </div>
+                            <div 
+                                title="Contacts" 
+                                class="action-button"
+                                @click="select_comment_type('contacts')">
+                                <i :class="['fa', selected.comment_type == 'contacts' ? 'fa-times' : 'fa-users']"></i>
+                            </div>
+                        </div>
                     </td>
                 </tr>
                 <!-- Add New Requirement selector -->

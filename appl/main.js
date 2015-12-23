@@ -20,7 +20,11 @@ Vue.filter('round', function(value, decimals) {
 		value = 0
 	}
 	return Math.round(value * Math.pow(10, decimals)) / Math.pow(10, decimals)
-});
+})
+
+Vue.filter('pretty_var', function(value) {
+	return value.replace("_"," ")
+})
 
 var router = new VueRouter()
 router.map({
@@ -72,8 +76,8 @@ router.start({
 	},
 	created() {
 		var appl = window.appl = this;
-		// var url  = "ws://localhost:8081/websocket"
-		var url = "wss://a2z-scorecard.herokuapp.com/websocket"
+		var url  = "ws://localhost:8081/websocket"
+		// var url = "wss://a2z-scorecard.herokuapp.com/websocket"
 		this.control = new Control(this, url);
 	},
     ready() {
