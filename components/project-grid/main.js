@@ -2,7 +2,7 @@ import './main.css!';
 import tmpl from './main-tmpl.html!text';
 import Vue from 'vue';
 
-var ProjectGrid = Vue.extend({
+export default Vue.extend({
     template: tmpl,
     props: [
         "store"
@@ -12,7 +12,8 @@ var ProjectGrid = Vue.extend({
             selected: {
                 provider: "",
                 requirement: "",
-                scoring_method: this.total_for
+                scoring_method: this.total_for,
+                comment_type: null
             },
             scoring_methods: [
                 { text: 'Total Score',   value: this.total_for   },
@@ -112,21 +113,36 @@ var ProjectGrid = Vue.extend({
                 this.save_state.error = response.error
             })
         },
-        save_comment(requirement_id, comment) {
-            this.save_state.text = "Saving..."
-            var payload = {
-                requirement_id: requirement_id, 
-                comment: comment
-            }
+        save_comment(requirement_id, comment, close=false) {
+            // If that catches the posible debounce after enter has been hit
+            if (this.selected.comment_type) {
+                this.save_state.text = "Saving..."
+                var payload = {
+                    requirement_id: requirement_id, 
+                    comment_type: this.selected.comment_type,
+                    comment: comment
+                }
 
-            this.$root.control.send("update_comment", payload, (request, response) => {
-                this.save_state.text  = (response.error) ? "ERROR SAVING" : "Saved"
-                this.save_state.error = response.error
-            })
+                this.$root.control.send("update_comment", payload, (request, response) => {
+                    this.save_state.text  = (response.error) ? "ERROR SAVING" : "Saved"
+                    this.save_state.error = response.error
+
+                    if (close) this.select_comment_type(null)
+                })
+            }
         },
         constrain_score(score) {
             score.score = Math.max(0, Math.min(score.score, 5))
             return score
+        },
+        select_comment_type(selection) {
+            this.selected.comment_type = selection
+            // this.selected.comment_type = (this.selected.comment_type == selection) ? null : selection
+        },
+        full_requirement_name(requirement) {
+            var name = requirement.name
+            var unit = (requirement.unit) ? ' (' + requirement.unit + ')' : ''
+            return name + unit
         }
     },
     computed: {
@@ -239,7 +255,3 @@ var ProjectGrid = Vue.extend({
         this.store = window.appl.get_store()
     }
 });
-
-export default {
-    component: ProjectGrid
-}
