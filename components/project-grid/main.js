@@ -2,7 +2,7 @@ import './main.css!';
 import tmpl from './main-tmpl.html!text';
 import Vue from 'vue';
 
-var ProjectGrid = Vue.extend({
+export default Vue.extend({
     template: tmpl,
     props: [
         "store"
@@ -136,7 +136,13 @@ var ProjectGrid = Vue.extend({
             return score
         },
         select_comment_type(selection) {
-            this.selected.comment_type = (this.selected.comment_type == selection) ? null : selection
+            this.selected.comment_type = selection
+            // this.selected.comment_type = (this.selected.comment_type == selection) ? null : selection
+        },
+        full_requirement_name(requirement) {
+            var name = requirement.name
+            var unit = (requirement.unit) ? ' (' + requirement.unit + ')' : ''
+            return name + unit
         }
     },
     computed: {
@@ -249,7 +255,3 @@ var ProjectGrid = Vue.extend({
         this.store = window.appl.get_store()
     }
 });
-
-export default {
-    component: ProjectGrid
-}

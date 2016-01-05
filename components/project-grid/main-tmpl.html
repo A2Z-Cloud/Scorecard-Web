@@ -4,6 +4,42 @@
 
     <div v-if="scorecard"> 
         <h4 class="project-header" v-text="scorecard.name"></h4>
+
+        <div class="action-panel no-select">
+            <div 
+                title="Scores" 
+                class="action-button"
+                :class="[selected.comment_type == null ? 'selected' : '']"
+                @click="select_comment_type(null)">
+                <i :class="['fa', 'fa-trophy']"></i>
+                Scores
+            </div>
+            <div 
+                title="Action Plan" 
+                class="action-button"
+                :class="[selected.comment_type == 'action_plan' ? 'selected' : '']"
+                @click="select_comment_type('action_plan')">
+                <i :class="['fa', 'fa-bolt']"></i>
+                Action Plan
+            </div>
+            <div 
+                title="Lobby Plan" 
+                class="action-button" 
+                :class="[selected.comment_type == 'lobby_plan' ? 'selected' : '']"
+                @click="select_comment_type('lobby_plan')">
+                <i :class="['fa', 'fa-bank']"></i>
+                Lobby Plan
+            </div>
+            <div 
+                title="Contacts" 
+                class="action-button"
+                :class="[selected.comment_type == 'contacts' ? 'selected' : '']"
+                @click="select_comment_type('contacts')">
+                <i class="fa fa-users"></i>
+                Contacts
+            </div>
+        </div>
+
         <table class="grid-panel">
             <thead>
                 <tr>
@@ -18,7 +54,7 @@
                         <select v-if="sorted_requirements.length" class="add-selector" v-model="selected.provider">
                             <option value=""> Add Competitor... </option>
                             <option v-for="provider in remaining_providers" 
-                                    v-bind:value="provider"> {{ provider.name }} 
+                                    v-bind:value="provider"> {{ provider.name }}
                             </option>
                         </select>
                     </th>
@@ -51,27 +87,8 @@
                                 @keyup.enter="save_comment(requirement.id, requirement[selected.comment_type], true)"/>
                     </td>
 
-                    <td class="noselect">
-                        <div class="action-panel">
-                            <div 
-                                title="Action Plan" 
-                                class="action-button"
-                                @click="select_comment_type('action_plan')">
-                                <i :class="['fa', selected.comment_type == 'action_plan' ? 'fa-times' : 'fa-bolt']"></i>
-                            </div>
-                            <div 
-                                title="Lobby Plan" 
-                                class="action-button" 
-                                @click="select_comment_type('lobby_plan')">
-                                <i :class="['fa', selected.comment_type == 'lobby_plan' ? 'fa-times' : 'fa-bank']"></i>
-                            </div>
-                            <div 
-                                title="Contacts" 
-                                class="action-button"
-                                @click="select_comment_type('contacts')">
-                                <i :class="['fa', selected.comment_type == 'contacts' ? 'fa-times' : 'fa-users']"></i>
-                            </div>
-                        </div>
+                    <td class="no-select">
+                        
                     </td>
                 </tr>
                 <!-- Add New Requirement selector -->
@@ -80,7 +97,7 @@
                         <select class="add-selector" v-model="selected.requirement">
                             <option value=""> Add Most Important Requirement... </option>
                             <option v-for="requirement in remaining_requirements" 
-                                    v-bind:value="requirement"> {{ requirement.name }}
+                                    v-bind:value="requirement"> {{ full_requirement_name(requirement) }} 
                             </option>
                         </select>
                     </td>

@@ -28,7 +28,11 @@ Vue.filter('pretty_var', function(value) {
 
 var router = new VueRouter()
 router.map({
-	'/project': ProjectGrid
+	'/project': {
+		name: 'Scorecard',
+        component: ProjectGrid,
+        props: ['store']
+	}
 })
 
 router.start({
