@@ -1,4 +1,6 @@
 build:
+	- rm consts.js
+	echo "export const debug = false\nexport const ws_url = 'wss://a2z-scorecard.herokuapp.com/websocket'\n" > consts.js
 	- rm -rf dist
 	mkdir dist
 	jspm bundle-sfx appl/main dist/appl.js
@@ -7,7 +9,9 @@ build:
 	mkdir -p dist/images
 	cp -r images/* dist/images/
 	cp loading.css dist/loading.css
-	mkdir -p dist/jspm_packages/npm/font-awesome@4.4.0/fonts 
+	mkdir -p dist/jspm_packages/npm/font-awesome@4.4.0/fonts
 	cp -r jspm_packages/npm/font-awesome@4.4.0/fonts/* dist/jspm_packages/npm/font-awesome@4.4.0/fonts/
+	- rm consts.js
+	echo "export const debug = true\nexport const ws_url = 'ws://localhost:8081/websocket'\n" > consts.js
 deploy:
 	scp -r -i ~/.ssh/i-Dynamics/idynamics-aws.pem dist/* root@54.171.121.214:/var/www/scorecard/

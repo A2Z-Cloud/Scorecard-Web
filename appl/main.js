@@ -6,6 +6,9 @@ import './main.css!';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
+// -- Consts
+import {debug, ws_url} from 'consts'
+
 import "components/menu-panel/main";
 import "components/login-panel/main";
 import ProjectGrid from "components/project-grid/main";
@@ -79,10 +82,9 @@ router.start({
 		}
 	},
 	created() {
-		var appl = window.appl = this;
-		var url  = "ws://localhost:8081/websocket"
-		// var url = "wss://a2z-scorecard.herokuapp.com/websocket"
-		this.control = new Control(this, url);
+        var appl = window.appl = this;
+
+		this.control = new Control(this, ws_url);
 	},
     ready() {
         this.loading = false;
