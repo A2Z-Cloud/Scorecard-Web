@@ -12,6 +12,6 @@ build:
 	mkdir -p dist/jspm_packages/npm/font-awesome@4.4.0/fonts
 	cp -r jspm_packages/npm/font-awesome@4.4.0/fonts/* dist/jspm_packages/npm/font-awesome@4.4.0/fonts/
 	- rm consts.js
-	echo "export const debug = true\nexport const ws_url = 'ws://localhost:8081/websocket'\n" > consts.js
+	echo "export const debug = true\nexport const ws_url = 'ws://localhost:8888/websocket'\n" > consts.js
 deploy:
 	scp -r -i ~/.ssh/i-Dynamics/idynamics-aws.pem dist/* root@54.171.121.214:/var/www/scorecard/
