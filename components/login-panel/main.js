@@ -51,6 +51,7 @@ Vue.component('login-panel', {
         }
     },
     ready(){
-        this.offset = this.$els.footer.clientHeight;
+        this.offset = this.$els.footer.clientHeight
+        if (this.user == null) this.toggle()
     }
 });

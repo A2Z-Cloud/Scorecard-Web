@@ -41,11 +41,18 @@ router.map({
 router.start({
 	data() {
 		return {
+            control: null,
 			store: null,
 	        loading: true,
 			user: null,
 			error: null
 		}
+    },
+    computed: {
+        // Monitors when the handshake between the server and client end (cookie for user exchange)
+        handshake_complete() {
+            return this.control._handshake_complete
+        }
     },
 	methods:{
 		get_store() {
@@ -89,4 +96,4 @@ router.start({
     ready() {
         this.loading = false;
     }
-}, '#scorecard');
+}, 'body');

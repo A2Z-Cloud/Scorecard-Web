@@ -1,3 +1,9 @@
+/* Hide and show on load */
+[v-cloak] { display:none;  }
+
+.loading { display:none; }
+[v-cloak].loading { display:block; }
+
 .loading {
     position: absolute;
     top: 50%;
@@ -37,4 +43,27 @@
     40% {
         transform: scale(1);
     }
+}
+
+.disconnected {
+    -webkit-filter: grayscale(1);
+            filter: grayscale(1);
+
+    -webkit-transition: 2s;
+       -moz-transition: 2s;
+        -ms-transition: 2s;
+         -o-transition: 2s;
+            transition: 2s;
+}
+
+.disconnected::after {
+    content: '';
+
+    position: absolute;
+        left: 0;
+         top: 0;
+
+    display: block;
+     height: 100%;
+      width: 100%;
 }

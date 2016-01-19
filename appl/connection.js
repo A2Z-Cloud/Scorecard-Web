@@ -2,13 +2,14 @@ import docCookies from "./utils";
 
 export default class Connection{
 	constructor(appl, url){
-		this._url = url;
-		this._ws = null;
-		this._next_id = 1;
-		this._pending_request = [];
-		this._pending_response = {};
-		this._send_timeout = null;
-		this._connected = false;
+        this._url                = url;
+        this._ws                 = null;
+        this._next_id            = 1;
+        this._pending_request    = [];
+        this._pending_response   = {};
+        this._send_timeout       = null;
+        this._connected          = false;
+        this._handshake_complete = false;
 		this.connect();
 
 		// ping to keep connection alive
@@ -34,9 +35,11 @@ export default class Connection{
 				}
 			} else if(message.signal == "cookie") {
 				var value = docCookies.getItem(message.message.cookie_name);
-				if(value){
-					this.send("cookie",{value: value});
-				}
+                if (value) {
+                    this.send("cookie",{value: value});
+                } else {
+                    this._handshake_complete = true
+                }
 			} else if(message.signal == "user") {
 				appl.user = message.message;
 				if(message.cookie){
@@ -44,6 +47,7 @@ export default class Connection{
 					expires.setMonth( expires.getMonth( ) + 1 );
 					docCookies.setItem(message.cookie_name, message.cookie,expires.toGMTString());
 				}
+                this._handshake_complete = true
 			} else {
 				appl.$broadcast(message.signal, message.message);
 			}
