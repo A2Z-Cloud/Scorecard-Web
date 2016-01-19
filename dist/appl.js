@@ -10343,6 +10343,7 @@ $__System.register('79', ['77', '78', '4d'], function (_export) {
                 },
                 ready: function ready() {
                     this.offset = this.$els.footer.clientHeight;
+                    if (this.user == null) this.toggle();
                 }
             });
         }
@@ -10784,6 +10785,7 @@ $__System.register("7e", ["51", "52", "7d"], function (_export) {
 					this._pending_response = {};
 					this._send_timeout = null;
 					this._connected = false;
+					this._handshake_complete = false;
 					this.connect();
 
 					// ping to keep connection alive
@@ -10815,6 +10817,8 @@ $__System.register("7e", ["51", "52", "7d"], function (_export) {
 								var value = docCookies.getItem(message.message.cookie_name);
 								if (value) {
 									_this2.send("cookie", { value: value });
+								} else {
+									_this2._handshake_complete = true;
 								}
 							} else if (message.signal == "user") {
 								appl.user = message.message;
@@ -10823,6 +10827,7 @@ $__System.register("7e", ["51", "52", "7d"], function (_export) {
 									expires.setMonth(expires.getMonth() + 1);
 									docCookies.setItem(message.cookie_name, message.cookie, expires.toGMTString());
 								}
+								_this2._handshake_complete = true;
 							} else {
 								appl.$broadcast(message.signal, message.message);
 							}
@@ -10941,11 +10946,18 @@ $__System.register("1", ["5", "6", "7", "8", "72", "73", "76", "79", "4d", "7c",
 			router.start({
 				data: function data() {
 					return {
+						control: null,
 						store: null,
 						loading: true,
 						user: null,
 						error: null
 					};
+				},
+				computed: {
+					// Monitors when the handshake between the server and client end (cookie for user exchange)
+					handshake_complete: function handshake_complete() {
+						return this.control._handshake_complete;
+					}
 				},
 				methods: {
 					get_store: function get_store() {
@@ -10991,7 +11003,7 @@ $__System.register("1", ["5", "6", "7", "8", "72", "73", "76", "79", "4d", "7c",
 				ready: function ready() {
 					this.loading = false;
 				}
-			}, '#scorecard');
+			}, 'body');
 		}
 	};
 });
