@@ -33,22 +33,18 @@
 
 	</head>
 	<body>
-		<!-- <div id="loading-placeholder" class="loading" v-cloak>
+		<div id="loading-placeholder" class="loading" v-cloak>
 			<div class="loading-bar"></div>
 			<div class="loading-bar"></div>
 			<div class="loading-bar"></div>
 			<div class="loading-bar"></div>
 		</div>
- -->
-		<div id="scorecard" class="main" v-cloak>
-			<login-panel :user="user"></login-panel>
-			<!-- <div class="side-panel">
-				<menu-panel :projects="projects"></menu-panel>
-			</div> -->
-			<!-- <div class="main-panel">
-				<project-grid :project="project"></project-grid>
-			</div> -->
-			<router-view></router-view>
+
+		<div id="scorecard" class="main" :class="{ disconnected: !control._connected }" v-cloak>
+            <template v-if="handshake_complete">
+                <login-panel :user="user"></login-panel>
+                <router-view v-if="user" :store="store"></router-view>
+            </template>
 		</div>
 
 		<!-- Javascript -->

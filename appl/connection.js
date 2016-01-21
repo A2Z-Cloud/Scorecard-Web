@@ -2,15 +2,22 @@ import docCookies from "./utils";
 
 export default class Connection{
 	constructor(appl, url){
-		this._url = url;
-		this._appl = appl;
-		this._ws = null;
-		this._next_id = 1;
-		this._pending_request = [];
-		this._pending_response = {};
-		this._send_timeout = null;
-		this._connected = false;
+        this._url                = url;
+        this._ws                 = null;
+        this._next_id            = 1;
+        this._pending_request    = [];
+        this._pending_response   = {};
+        this._send_timeout       = null;
+        this._connected          = false;
+        this._handshake_complete = false;
 		this.connect();
+
+		// ping to keep connection alive
+        setInterval( () => {
+            if(this._connected) {
+                this.send("ping")
+            }
+        }, 30000);
 	}
 
 	connect(){
@@ -28,18 +35,21 @@ export default class Connection{
 				}
 			} else if(message.signal == "cookie") {
 				var value = docCookies.getItem(message.message.cookie_name);
-				if(value){
-					this.send("cookie",{value: value});
-				}
+                if (value) {
+                    this.send("cookie",{value: value});
+                } else {
+                    this._handshake_complete = true
+                }
 			} else if(message.signal == "user") {
-				this._appl.user = message.message;
+				appl.user = message.message;
 				if(message.cookie){
 					var expires = new Date();
 					expires.setMonth( expires.getMonth( ) + 1 );
 					docCookies.setItem(message.cookie_name, message.cookie,expires.toGMTString());
 				}
+                this._handshake_complete = true
 			} else {
-				this._appl.$broadcast(message.signal, message.message);
+				appl.$broadcast(message.signal, message.message);
 			}
 		};
 		this._ws.onclose = () =>{
@@ -60,7 +70,7 @@ export default class Connection{
 		}
 	}
 
-	_send(){
+	_send() {
 		this._send_timeout = null;
 		this._ws.send(JSON.stringify({
 			requests: this._pending_request.map(item=>{
@@ -75,7 +85,7 @@ export default class Connection{
 
 	login(email, password, err_back){
 		this.send("login",{ email:email, password:password },(request,response)=>{
-			if(response.error && err_back){
+			if(response.error && err_back) {
 				err_back(response.error);
 			}
 		});
@@ -89,7 +99,7 @@ export default class Connection{
 				}
 				return;
 			}
-			this._appl.user = null;
+			appl.user = null;
 			docCookies.removeItem(response.result);
 		});
 	}
