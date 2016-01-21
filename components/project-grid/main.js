@@ -29,7 +29,7 @@ export default Vue.extend({
     methods:{
         score_for(provider, requirement) {
             var result = this.scorecard.scores.find( score => {
-                return score.requirement_id == requirement.requirement_id 
+                return score.requirement_id == requirement.requirement_id
                     && score.provider_id    == provider.id
             })
             return (result) ? result : {score: 0}
@@ -42,37 +42,48 @@ export default Vue.extend({
                 }
             })
         },
+        // class_for(provider, requirement) {
+        //     // Get all scores for providers (keyed by provider id)
+        //     // As well as the passed providers score
+        //     var providers_scores = this.providers_scores_for(requirement)
+        //     var provider_score   = this.score_for(provider, requirement).score
+        //
+        //     var provider_count_by_scores = providers_scores.reduce( (carry, i) => {
+        //         // Add key if doesn't exist
+        //         if (carry[i.score] == undefined) {
+        //             carry[i.score] = 0
+        //         }
+        //         // Add provider id to score key
+        //         carry[i.score]++
+        //         return carry
+        //     }, {})
+        //
+        //     // Figure out placement
+        //     var decending_scores = Object.keys(provider_count_by_scores)  // Get all scores
+        //                                  .map (  k   => parseFloat(k))    // Make them floats
+        //                                  .sort((a,b) => a<b)              // Sort descending
+        //     var high_score       = decending_scores[0]
+        //     var winner           = (provider_score == high_score)
+        //     var multiple_winners = (provider_count_by_scores[high_score] > 1)
+        //
+        //     // Objective placement
+        //     if (winner && multiple_winners) {
+        //         return 'drew'
+        //     } else if (winner) {
+        //         return 'won'
+        //     } else {
+        //         return 'lost'
+        //     }
+        // },
         class_for(provider, requirement) {
-            // Get all scores for providers (keyed by provider id)
-            // As well as the passed providers score
-            var providers_scores = this.providers_scores_for(requirement)
-            var provider_score   = this.score_for(provider, requirement).score
-
-            var provider_count_by_scores = providers_scores.reduce( (carry, i) => {
-                // Add key if doesn't exist
-                if (carry[i.score] == undefined) {
-                    carry[i.score] = 0
-                } 
-                // Add provider id to score key
-                carry[i.score]++
-                return carry
-            }, {})
-            
-            // Figure out placement
-            var decending_scores = Object.keys(provider_count_by_scores)  // Get all scores
-                                         .map (  k   => parseFloat(k))    // Make them floats
-                                         .sort((a,b) => a<b)              // Sort descending
-            var high_score       = decending_scores[0]
-            var winner           = (provider_score == high_score)
-            var multiple_winners = (provider_count_by_scores[high_score] > 1)
-
-            // Objective placement
-            if (winner && multiple_winners) {
-                return 'drew'
-            } else if (winner) {
-                return 'won'
-            } else {
-                return 'lost'
+            let provider_score = this.score_for(provider, requirement).score
+            switch (provider_score) {
+                 case 1: return 'score-one'
+                 case 2: return 'score-two'
+                 case 3: return 'score-three'
+                 case 4: return 'score-four'
+                 case 5: return 'score-five'
+                default: return ''
             }
         },
         total_for(provider) {
@@ -107,7 +118,7 @@ export default Vue.extend({
 
             // Make all scores between 0 and 5
             this.scorecard.scores = this.scorecard.scores.map(score => this.constrain_score(score))
-            
+
             this.$root.control.send("update_scores", {scores: this.scorecard.scores}, (request, response) => {
                 this.save_state.text  = (response.error) ? "ERROR SAVING" : "Saved"
                 this.save_state.error = response.error
@@ -118,7 +129,7 @@ export default Vue.extend({
             if (this.selected.comment_type) {
                 this.save_state.text = "Saving..."
                 var payload = {
-                    requirement_id: requirement_id, 
+                    requirement_id: requirement_id,
                     comment_type: this.selected.comment_type,
                     comment: comment
                 }

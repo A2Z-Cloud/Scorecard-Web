@@ -2,36 +2,36 @@
 
     <div class="not-found-notice" v-if="no_project"> Can't Find Scorecard </div>
 
-    <div v-if="scorecard"> 
+    <div v-if="scorecard">
         <h4 class="project-header" v-text="scorecard.name"></h4>
 
         <div class="action-panel no-select">
-            <div 
-                title="Scores" 
+            <div
+                title="Scores"
                 class="action-button"
                 :class="[selected.comment_type == null ? 'selected' : '']"
                 @click="select_comment_type(null)">
                 <i :class="['fa', 'fa-trophy']"></i>
                 Scores
             </div>
-            <div 
-                title="Action Plan" 
+            <div
+                title="Action Plan"
                 class="action-button"
                 :class="[selected.comment_type == 'action_plan' ? 'selected' : '']"
                 @click="select_comment_type('action_plan')">
                 <i :class="['fa', 'fa-bolt']"></i>
                 Action Plan
             </div>
-            <div 
-                title="Lobby Plan" 
-                class="action-button" 
+            <div
+                title="Lobby Plan"
+                class="action-button"
                 :class="[selected.comment_type == 'lobby_plan' ? 'selected' : '']"
                 @click="select_comment_type('lobby_plan')">
                 <i :class="['fa', 'fa-bank']"></i>
                 Lobby Plan
             </div>
-            <div 
-                title="Contacts" 
+            <div
+                title="Contacts"
                 class="action-button"
                 :class="[selected.comment_type == 'contacts' ? 'selected' : '']"
                 @click="select_comment_type('contacts')">
@@ -41,19 +41,19 @@
         </div>
 
         <div class="legend">
-            <div class="legend-item">
-                1) Can not meet MIR 
+            <div class="legend-item score-one">
+                1) Can not meet MIR
             </div>
-            <div class="legend-item">
+            <div class="legend-item score-two">
                 2) Development required
             </div>
-            <div class="legend-item">
+            <div class="legend-item score-three">
                 3) Meets MIR requirement
             </div>
-            <div class="legend-item">
+            <div class="legend-item score-four">
                 4) exceeds MIR requirement
             </div>
-            <div class="legend-item">
+            <div class="legend-item score-five">
                 5) MIR market leader
             </div>
         </div>
@@ -71,7 +71,7 @@
                     <th id="add-provider-cell">
                         <select v-if="sorted_requirements.length" class="add-selector" v-model="selected.provider">
                             <option value=""> Add Competitor... </option>
-                            <option v-for="provider in remaining_providers" 
+                            <option v-for="provider in remaining_providers"
                                     v-bind:value="provider"> {{ provider.name }}
                             </option>
                         </select>
@@ -80,16 +80,16 @@
             </thead>
             <tbody>
                 <tr v-for="requirement in sorted_requirements">
-                    <td class="row-label"> 
-                        {{ requirement.name }} 
+                    <td class="row-label">
+                        {{ requirement.name }}
                         <span v-if="requirement.unit">({{ requirement.unit }})</span>
                         <span class="delete fa fa-times" @click="remove_requirement(requirement)"></span>
                     </td>
 
-                    <td v-if="selected.comment_type == null" v-for="provider in sorted_providers" 
-                        v-bind:class="class_for(provider, requirement)"> 
+                    <td v-if="selected.comment_type == null" v-for="provider in sorted_providers"
+                        v-bind:class="class_for(provider, requirement)">
 
-                        <input  class="score-value u-full-width" 
+                        <input  class="score-value u-full-width"
                                 type='number'
                                 v-model='score_for(provider,requirement).score' number
                                 @click="selected_score($event)"
@@ -97,7 +97,7 @@
                     </td>
 
                     <td v-if="selected.comment_type != null" colspan="{{ sorted_providers.length }}">
-                        <input  class="comment-input" 
+                        <input  class="comment-input"
                                 type="text"
                                 placeholder="{{ selected.comment_type | pretty_var}} comment..."
                                 v-model="requirement[selected.comment_type]"
@@ -106,7 +106,7 @@
                     </td>
 
                     <td class="no-select">
-                        
+
                     </td>
                 </tr>
                 <!-- Add New Requirement selector -->
@@ -114,15 +114,15 @@
                     <td id="add-requirement-cell">
                         <select class="add-selector" v-model="selected.requirement">
                             <option value=""> Add Most Important Requirement... </option>
-                            <option v-for="requirement in remaining_requirements" 
-                                    v-bind:value="requirement"> {{ full_requirement_name(requirement) }} 
+                            <option v-for="requirement in remaining_requirements"
+                                    v-bind:value="requirement"> {{ full_requirement_name(requirement) }}
                             </option>
                         </select>
                     </td>
                 </tr>
             </tbody>
         </table>
-        
+
         <div class="grid-footer">
             <table>
                 <thead>

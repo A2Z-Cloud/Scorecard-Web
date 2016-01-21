@@ -31,7 +31,7 @@ th {
 	text-align: center;
 }
 
-.ProjectGrid 
+.ProjectGrid
 .project-header {
 	width: 100%;
 
@@ -39,22 +39,22 @@ th {
 	padding-left: 16px;
 	padding-bottom: 32px;
 	box-sizing: border-box;
-	
+
 	color: #0C2C2C;
 	background-color: #FFFFFC;
 	margin-bottom: 0;
 }
 
-.ProjectGrid 
+.ProjectGrid
 .grid-panel {
 	width: 100%;
 	background-color: #FFFFFC;
 }
 
-.ProjectGrid 
+.ProjectGrid
 .grid-panel
-td, 
-.ProjectGrid 
+td,
+.ProjectGrid
 .grid-panel
 th {
 	padding-top: 0px;
@@ -68,7 +68,7 @@ input, textarea, select, fieldset {
     margin-bottom: 0rem;
 }
 
-.ProjectGrid 
+.ProjectGrid
 .grid-panel
 thead {
 	background-color: #FFFFFF;
@@ -126,14 +126,14 @@ input {
 
 /* Footer Panel */
 
-.ProjectGrid 
+.ProjectGrid
 .grid-footer {
 	position: absolute;
 	bottom: 0px;
 	width: 100%;
 }
 
-.ProjectGrid 
+.ProjectGrid
 .grid-footer
 table {
 	width: 100%;
@@ -141,7 +141,7 @@ table {
 	color: #fff;
 }
 
-.ProjectGrid 
+.ProjectGrid
 .grid-footer
 th {
 	border: 0px;
@@ -179,6 +179,51 @@ input {
 
 .ProjectGrid
 .lost
+input {
+	background-color: #D4886A;
+	color: white;
+}
+
+.ProjectGrid
+.score-five,
+.ProjectGrid
+.score-five
+input {
+	background-color: #52A55C;
+	color: white;
+}
+
+.ProjectGrid
+.score-four,
+.ProjectGrid
+.score-four
+input {
+	background-color: #93B663;
+	color: white;
+}
+
+.ProjectGrid
+.score-three,
+.ProjectGrid
+.score-three
+input {
+	background-color: #D4C76A;
+	color: white;
+}
+
+.ProjectGrid
+.score-two,
+.ProjectGrid
+.score-two
+input {
+	background-color: #D4A86A;
+	color: white;
+}
+
+.ProjectGrid
+.score-one,
+.ProjectGrid
+.score-one
 input {
 	background-color: #D4886A;
 	color: white;
