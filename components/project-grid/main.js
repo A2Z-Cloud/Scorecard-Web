@@ -168,7 +168,7 @@ export default Vue.extend({
             // All requirements minus those already assigned to the scorecard
             if (this.scorecard.requirements && this.store.requirements) {
                 var selected_requirements_ids = this.scorecard.requirements.map(r => r.requirement_id)
-                return this.store.requirements.filter(r => selected_requirements_ids.indexOf(r.id) == -1)
+                return this.store.requirements.filter(r => selected_requirements_ids.indexOf(r.id) == -1 && r.active == true)
             }
         },
         scorecard() {
