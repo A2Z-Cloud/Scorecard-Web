@@ -238,7 +238,7 @@ input {
 .ProjectGrid
 .grid-panel
 .comment-input {
-	width: 98%;
+	width: 100%;
 	text-align: left;
     border: 0px;
     min-height: 38px;

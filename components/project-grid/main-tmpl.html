@@ -5,6 +5,21 @@
     <div v-if="scorecard">
         <h4 class="project-header" v-text="scorecard.name"></h4>
 
+        <div class="action-panel">
+            <select v-if="sorted_requirements.length" class="add-selector scoring-options" v-model="selected.provider">
+                <option value=""> Add Competitor... </option>
+                <option v-for="provider in remaining_providers"
+                        v-bind:value="provider"> {{ provider.name }}
+                </option>
+            </select>
+            <select class="add-selector scoring-options" v-model="selected.requirement">
+                <option value=""> Add Most Important Requirement... </option>
+                <option v-for="requirement in remaining_requirements"
+                        v-bind:value="requirement"> {{ full_requirement_name(requirement) }}
+                </option>
+            </select>
+        </div>
+
         <div class="action-panel no-select">
             <div
                 title="Action Plan"
@@ -59,14 +74,14 @@
                         {{ selected_provider.name }}
                         <span class="delete fa fa-times" @click="remove_provider(selected_provider)"></span>
                     </th>
-                    <!-- Add new provider selector -->
-                    <th id="add-provider-cell">
-                        <select v-if="sorted_requirements.length" class="add-selector" v-model="selected.provider">
-                            <option value=""> Add Competitor... </option>
-                            <option v-for="provider in remaining_providers"
-                                    v-bind:value="provider"> {{ provider.name }}
-                            </option>
-                        </select>
+                    <th v-if="selected.action_plan">
+                        Action Plan
+                    </th>
+                    <th v-if="selected.lobby_plan">
+                        Lobby Plan
+                    </th>
+                    <th v-if="selected.contacts">
+                        Contacts
                     </th>
                 </tr>
             </thead>
@@ -89,22 +104,7 @@
                                     @keyup="save_scores | debounce 500"/>
                         </td>
 
-                        <!-- <td v-if="selected.comment_type != null" colspan="{{ sorted_providers.length }}">
-                            <input  class="comment-input"
-                                    type="text"
-                                    placeholder="{{ selected.comment_type | pretty_var}} comment..."
-                                    v-model="requirement[selected.comment_type]"
-                                    @keyup="save_comment(requirement.id, requirement[selected.comment_type]) | debounce 500"
-                                    @keyup.enter="save_comment(requirement.id, requirement[selected.comment_type], true)"/>
-                        </td> -->
-
-                        <td class="no-select">
-
-                        </td>
-                    </tr>
-
-                    <tr v-if="selected.action_plan">
-                        <td colspan="{{ sorted_providers.length + 2 }}">
+                        <td v-if="selected.action_plan">
                             <textarea
                                 class="comment-input"
                                 type="text"
@@ -113,9 +113,8 @@
                                 @keyup="save_comment(requirement.id, 'action_plan', requirement.action_plan) | debounce 500">
                             </textarea>
                         </td>
-                    </tr>
-                    <tr v-if="selected.lobby_plan">
-                        <td colspan="{{ sorted_providers.length + 2 }}">
+
+                        <td v-if="selected.lobby_plan">
                             <textarea
                                 class="comment-input"
                                 type="text"
@@ -124,9 +123,8 @@
                                 @keyup="save_comment(requirement.id, 'lobby_plan', requirement.lobby_plan) | debounce 500">
                             </textarea>
                         </td>
-                    </tr>
-                    <tr v-if="selected.contacts">
-                        <td colspan="{{ sorted_providers.length + 2 }}">
+
+                        <td v-if="selected.contacts">
                             <textarea
                                 class="comment-input"
                                 type="text"
@@ -137,17 +135,6 @@
                         </td>
                     </tr>
                 </template>
-                <!-- Add New Requirement selector -->
-                <tr>
-                    <td id="add-requirement-cell">
-                        <select class="add-selector" v-model="selected.requirement">
-                            <option value=""> Add Most Important Requirement... </option>
-                            <option v-for="requirement in remaining_requirements"
-                                    v-bind:value="requirement"> {{ full_requirement_name(requirement) }}
-                            </option>
-                        </select>
-                    </td>
-                </tr>
             </tbody>
         </table>
 
