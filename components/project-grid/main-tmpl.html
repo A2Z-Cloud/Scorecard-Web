@@ -5,38 +5,45 @@
     <div v-if="scorecard">
         <h4 class="project-header" v-text="scorecard.name"></h4>
 
+        <div class="action-panel">
+            <select v-if="sorted_requirements.length" class="add-selector scoring-options" v-model="selected.provider">
+                <option value=""> Add Competitor... </option>
+                <option v-for="provider in remaining_providers"
+                        v-bind:value="provider"> {{ provider.name }}
+                </option>
+            </select>
+            <select class="add-selector scoring-options" v-model="selected.requirement">
+                <option value=""> Add Most Important Requirement... </option>
+                <option v-for="requirement in remaining_requirements"
+                        v-bind:value="requirement"> {{ full_requirement_name(requirement) }}
+                </option>
+            </select>
+        </div>
+
         <div class="action-panel no-select">
-            <div
-                title="Scores"
-                class="action-button"
-                :class="[selected.comment_type == null ? 'selected' : '']"
-                @click="select_comment_type(null)">
-                <i :class="['fa', 'fa-trophy']"></i>
-                Scores
-            </div>
             <div
                 title="Action Plan"
                 class="action-button"
-                :class="[selected.comment_type == 'action_plan' ? 'selected' : '']"
-                @click="select_comment_type('action_plan')">
-                <i :class="['fa', 'fa-bolt']"></i>
-                Action Plan
+                :class="[selected.action_plan ? 'selected' : '']"
+                @click="selected.action_plan = !selected.action_plan">
+                    <i :class="['fa', 'fa-bolt']"></i>
+                    Action Plan
             </div>
             <div
                 title="Lobby Plan"
                 class="action-button"
-                :class="[selected.comment_type == 'lobby_plan' ? 'selected' : '']"
-                @click="select_comment_type('lobby_plan')">
-                <i :class="['fa', 'fa-bank']"></i>
-                Lobby Plan
+                :class="[selected.lobby_plan ? 'selected' : '']"
+                @click="selected.lobby_plan = !selected.lobby_plan">
+                    <i :class="['fa', 'fa-bank']"></i>
+                    Lobby Plan
             </div>
             <div
                 title="Contacts"
                 class="action-button"
-                :class="[selected.comment_type == 'contacts' ? 'selected' : '']"
-                @click="select_comment_type('contacts')">
-                <i class="fa fa-users"></i>
-                Contacts
+                :class="[selected.contacts ? 'selected' : '']"
+                @click="selected.contacts = !selected.contacts">
+                    <i class="fa fa-users"></i>
+                    Contacts
             </div>
         </div>
 
@@ -67,59 +74,67 @@
                         {{ selected_provider.name }}
                         <span class="delete fa fa-times" @click="remove_provider(selected_provider)"></span>
                     </th>
-                    <!-- Add new provider selector -->
-                    <th id="add-provider-cell">
-                        <select v-if="sorted_requirements.length" class="add-selector" v-model="selected.provider">
-                            <option value=""> Add Competitor... </option>
-                            <option v-for="provider in remaining_providers"
-                                    v-bind:value="provider"> {{ provider.name }}
-                            </option>
-                        </select>
+                    <th v-if="selected.action_plan">
+                        Action Plan
+                    </th>
+                    <th v-if="selected.lobby_plan">
+                        Lobby Plan
+                    </th>
+                    <th v-if="selected.contacts">
+                        Contacts
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="requirement in sorted_requirements">
-                    <td class="row-label">
-                        {{ requirement.name }}
-                        <span v-if="requirement.unit">({{ requirement.unit }})</span>
-                        <span class="delete fa fa-times" @click="remove_requirement(requirement)"></span>
-                    </td>
+                <template v-for="requirement in sorted_requirements">
+                    <tr>
+                        <td class="row-label">
+                            {{ requirement.name }}
+                            <span v-if="requirement.unit">({{ requirement.unit }})</span>
+                            <span class="delete fa fa-times" @click="remove_requirement(requirement)"></span>
+                        </td>
 
-                    <td v-if="selected.comment_type == null" v-for="provider in sorted_providers"
-                        v-bind:class="class_for(provider, requirement)">
+                        <td v-for="provider in sorted_providers"
+                            v-bind:class="class_for(provider, requirement)">
 
-                        <input  class="score-value u-full-width"
-                                type='number'
-                                v-model='score_for(provider,requirement).score' number
-                                @click="selected_score($event)"
-                                @keyup="save_scores | debounce 500"/>
-                    </td>
+                            <input  class="score-value u-full-width"
+                                    type='number'
+                                    v-model='score_for(provider,requirement).score' number
+                                    @click="selected_score($event)"
+                                    @keyup="save_scores | debounce 500"/>
+                        </td>
 
-                    <td v-if="selected.comment_type != null" colspan="{{ sorted_providers.length }}">
-                        <input  class="comment-input"
+                        <td v-if="selected.action_plan">
+                            <textarea
+                                class="comment-input"
                                 type="text"
-                                placeholder="{{ selected.comment_type | pretty_var}} comment..."
-                                v-model="requirement[selected.comment_type]"
-                                @keyup="save_comment(requirement.id, requirement[selected.comment_type]) | debounce 500"
-                                @keyup.enter="save_comment(requirement.id, requirement[selected.comment_type], true)"/>
-                    </td>
+                                placeholder="action plan comment..."
+                                v-model="requirement.action_plan"
+                                @keyup="save_comment(requirement.id, 'action_plan', requirement.action_plan) | debounce 500">
+                            </textarea>
+                        </td>
 
-                    <td class="no-select">
+                        <td v-if="selected.lobby_plan">
+                            <textarea
+                                class="comment-input"
+                                type="text"
+                                placeholder="lobby plan comment..."
+                                v-model="requirement.lobby_plan"
+                                @keyup="save_comment(requirement.id, 'lobby_plan', requirement.lobby_plan) | debounce 500">
+                            </textarea>
+                        </td>
 
-                    </td>
-                </tr>
-                <!-- Add New Requirement selector -->
-                <tr>
-                    <td id="add-requirement-cell">
-                        <select class="add-selector" v-model="selected.requirement">
-                            <option value=""> Add Most Important Requirement... </option>
-                            <option v-for="requirement in remaining_requirements"
-                                    v-bind:value="requirement"> {{ full_requirement_name(requirement) }}
-                            </option>
-                        </select>
-                    </td>
-                </tr>
+                        <td v-if="selected.contacts">
+                            <textarea
+                                class="comment-input"
+                                type="text"
+                                placeholder="contacts comment..."
+                                v-model="requirement.contacts"
+                                @keyup="save_comment(requirement.id, 'contacts', requirement.contacts) | debounce 500">
+                            </textarea>
+                        </td>
+                    </tr>
+                </template>
             </tbody>
         </table>
 
