@@ -238,8 +238,10 @@ input {
 .ProjectGrid
 .grid-panel
 .comment-input {
-	width: 100%;
+	width: 98%;
 	text-align: left;
+    border: 0px;
+    min-height: 38px;
 }
 
 .ProjectGrid .grid-panel .perspective {

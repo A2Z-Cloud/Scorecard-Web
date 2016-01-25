@@ -13,6 +13,9 @@ export default Vue.extend({
                 provider: "",
                 requirement: "",
                 scoring_method: this.total_for,
+                action_plan: false,
+                lobby_plan: false,
+                contacts: false,
                 comment_type: null
             },
             scoring_methods: [
@@ -124,31 +127,22 @@ export default Vue.extend({
                 this.save_state.error = response.error
             })
         },
-        save_comment(requirement_id, comment, close=false) {
-            // If that catches the posible debounce after enter has been hit
-            if (this.selected.comment_type) {
-                this.save_state.text = "Saving..."
-                var payload = {
-                    requirement_id: requirement_id,
-                    comment_type: this.selected.comment_type,
-                    comment: comment
-                }
-
-                this.$root.control.send("update_comment", payload, (request, response) => {
-                    this.save_state.text  = (response.error) ? "ERROR SAVING" : "Saved"
-                    this.save_state.error = response.error
-
-                    if (close) this.select_comment_type(null)
-                })
+        save_comment(requirement_id, type, comment) {
+            this.save_state.text = "Saving..."
+            var payload = {
+                requirement_id: requirement_id,
+                comment_type: type,
+                comment: comment
             }
+
+            this.$root.control.send("update_comment", payload, (request, response) => {
+                this.save_state.text  = (response.error) ? "ERROR SAVING" : "Saved"
+                this.save_state.error = response.error
+            })
         },
         constrain_score(score) {
             score.score = Math.max(0, Math.min(score.score, 5))
             return score
-        },
-        select_comment_type(selection) {
-            this.selected.comment_type = selection
-            // this.selected.comment_type = (this.selected.comment_type == selection) ? null : selection
         },
         full_requirement_name(requirement) {
             var name = requirement.name
