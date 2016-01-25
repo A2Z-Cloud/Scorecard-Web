@@ -10557,7 +10557,7 @@ $__System.register('7c', ['7a', '7b', '4d'], function (_export) {
                                 return r.requirement_id;
                             });
                             return this.store.requirements.filter(function (r) {
-                                return selected_requirements_ids.indexOf(r.id) == -1;
+                                return selected_requirements_ids.indexOf(r.id) == -1 && r.active == true;
                             });
                         }
                     },
