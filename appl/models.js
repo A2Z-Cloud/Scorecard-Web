@@ -24,9 +24,10 @@ export class Score {
 }
 
 export class Requirement {
-    constructor({id: id, name: name , project: project}){
+    constructor({id: id, name: name, unit: unit, project: project}){
         this.id = id;
         this.name = name;
+        this.unit = unit
         this.project = project;
     }
 }

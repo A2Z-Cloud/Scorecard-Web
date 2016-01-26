@@ -6,6 +6,9 @@ import './main.css!';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
+// -- Consts
+import {debug, ws_url} from 'consts'
+
 import "components/menu-panel/main";
 import "components/login-panel/main";
 import ProjectGrid from "components/project-grid/main";
@@ -15,57 +18,82 @@ import Control from "./connection";
 Vue.use(VueRouter);
 Vue.config.debug=true;
 
-var Foo = Vue.extend({
-    template: '<p>This is foo!</p>'
+Vue.filter('round', function(value, decimals) {
+	if(!value || !decimals) {
+		value = 0
+	}
+	return Math.round(value * Math.pow(10, decimals)) / Math.pow(10, decimals)
+})
+
+Vue.filter('pretty_var', function(value) {
+	return value.replace("_"," ")
 })
 
 var router = new VueRouter()
 router.map({
-	'/project': ProjectGrid
+	'/project': {
+		name: 'Scorecard',
+        component: ProjectGrid,
+        props: ['store']
+	}
 })
 
 router.start({
 	data() {
 		return {
-			project: null,
+            control: null,
+			store: null,
 	        loading: true,
 			user: null,
 			error: null
 		}
     },
+    computed: {
+        // Monitors when the handshake between the server and client end (cookie for user exchange)
+        handshake_complete() {
+            return this.control._handshake_complete
+        }
+    },
 	methods:{
-		get_score_cards(project_id) {
-			var project = new Vue({
-				data:{
-					id:null,
-					zoho_id: null,
-					name: null,
+		get_store() {
+			var store = new Vue({
+				data: {
+					providers: null,
 					requirements: null,
-					scores: null,
-					providers: null
+					projects: null,
 				}
-			});
-			this.control.send("get_scorecard",{zoho_id:project_id},(request,response)=>{
-				// debugger
-				if(response.error){
-					this.error=response.error;
-					return;
+			})
+
+			this.control.send("get_providers", null, (request, response) => {
+				if (response.error) {
+					this.error = response.error
+					return
 				}
-				for(var key in response.result) {
-					project[key]=response.result[key];
+				store.providers = response.result
+			})
+			this.control.send("get_requirements", null, (request, response) => {
+				if (response.error) {
+					this.error = response.error
+					return
 				}
-			});
-			return project;
+				store.requirements = response.result
+			})
+			this.control.send("get_projects", null, (request, response) => {
+				if (response.error) {
+					this.error = response.error
+					return
+				}
+				store.projects = response.result
+			})
+			return store
 		}
 	},
 	created() {
-		// var url = "ws://localhost:8081/websocket"
-		var url = "wss://a2z-scorecard-server.herokuapp.com/websocket"
-		this.control = new Control(this, url);
+        var appl = window.appl = this;
+
+		this.control = new Control(this, ws_url);
 	},
     ready() {
-    	var appl = window.appl = this;
         this.loading = false;
-		// this.project = this.get_score_cards(4768000000041086);
     }
-}, '#scorecard');
+}, 'body');

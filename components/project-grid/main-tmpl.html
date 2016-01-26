@@ -1,58 +1,160 @@
-<div class="ProjectGrid" v-if="project">
-    <h4 class="project-header" v-text="project.name"></h4>
-    <table class="grid-panel">
-        <thead>
-            <tr>
-                <th class="row-label corner-label">Requirements</th>
-                <th class="column-label" v-for="provider in sorted_providers">
-                    <input class="u-full-width" type="text" v-model='provider.name'>
-                </th>
-                <!-- <th class="column-label">
-                    <input class="u-full-width" type="text"></input>
-                </th> -->
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="(index, req) in sorted_requirements">
-                <td class="row-label">
-                    <input class="u-full-width" type="text" v-model='req.requirement' placeholder="Add Requirement">
-                </td>
-                <td 
-                    v-for="provider in sorted_providers" 
-                    v-bind:class="class_for(provider, req)"> 
+<div class="ProjectGrid" v-if="store">
 
-                        <input  class="score-value u-full-width" 
-                                type='number' 
-                                v-model='score_for(provider,req).score'></input> 
-                </td>
-                <!-- <td></td> -->
-            </tr>
-            <tr>
-                <td class="row-label">
-                    <button @click="add_requirement">Add Requirement</button>
-                </td>
-                    <!-- <input class="u-full-width" type="text"></input> -->
-                <!-- </td>
-                <td v-for="_ in sorted_providers"></td>
-                <td></td> -->
-            </tr>
-        </tbody>
-    </table>
-    <div class="grid-footer">
-        <table>
+    <div class="not-found-notice" v-if="no_project"> Can't Find Scorecard </div>
+
+    <div v-if="scorecard">
+        <h4 class="project-header" v-text="scorecard.name"></h4>
+
+        <div class="action-panel">
+            <select class="add-selector scoring-options" v-model="selected.requirement">
+                <option value=""> Add Most Important Requirement... </option>
+                <option v-for="requirement in remaining_requirements"
+                        v-bind:value="requirement"> {{ full_requirement_name(requirement) }}
+                </option>
+            </select>
+            <select v-if="sorted_requirements.length" class="add-selector scoring-options" v-model="selected.provider">
+                <option value=""> Add Competitor... </option>
+                <option v-for="provider in remaining_providers"
+                        v-bind:value="provider"> {{ provider.name }}
+                </option>
+            </select>
+        </div>
+
+        <div class="action-panel no-select">
+            <div
+                title="Action Plan"
+                class="action-button"
+                :class="[selected.action_plan ? 'selected' : '']"
+                @click="selected.action_plan = !selected.action_plan">
+                    <i :class="['fa', 'fa-bolt']"></i>
+                    Action Plan
+            </div>
+            <div
+                title="Lobby Plan"
+                class="action-button"
+                :class="[selected.lobby_plan ? 'selected' : '']"
+                @click="selected.lobby_plan = !selected.lobby_plan">
+                    <i :class="['fa', 'fa-bank']"></i>
+                    Lobby Plan
+            </div>
+            <div
+                title="Contacts"
+                class="action-button"
+                :class="[selected.contacts ? 'selected' : '']"
+                @click="selected.contacts = !selected.contacts">
+                    <i class="fa fa-users"></i>
+                    Contacts
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item score-one">
+                1) Can not meet MIR
+            </div>
+            <div class="legend-item score-two">
+                2) Development required
+            </div>
+            <div class="legend-item score-three">
+                3) Meets MIR requirement
+            </div>
+            <div class="legend-item score-four">
+                4) exceeds MIR requirement
+            </div>
+            <div class="legend-item score-five">
+                5) MIR market leader
+            </div>
+        </div>
+
+        <table class="grid-panel">
             <thead>
                 <tr>
-                    <th class="row-label">
-                        <select class="scoring-options" v-model="selected_scoring_method">
-                            <option v-for="method in scoring_methods" v-bind:value="method.value"> {{ method.text }} </option>
-                        </select>
+                    <th class="row-label corner-label">Requirements</th>
+                    <!-- Currently selected providers -->
+                    <th v-for="selected_provider in scorecard.providers">
+                        {{ selected_provider.name }}
+                        <span class="delete fa fa-times" @click="remove_provider(selected_provider)"></span>
                     </th>
-                    <th v-for="provider in sorted_providers">
-                        <span class="total-value" v-text="selected_scoring_method(provider)"></span>
+                    <th v-if="selected.action_plan">
+                        Action Plan
                     </th>
-                    <!-- <th class="corner-label"></th> -->
+                    <th v-if="selected.lobby_plan">
+                        Lobby Plan
+                    </th>
+                    <th v-if="selected.contacts">
+                        Contacts
+                    </th>
                 </tr>
             </thead>
+            <tbody>
+                <tr v-for="requirement in sorted_requirements">
+                    <td class="row-label">
+                        {{ requirement.name }}
+                        <span v-if="requirement.unit">({{ requirement.unit }})</span>
+                        <span class="delete fa fa-times" @click="remove_requirement(requirement)"></span>
+                    </td>
+
+                    <td v-for="provider in sorted_providers"
+                        v-bind:class="class_for(provider, requirement)">
+
+                        <input  class="score-value u-full-width"
+                                type='number'
+                                v-model='score_for(provider,requirement).score' number
+                                @click="selected_score($event)"
+                                @keyup="save_scores | debounce 500"/>
+                    </td>
+
+                    <td v-if="selected.action_plan">
+                        <textarea
+                            class="comment-input"
+                            type="text"
+                            placeholder="action plan comment..."
+                            v-model="requirement.action_plan"
+                            @keyup="save_comment(requirement.id, 'action_plan', requirement.action_plan) | debounce 500">
+                        </textarea>
+                    </td>
+
+                    <td v-if="selected.lobby_plan">
+                        <textarea
+                            class="comment-input"
+                            type="text"
+                            placeholder="lobby plan comment..."
+                            v-model="requirement.lobby_plan"
+                            @keyup="save_comment(requirement.id, 'lobby_plan', requirement.lobby_plan) | debounce 500">
+                        </textarea>
+                    </td>
+
+                    <td v-if="selected.contacts">
+                        <textarea
+                            class="comment-input"
+                            type="text"
+                            placeholder="contacts comment..."
+                            v-model="requirement.contacts"
+                            @keyup="save_comment(requirement.id, 'contacts', requirement.contacts) | debounce 500">
+                        </textarea>
+                    </td>
+                </tr>
+            </tbody>
         </table>
+
+        <div class="grid-footer">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="row-label">
+                            <select class="scoring-options" v-model="selected.scoring_method">
+                                <option v-for="method in scoring_methods" v-bind:value="method.value"> {{ method.text }} </option>
+                            </select>
+                        </th>
+                        <th v-for="provider in sorted_providers">
+                            <span class="total-value" v-text="selected.scoring_method(provider) | round '2' "></span>
+                        </th>
+                        <th v-bind:class="{ 'error-message': save_state.error }">
+                            {{ save_state.text }}
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
     </div>
+
 </div>

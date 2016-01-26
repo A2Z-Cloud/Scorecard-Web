@@ -1,7 +1,14 @@
 ### todos
  - [x] red/green/yellow scores
- - [ ] colour theme
- - [ ] default just organisation
- - [ ] bring in all companies from CRM
+ - [x] color theme
+ - [x] default organization
+ - [x] bring in all companies from CRM
  - [ ] push competitors back to CRM (opertunities page)
  - [ ] push back requirements
+ - [x] save scores
+ - [x] perspective scoring
+ - [x] comments
+ - [ ] change to MIR Most Important Requirements
+ - [ ] authenticated Zoho handler with company API token table
+ - [ ] don't delete company or MIR when deleted from Zoho (set zoho_id to null or set retired flag)
+ - [ ] UI touch up
