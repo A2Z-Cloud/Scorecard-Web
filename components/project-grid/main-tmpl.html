@@ -6,16 +6,16 @@
         <h4 class="project-header" v-text="scorecard.name"></h4>
 
         <div class="action-panel">
-            <select v-if="sorted_requirements.length" class="add-selector scoring-options" v-model="selected.provider">
-                <option value=""> Add Competitor... </option>
-                <option v-for="provider in remaining_providers"
-                        v-bind:value="provider"> {{ provider.name }}
-                </option>
-            </select>
             <select class="add-selector scoring-options" v-model="selected.requirement">
                 <option value=""> Add Most Important Requirement... </option>
                 <option v-for="requirement in remaining_requirements"
                         v-bind:value="requirement"> {{ full_requirement_name(requirement) }}
+                </option>
+            </select>
+            <select v-if="sorted_requirements.length" class="add-selector scoring-options" v-model="selected.provider">
+                <option value=""> Add Competitor... </option>
+                <option v-for="provider in remaining_providers"
+                        v-bind:value="provider"> {{ provider.name }}
                 </option>
             </select>
         </div>
