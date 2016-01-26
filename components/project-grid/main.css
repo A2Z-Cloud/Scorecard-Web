@@ -242,6 +242,7 @@ input {
 	text-align: left;
     border: 0px;
     min-height: 38px;
+    resize:vertical;
 }
 
 .ProjectGrid .grid-panel .perspective {
