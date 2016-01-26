@@ -86,55 +86,53 @@
                 </tr>
             </thead>
             <tbody>
-                <template v-for="requirement in sorted_requirements">
-                    <tr>
-                        <td class="row-label">
-                            {{ requirement.name }}
-                            <span v-if="requirement.unit">({{ requirement.unit }})</span>
-                            <span class="delete fa fa-times" @click="remove_requirement(requirement)"></span>
-                        </td>
+                <tr v-for="requirement in sorted_requirements">
+                    <td class="row-label">
+                        {{ requirement.name }}
+                        <span v-if="requirement.unit">({{ requirement.unit }})</span>
+                        <span class="delete fa fa-times" @click="remove_requirement(requirement)"></span>
+                    </td>
 
-                        <td v-for="provider in sorted_providers"
-                            v-bind:class="class_for(provider, requirement)">
+                    <td v-for="provider in sorted_providers"
+                        v-bind:class="class_for(provider, requirement)">
 
-                            <input  class="score-value u-full-width"
-                                    type='number'
-                                    v-model='score_for(provider,requirement).score' number
-                                    @click="selected_score($event)"
-                                    @keyup="save_scores | debounce 500"/>
-                        </td>
+                        <input  class="score-value u-full-width"
+                                type='number'
+                                v-model='score_for(provider,requirement).score' number
+                                @click="selected_score($event)"
+                                @keyup="save_scores | debounce 500"/>
+                    </td>
 
-                        <td v-if="selected.action_plan">
-                            <textarea
-                                class="comment-input"
-                                type="text"
-                                placeholder="action plan comment..."
-                                v-model="requirement.action_plan"
-                                @keyup="save_comment(requirement.id, 'action_plan', requirement.action_plan) | debounce 500">
-                            </textarea>
-                        </td>
+                    <td v-if="selected.action_plan">
+                        <textarea
+                            class="comment-input"
+                            type="text"
+                            placeholder="action plan comment..."
+                            v-model="requirement.action_plan"
+                            @keyup="save_comment(requirement.id, 'action_plan', requirement.action_plan) | debounce 500">
+                        </textarea>
+                    </td>
 
-                        <td v-if="selected.lobby_plan">
-                            <textarea
-                                class="comment-input"
-                                type="text"
-                                placeholder="lobby plan comment..."
-                                v-model="requirement.lobby_plan"
-                                @keyup="save_comment(requirement.id, 'lobby_plan', requirement.lobby_plan) | debounce 500">
-                            </textarea>
-                        </td>
+                    <td v-if="selected.lobby_plan">
+                        <textarea
+                            class="comment-input"
+                            type="text"
+                            placeholder="lobby plan comment..."
+                            v-model="requirement.lobby_plan"
+                            @keyup="save_comment(requirement.id, 'lobby_plan', requirement.lobby_plan) | debounce 500">
+                        </textarea>
+                    </td>
 
-                        <td v-if="selected.contacts">
-                            <textarea
-                                class="comment-input"
-                                type="text"
-                                placeholder="contacts comment..."
-                                v-model="requirement.contacts"
-                                @keyup="save_comment(requirement.id, 'contacts', requirement.contacts) | debounce 500">
-                            </textarea>
-                        </td>
-                    </tr>
-                </template>
+                    <td v-if="selected.contacts">
+                        <textarea
+                            class="comment-input"
+                            type="text"
+                            placeholder="contacts comment..."
+                            v-model="requirement.contacts"
+                            @keyup="save_comment(requirement.id, 'contacts', requirement.contacts) | debounce 500">
+                        </textarea>
+                    </td>
+                </tr>
             </tbody>
         </table>
 
