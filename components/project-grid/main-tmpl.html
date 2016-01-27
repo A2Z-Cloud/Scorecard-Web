@@ -154,6 +154,15 @@
                         <th v-for="provider in sorted_providers">
                             <span class="total-value" v-text="selected.scoring_method(provider) | round '2' "></span>
                         </th>
+                        <th v-if="selected.lobby_plan">
+                            <span></span>
+                        </th>
+                        <th v-if="selected.action_plan">
+                            <span></span>
+                        </th>
+                        <th v-if="selected.contacts">
+                            <span></span>
+                        </th>
                     </tr>
                 </thead>
             </table>
