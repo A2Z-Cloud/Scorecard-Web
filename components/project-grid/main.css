@@ -32,17 +32,27 @@ th {
 }
 
 .ProjectGrid
-.project-header {
-	width: 100%;
+.header {
+    width: 100%;
 
-	padding-top: 16px;
+    padding-top: 16px;
 	padding-left: 16px;
 	padding-bottom: 32px;
 	box-sizing: border-box;
+    margin-bottom: 0;
 
+    background-color: #FFFFFC;
+}
+
+.ProjectGrid
+.project-header {
 	color: #0C2C2C;
-	background-color: #FFFFFC;
-	margin-bottom: 0;
+    margin: 0;
+}
+
+.ProjectGrid
+.save-status {
+    margin-right: 20px;
 }
 
 .ProjectGrid

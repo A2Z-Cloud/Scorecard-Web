@@ -3,7 +3,13 @@
     <div class="not-found-notice" v-if="no_project"> Can't Find Scorecard </div>
 
     <div v-if="scorecard">
-        <h4 class="project-header" v-text="scorecard.name"></h4>
+        <div class="header">
+            <h5 class="project-header" v-text="scorecard.name"></h4>
+
+            <span v-bind:class="{ 'error-message': save_state.error }" class="save-status">
+                {{ save_state.text }}
+            </span>
+        </div>
 
         <div class="action-panel">
             <select class="add-selector scoring-options" v-model="selected.requirement">
@@ -147,9 +153,6 @@
                         </th>
                         <th v-for="provider in sorted_providers">
                             <span class="total-value" v-text="selected.scoring_method(provider) | round '2' "></span>
-                        </th>
-                        <th v-bind:class="{ 'error-message': save_state.error }">
-                            {{ save_state.text }}
                         </th>
                     </tr>
                 </thead>
