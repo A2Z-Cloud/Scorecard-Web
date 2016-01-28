@@ -37,7 +37,7 @@ th {
 
     padding-top: 16px;
 	padding-left: 16px;
-	padding-bottom: 32px;
+	padding-bottom: 16px;
 	box-sizing: border-box;
     margin-bottom: 0;
 
@@ -129,6 +129,37 @@ input {
 }
 
 .ProjectGrid
+.requirement-cell,
+.ProjectGrid
+.scoring-method-cell {
+    width: 25%;
+}
+
+.ProjectGrid
+.provider-cell {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.ProjectGrid
+.provider-cell,
+.ProjectGrid
+.score-cell,
+.ProjectGrid
+.score-total-cell {
+    width: 66px;
+}
+
+.ProjectGrid
+.score-cell,
+.ProjectGrid
+.score-total-cell {
+    white-space: nowrap;
+    padding: 5px 0px;
+}
+
+.ProjectGrid
 .score-value {
 	font-size: 1.4em;
 }
@@ -162,6 +193,10 @@ th {
 .grid-footer
 .total-value {
 	font-size: 1.4em;
+    width: 60px;
+    height: 30px;
+    padding: 5px 10px;
+    display: inline-block;
 }
 
 .ProjectGrid

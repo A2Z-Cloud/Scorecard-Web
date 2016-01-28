@@ -3,6 +3,7 @@
     <div class="not-found-notice" v-if="no_project"> Can't Find Scorecard </div>
 
     <div v-if="scorecard">
+        <!-- Page Header -->
         <div class="header">
             <h5 class="project-header" v-text="scorecard.name"></h4>
 
@@ -11,6 +12,7 @@
             </span>
         </div>
 
+        <!-- Company and Requirements Selectors -->
         <div class="action-panel">
             <select class="add-selector scoring-options" v-model="selected.requirement">
                 <option value=""> Add Most Important Requirement... </option>
@@ -26,7 +28,16 @@
             </select>
         </div>
 
+        <!-- Comment Toggles -->
         <div class="action-panel no-select">
+            <div
+                title="Scores"
+                class="action-button"
+                :class="[selected.scores ? 'selected' : '']"
+                @click="selected.scores = !selected.scores">
+                    <i :class="['fa', 'fa-trophy']"></i>
+                    Scores
+            </div>
             <div
                 title="Action Plan"
                 class="action-button"
@@ -53,6 +64,7 @@
             </div>
         </div>
 
+        <!-- Score Legend -->
         <div class="legend">
             <div class="legend-item score-one">
                 1) Can not meet MIR
@@ -71,15 +83,17 @@
             </div>
         </div>
 
+        <!-- Main Score Table -->
         <table class="grid-panel">
             <thead>
                 <tr>
                     <th class="row-label corner-label">Requirements</th>
-                    <!-- Currently selected providers -->
-                    <th v-for="selected_provider in scorecard.providers">
+                    <!-- Each Provider -->
+                    <th v-if="selected.scores" class="provider-cell" v-for="selected_provider in scorecard.providers">
                         {{ selected_provider.name }}
                         <span class="delete fa fa-times" @click="remove_provider(selected_provider)"></span>
                     </th>
+                    <!-- Comment Headings -->
                     <th v-if="selected.action_plan">
                         Action Plan
                     </th>
@@ -93,13 +107,17 @@
             </thead>
             <tbody>
                 <tr v-for="requirement in sorted_requirements">
-                    <td class="row-label">
+                    <!-- Each Requirement -->
+                    <td class="row-label requirement-cell">
                         {{ requirement.name }}
                         <span v-if="requirement.unit">({{ requirement.unit }})</span>
                         <span class="delete fa fa-times" @click="remove_requirement(requirement)"></span>
                     </td>
 
-                    <td v-for="provider in sorted_providers"
+                    <!-- Score -->
+                    <td class="score-cell"
+                        v-if="selected.scores"
+                        v-for="provider in sorted_providers"
                         v-bind:class="class_for(provider, requirement)">
 
                         <input  class="score-value u-full-width"
@@ -109,6 +127,7 @@
                                 @keyup="save_scores | debounce 500"/>
                     </td>
 
+                    <!-- Comment Cells -->
                     <td v-if="selected.action_plan">
                         <textarea
                             class="comment-input"
@@ -142,18 +161,24 @@
             </tbody>
         </table>
 
-        <div class="grid-footer">
+        <!-- Totals -->
+        <div v-if="selected.scores" class="grid-footer">
             <table>
                 <thead>
                     <tr>
-                        <th class="row-label">
+                        <!-- Scoring Method Selector -->
+                        <th class="row-label scoring-method-cell">
                             <select class="scoring-options" v-model="selected.scoring_method">
                                 <option v-for="method in scoring_methods" v-bind:value="method.value"> {{ method.text }} </option>
                             </select>
                         </th>
-                        <th v-for="provider in sorted_providers">
-                            <span class="total-value" v-text="selected.scoring_method(provider) | round '2' "></span>
+
+                        <!-- Score per Provider -->
+                        <th class="score-total-cell" v-for="provider in sorted_providers">
+                            <div class="total-value" v-text="selected.scoring_method(provider) | round '2' "></div>
                         </th>
+
+                        <!-- Comment Placeholder -->
                         <th v-if="selected.lobby_plan">
                             <span></span>
                         </th>

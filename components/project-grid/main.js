@@ -13,6 +13,7 @@ export default Vue.extend({
                 provider: "",
                 requirement: "",
                 scoring_method: this.total_for,
+                scores: true,
                 action_plan: false,
                 lobby_plan: false,
                 contacts: false,
