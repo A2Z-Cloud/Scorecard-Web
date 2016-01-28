@@ -12,6 +12,12 @@
 }
 
 .ProjectGrid
+.panel-container {
+    height: 100%;
+    overflow: auto;
+}
+
+.ProjectGrid
 table {
 	margin-bottom: 0px;
 	border: 0px;
@@ -129,6 +135,11 @@ input {
 }
 
 .ProjectGrid
+.requirement-label {
+    display: inline-block;
+}
+
+.ProjectGrid
 .requirement-cell,
 .ProjectGrid
 .scoring-method-cell {
@@ -140,6 +151,12 @@ input {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+}
+
+.ProjectGrid
+.provider-cell:hover {
+    overflow: visible;
+    white-space: inherit;
 }
 
 .ProjectGrid
@@ -190,22 +207,36 @@ th {
 }
 
 .ProjectGrid
-.grid-footer
 .total-value {
 	font-size: 1.4em;
     width: 60px;
     height: 30px;
-    padding: 5px 10px;
+    margin-top: 16px;
     display: inline-block;
 }
 
 .ProjectGrid
-.scoring-options {
+.resource-picker {
 	margin: 0px;
     border: 0px;
 
     color: #fff;
     background: #3A9A9A;
+}
+
+.ProjectGrid
+.scoring-row {
+    margin-top: 16px;
+    background: #E0E0E0;
+}
+
+.ProjectGrid
+.scoring-options {
+    border: 0px;
+    width: 100%;
+    margin-top: 16px;
+
+    background-color: #E0E0E0;
 }
 
 .ProjectGrid
