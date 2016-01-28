@@ -86,10 +86,10 @@
         <!-- Main Score Table -->
         <table class="grid-panel">
             <thead>
-                <tr>
+                <tr class="header-row">
                     <th class="row-label corner-label">Requirements</th>
                     <!-- Each Provider -->
-                    <th v-if="selected.scores" class="provider-cell" v-for="selected_provider in scorecard.providers">
+                    <th v-if="selected.scores" class="column-label provider-cell" v-for="selected_provider in scorecard.providers">
                         {{ selected_provider.name }}
                         <span class="delete fa fa-times" @click="remove_provider(selected_provider)"></span>
                     </th>

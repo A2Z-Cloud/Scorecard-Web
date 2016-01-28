@@ -108,7 +108,21 @@ input {
 }
 
 .ProjectGrid
+.header-row
+th {
+    border-bottom: 2px solid #6E5886;
+    padding: 15px 0px 15px 0px;
+}
+
+.ProjectGrid
+.header-row
+th.corner-label {
+    padding-left: 16px;
+}
+
+.ProjectGrid
 .row-label {
+    position: relative;
 	margin: 0px;
 	padding-left: 16px;
 	text-align: left;
@@ -122,9 +136,8 @@ input {
 
 .ProjectGrid
 .column-label {
+    position: relative;
 	margin: 0px;
-	background-color: #3A9A9A;
-	color: #fff;
 }
 
 .ProjectGrid
@@ -211,7 +224,7 @@ th {
 	font-size: 1.4em;
     width: 60px;
     height: 30px;
-    margin-top: 16px;
+    margin: 15px 0px 15px 0px;
     display: inline-block;
 }
 
@@ -227,16 +240,21 @@ th {
 .ProjectGrid
 .scoring-row {
     margin-top: 16px;
-    background: #E0E0E0;
+    background: #fff;
+}
+
+.ProjectGrid
+.scoring-row
+td {
+    border-top: 2px solid #6E5886;
 }
 
 .ProjectGrid
 .scoring-options {
     border: 0px;
     width: 100%;
-    margin-top: 16px;
-
-    background-color: #E0E0E0;
+    margin: 15px 0px 15px 0px;
+    background-color: #fff;
 }
 
 .ProjectGrid
@@ -330,6 +348,10 @@ input {
 }
 
 .ProjectGrid .delete {
+    position: absolute;
+    top: 5px;
+    right: 0;
+
 	float: right;
 	padding-right: 8px;
 }
