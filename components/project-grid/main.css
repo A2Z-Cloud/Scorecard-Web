@@ -6,6 +6,41 @@
 }
 
 .ProjectGrid
+.header {
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    z-index: 1;
+
+    background: #FFF;
+    text-align: center;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.ProjectGrid
+.header .logo-container {
+    position: absolute;
+    height: 30px;
+}
+
+.ProjectGrid
+.header .logo-container
+.logo {
+    max-height: 100%;
+    vertical-align: middle;
+}
+
+.ProjectGrid
+.header .logo-container
+.page-title {
+    font-size: 18px;
+    line-height: 30px;
+    vertical-align: text-top;
+    color: #4A3A5D;
+}
+
+.ProjectGrid
 .not-found-notice {
 	text-align: center;
 	width: 100%;
@@ -38,16 +73,12 @@ th {
 }
 
 .ProjectGrid
-.header {
-    width: 100%;
+.project-title {
+    margin-bottom: 0px;
 
-    padding-top: 16px;
-	padding-left: 16px;
-	padding-bottom: 16px;
-	box-sizing: border-box;
-    margin-bottom: 0;
-
-    background-color: #FFFFFC;
+    font-family: 'Source Sans Pro',sans-serif;
+    font-weight: 400;
+    font-size: 1.8em;
 }
 
 .ProjectGrid
@@ -58,13 +89,18 @@ th {
 
 .ProjectGrid
 .save-status {
-    margin-right: 20px;
+    font-weight: bold;
+    color: #E0E0E0;
+    line-height: 30px;
+    vertical-align: text-top;
+    margin-left: 20px;
 }
 
 .ProjectGrid
 .grid-panel {
 	width: 100%;
 	background-color: #FFFFFC;
+    margin-bottom: 90px;
 }
 
 .ProjectGrid
@@ -111,7 +147,20 @@ input {
 .header-row
 th {
     border-bottom: 2px solid #6E5886;
-    padding: 15px 0px 15px 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.ProjectGrid
+.header-row
+th .project-title {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .ProjectGrid
@@ -153,6 +202,13 @@ input {
 }
 
 .ProjectGrid
+.requirement-row
+td {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.ProjectGrid
 .requirement-cell,
 .ProjectGrid
 .scoring-method-cell {
@@ -160,11 +216,7 @@ input {
 }
 
 .ProjectGrid
-.provider-cell {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-}
+.provider-cell {}
 
 .ProjectGrid
 .provider-cell:hover {
@@ -224,7 +276,6 @@ th {
 	font-size: 1.4em;
     width: 60px;
     height: 30px;
-    margin: 15px 0px 15px 0px;
     display: inline-block;
 }
 
@@ -233,8 +284,8 @@ th {
 	margin: 0px;
     border: 0px;
 
-    color: #fff;
-    background: #3A9A9A;
+    color: #6E5886;
+    background: transparent;
 }
 
 .ProjectGrid
@@ -247,13 +298,14 @@ th {
 .scoring-row
 td {
     border-top: 2px solid #6E5886;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .ProjectGrid
 .scoring-options {
     border: 0px;
     width: 100%;
-    margin: 15px 0px 15px 0px;
     background-color: #fff;
 }
 
@@ -347,9 +399,18 @@ input {
 	color: red;
 }
 
+.ProjectGrid
+th:hover .delete,
+.ProjectGrid td:hover .delete {
+    visibility: visible;
+}
+
 .ProjectGrid .delete {
+    visibility: hidden;
+    color: #6E5886;
+
     position: absolute;
-    top: 5px;
+    top: 30%;
     right: 0;
 
 	float: right;
@@ -357,14 +418,54 @@ input {
 }
 
 .ProjectGrid
-.fa-times {
-	color: red;
+.delete:hover {
+    color: red;
+}
+
+.ProjectGrid
+.column-label .delete {
+    top: 25%;
+}
+
+.ProjectGrid
+.view-panel {
+    justify-content: space-between;
+    display: flex;
+    width: 100%;
+    height: 30px;
+
+    margin-top: 50px;
+    line-height: 30px;
+
+    background-color: #F1EBF7;
+    color: #6E5886;
+
+    border-bottom: 2px solid #6E5886;
 }
 
 .ProjectGrid
 .action-panel {
-	justify-content: space-between;
-	        display: flex;
+    position: absolute;
+    top: 0px;
+    right: 31%;
+    z-index: 2;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.action-selector {
+    width: 250px;
+    margin-right: 10px;
+
+    background: #F1EBF7;
+
+    -webkit-border-bottom-right-radius: 4px;
+    -webkit-border-bottom-left-radius:  4px;
+       -moz-border-radius-bottomright:  4px;
+       -moz-border-radius-bottomleft:   4px;
+            border-bottom-right-radius: 4px;
+            border-bottom-left-radius:  4px;
 }
 
 .ProjectGrid
@@ -377,29 +478,54 @@ input {
 }
 
 .ProjectGrid
+.action-button:hover {
+    background: #E5D9F1;
+}
+
+.ProjectGrid
+.action-button.selected {
+    color: #fff;
+    background: #6E5886;
+}
+
+.ProjectGrid
+.action-button.selected:hover {
+    background: #544465;
+}
+
+.ProjectGrid
+.totals-footer {
+    position: absolute;
+    bottom: 30px;
+    display: inherit;
+    width: 100%;
+}
+
+.ProjectGrid
 .legend {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 30px;
+
 	justify-content: space-between;
 	        display: flex;
 
 	background-color: white;
 	text-align: center;
-
-	padding-top: 16px;
-	padding-bottom: 16px;
 }
 
 .ProjectGrid
 .legend-item {
-	font-size: 18px;
+	font-size: 15px;
+    line-height: 30px;
 	cursor: pointer;
 	width: 100%;
 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
 	padding-left: 8px;
 	padding-right: 8px;
-}
-
-.ProjectGrid
-.action-button.selected {
-	background-color: darkgrey;
-	color: white;
 }

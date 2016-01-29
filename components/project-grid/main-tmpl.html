@@ -5,31 +5,39 @@
     <div class="panel-container" v-if="scorecard">
         <!-- Page Header -->
         <div class="header">
-            <h5 class="project-header" v-text="scorecard.name"></h4>
+            <div class="logo-container">
+                <img class="logo" src="images/a2zcloud.png" />
+                <span class="page-title">Scorecard</span>
 
-            <span v-bind:class="{ 'error-message': save_state.error }" class="save-status">
-                {{ save_state.text }}
-            </span>
+                <span v-bind:class="{ 'error-message': save_state.error }" class="save-status">
+                    {{ save_state.text }}
+                </span>
+            </div>
         </div>
 
         <!-- Company and Requirements Selectors -->
         <div class="action-panel">
-            <select class="add-selector resource-picker" v-model="selected.requirement">
-                <option value=""> Add Most Important Requirement... </option>
-                <option v-for="requirement in remaining_requirements"
-                        v-bind:value="requirement"> {{ full_requirement_name(requirement) }}
-                </option>
-            </select>
-            <select v-if="sorted_requirements.length" class="add-selector resource-picker" v-model="selected.provider">
-                <option value=""> Add Competitor... </option>
-                <option v-for="provider in remaining_providers"
-                        v-bind:value="provider"> {{ provider.name }}
-                </option>
-            </select>
+            <div class="action-selector">
+                <select class="add-selector resource-picker" v-model="selected.requirement">
+                    <option value=""> Add Most Important Requirement... </option>
+                    <option v-for="requirement in remaining_requirements"
+                            v-bind:value="requirement"> {{ full_requirement_name(requirement) }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="action-selector">
+                <select v-if="sorted_requirements.length" class="add-selector resource-picker" v-model="selected.provider">
+                    <option value=""> Add Competitor... </option>
+                    <option v-for="provider in remaining_providers"
+                            v-bind:value="provider"> {{ provider.name }}
+                    </option>
+                </select>
+            </div>
         </div>
 
         <!-- Comment Toggles -->
-        <div class="action-panel no-select">
+        <div class="view-panel no-select">
             <div
                 title="Scores"
                 class="action-button"
@@ -64,32 +72,13 @@
             </div>
         </div>
 
-        <!-- Score Legend -->
-        <div class="legend">
-            <div class="legend-item score-one">
-                1) Can not meet MIR
-            </div>
-            <div class="legend-item score-two">
-                2) Development required
-            </div>
-            <div class="legend-item score-three">
-                3) Meets MIR requirement
-            </div>
-            <div class="legend-item score-four">
-                4) exceeds MIR requirement
-            </div>
-            <div class="legend-item score-five">
-                5) MIR market leader
-            </div>
-        </div>
-
         <!-- Main Score Table -->
         <table class="grid-panel">
             <thead>
                 <tr class="header-row">
                     <th class="row-label corner-label"
                         v-bind:style="{ width: requirements_column_width + '%' }">
-                            Requirements
+                        <h3 class="project-title" v-text="scorecard.name">Unknown</h3>
                     </th>
                     <!-- Each Provider -->
                     <th v-if="selected.scores"
@@ -115,7 +104,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="requirement in sorted_requirements">
+                <tr class="requirement-row" v-for="requirement in sorted_requirements">
                     <!-- Each Requirement -->
                     <td class="row-label requirement-cell">
                         <span class="requirement-label">
@@ -173,34 +162,60 @@
                         </textarea>
                     </td>
                 </tr>
-
+            </tbody>
+            <tfoot class="totals-footer">
                 <!-- Totals -->
                 <tr v-if="selected.scores" class="scoring-row">
                     <!-- Scoring Method Selector -->
-                    <td class="row-label scoring-method-cell">
+                    <td class="row-label scoring-method-cell"
+                        v-bind:style="{ width: requirements_column_width + '%' }">
                         <select class="scoring-options" v-model="selected.scoring_method">
                             <option v-for="method in scoring_methods" v-bind:value="method.value"> {{ method.text }} </option>
                         </select>
                     </td>
 
                     <!-- Score per Provider -->
-                    <td class="score-total-cell" v-for="provider in sorted_providers">
+                    <td class="score-total-cell"
+                        v-for="provider in sorted_providers"
+                        v-bind:style="{ width: score_column_width + '%' }">
                         <div class="total-value" v-text="selected.scoring_method(provider) | round '2' "></div>
                     </td>
 
                     <!-- Comment Placeholder -->
-                    <td v-if="selected.lobby_plan">
+                    <td v-if="selected.lobby_plan"
+                        v-bind:style="{ width: comment_column_width + '%' }">
                         <span></span>
                     </td>
-                    <td v-if="selected.action_plan">
+                    <td v-if="selected.action_plan"
+                        v-bind:style="{ width: comment_column_width + '%' }">
                         <span></span>
                     </td>
-                    <td v-if="selected.contacts">
+                    <td v-if="selected.contacts"
+                        v-bind:style="{ width: comment_column_width + '%' }">
                         <span></span>
                     </td>
                 </tr>
-            </tbody>
+            </tfoot>
         </table>
+
+        <!-- Score Legend -->
+        <div class="legend">
+            <div class="legend-item score-one">
+                1) Can not meet MIR
+            </div>
+            <div class="legend-item score-two">
+                2) Development required
+            </div>
+            <div class="legend-item score-three">
+                3) Meets MIR requirement
+            </div>
+            <div class="legend-item score-four">
+                4) exceeds MIR requirement
+            </div>
+            <div class="legend-item score-five">
+                5) MIR market leader
+            </div>
+        </div>
     </div>
 
 </div>
