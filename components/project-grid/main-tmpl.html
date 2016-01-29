@@ -44,7 +44,7 @@
                 :class="[selected.action_plan ? 'selected' : '']"
                 @click="selected.action_plan = !selected.action_plan">
                     <i :class="['fa', 'fa-bolt']"></i>
-                    Action Plan
+                    Action/Mitigation Plan
             </div>
             <div
                 title="Lobby Plan"
@@ -95,7 +95,7 @@
                     </th>
                     <!-- Comment Headings -->
                     <th v-if="selected.action_plan">
-                        Action Plan
+                        Action/Mitigation Plan
                     </th>
                     <th v-if="selected.lobby_plan">
                         Lobby Plan
@@ -138,7 +138,7 @@
                         <textarea
                             class="comment-input"
                             type="text"
-                            placeholder="action plan comment..."
+                            placeholder="action/mitigation plan comment..."
                             v-model="requirement.action_plan"
                             @keyup="save_comment(requirement.id, 'action_plan', requirement.action_plan) | debounce 500">
                         </textarea>
@@ -166,7 +166,7 @@
                 </tr>
 
                 <!-- Totals -->
-                <tr class="scoring-row">
+                <tr v-if="selected.scores" class="scoring-row">
                     <!-- Scoring Method Selector -->
                     <td class="row-label scoring-method-cell">
                         <select class="scoring-options" v-model="selected.scoring_method">
