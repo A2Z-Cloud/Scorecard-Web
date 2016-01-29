@@ -83,24 +83,39 @@
             </div>
         </div>
 
+        <div>requirements: {{requirements_column_width}}</div>
+        <div>score: {{score_column_width}}</div>
+        <div>action: {{comment_column_width}}</div>
+        <div>lobby: {{comment_column_width}}</div>
+        <div>contacts: {{comment_column_width}}</div>
+
         <!-- Main Score Table -->
         <table class="grid-panel">
             <thead>
                 <tr class="header-row">
-                    <th class="row-label corner-label">Requirements</th>
+                    <th class="row-label corner-label"
+                        v-bind:style="{ width: requirements_column_width + '%' }">
+                            Requirements
+                    </th>
                     <!-- Each Provider -->
-                    <th v-if="selected.scores" class="column-label provider-cell" v-for="selected_provider in scorecard.providers">
+                    <th v-if="selected.scores"
+                        class="column-label provider-cell"
+                        v-bind:style="{ width: score_column_width + '%' }"
+                        v-for="selected_provider in scorecard.providers">
                         {{ selected_provider.name }}
                         <span class="delete fa fa-times" @click="remove_provider(selected_provider)"></span>
                     </th>
                     <!-- Comment Headings -->
-                    <th v-if="selected.action_plan">
+                    <th v-if="selected.action_plan"
+                        v-bind:style="{ width: comment_column_width + '%' }">
                         Action/Mitigation Plan
                     </th>
-                    <th v-if="selected.lobby_plan">
+                    <th v-if="selected.lobby_plan"
+                        v-bind:style="{ width: comment_column_width + '%' }">
                         Lobby Plan
                     </th>
-                    <th v-if="selected.contacts">
+                    <th v-if="selected.contacts"
+                        v-bind:style="{ width: comment_column_width + '%' }">
                         Contacts
                     </th>
                 </tr>
