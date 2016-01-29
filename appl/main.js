@@ -6,6 +6,9 @@ import './main.css!';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
+// Import utils
+import 'appl/array_hipster'
+
 // -- Consts
 import {debug, ws_url} from 'consts'
 

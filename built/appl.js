@@ -10222,7 +10222,35 @@ $__System.register("72", ["71"], function (_export) {
     execute: function () {}
   };
 });
-$__System.register('73', [], function (_export) {
+$__System.registerDynamic("73", [], false, function(__require, __exports, __module) {
+  var _retrieveGlobal = $__System.get("@@global-helpers").prepareGlobal(__module.id, null, null);
+  (function() {
+    if (!Array.prototype.find) {
+      Array.prototype.find = function(predicate) {
+        if (this === null) {
+          throw new TypeError('Array.prototype.find called on null or undefined');
+        }
+        if (typeof predicate !== 'function') {
+          throw new TypeError('predicate must be a function');
+        }
+        var list = Object(this);
+        var length = list.length >>> 0;
+        var thisArg = arguments[1];
+        var value;
+        for (var i = 0; i < length; i++) {
+          value = list[i];
+          if (predicate.call(thisArg, value, i, list)) {
+            return value;
+          }
+        }
+        return undefined;
+      };
+    }
+  })();
+  return _retrieveGlobal();
+});
+
+$__System.register('74', [], function (_export) {
   'use strict';
 
   var debug, ws_url;
@@ -10239,17 +10267,17 @@ $__System.register('73', [], function (_export) {
     }
   };
 });
-$__System.register("74", [], function() { return { setters: [], execute: function() {} } });
+$__System.register("75", [], function() { return { setters: [], execute: function() {} } });
 
 (function() {
 var _removeDefine = $__System.get("@@amd-helpers").createDefine();
-define("75", [], function() {
+define("76", [], function() {
   return "<div class=\"MenuPanel\" v-if=\"projects\">\n\t<div class=\"title\">\n\t\t<h4>Scorecard</h4>\n\t</div>\n    <div v-for='project in projects'>\n        <div >\n            <!-- {{ project.name }} -->\n        </div>\n    </div>\n</div>";
 });
 
 _removeDefine();
 })();
-$__System.register('76', ['74', '75', '4d'], function (_export) {
+$__System.register('77', ['75', '76', '4d'], function (_export) {
   'use strict';
 
   var tmpl, Vue;
@@ -10268,17 +10296,17 @@ $__System.register('76', ['74', '75', '4d'], function (_export) {
     }
   };
 });
-$__System.register("77", [], function() { return { setters: [], execute: function() {} } });
+$__System.register("78", [], function() { return { setters: [], execute: function() {} } });
 
 (function() {
 var _removeDefine = $__System.get("@@amd-helpers").createDefine();
-define("78", [], function() {
+define("79", [], function() {
   return "<div class=\"LoginPanel\">\n    <div class=\"transition-container transition-base\" transition=\"top-slide\" :style=\"{top: offset + 'px'}\">\n        <div class=\"pane-content\" v-show=\"active\">\n            <div v-if=\"user\">\n                <form class=\"login-panel-form profile-form\" @submit.stop.prevent=\"save\">\n                    <button class=\"logout-button button pull-right\" type=\"button\" @click.stop.prevent=\"logout\">\n                        <span class=\"logout-text\">Logout</span> \n                        <i class=\"fa fa-sign-out\"></i>\n                    </button>\n\n                    <label>Email</label>\n                    <input class=\"u-full-width\" type=\"text\" name=\"email\" v-model=\"user.email\" readonly/>\n                </form>\n            </div>\n            <div v-else>\n                <form class=\"login-panel-form login-form\" @submit.stop.prevent=\"login\">\n                    <label>Email</label>\n                    <input class=\"u-full-width\" type=\"text\" placeholder=\"Your email address\" name=\"email\" v-model=\"email\" v-el:email_input/>\n\n                    <label>Password</label>\n                    <input class=\"u-full-width\" type=\"password\" name=\"password\" placeholder=\"Your account password\" v-model=\"password\" />\n\n                    <button class=\"button button-primary u-full-width\" type=\"submit\">Login</button>\n                </form>\n            </div>\n            <div class=\"error\" v-if=\"error\">\n                {{error}}\n            </div>\n        </div>\n        <div class=\"pane-footer\" v-el:footer>\n            <button class=\"button-tab button\" type=\"button\" @click.prevent=\"toggle\" v-el:toggle_btn>\n                <span>{{ active ? \"Close\" : user? \"Profile\" : \"Login\" }}</span>\n            </button>\n        </div>\n    </div>\n</div>\n";
 });
 
 _removeDefine();
 })();
-$__System.register('79', ['77', '78', '4d'], function (_export) {
+$__System.register('7a', ['78', '79', '4d'], function (_export) {
     'use strict';
 
     var tmpl, Vue;
@@ -10349,23 +10377,23 @@ $__System.register('79', ['77', '78', '4d'], function (_export) {
         }
     };
 });
-$__System.register("7a", [], function() { return { setters: [], execute: function() {} } });
+$__System.register("7b", [], function() { return { setters: [], execute: function() {} } });
 
 (function() {
 var _removeDefine = $__System.get("@@amd-helpers").createDefine();
-define("7b", [], function() {
+define("7c", [], function() {
   return "<div class=\"ProjectGrid\" v-if=\"store\">\n\n    <div class=\"not-found-notice\" v-if=\"no_project\"> Can't Find Scorecard </div>\n\n    <div class=\"panel-container\" v-if=\"scorecard\">\n        <!-- Page Header -->\n        <div class=\"header\">\n            <h5 class=\"project-header\" v-text=\"scorecard.name\"></h4>\n\n            <span v-bind:class=\"{ 'error-message': save_state.error }\" class=\"save-status\">\n                {{ save_state.text }}\n            </span>\n        </div>\n\n        <!-- Company and Requirements Selectors -->\n        <div class=\"action-panel\">\n            <select class=\"add-selector resource-picker\" v-model=\"selected.requirement\">\n                <option value=\"\"> Add Most Important Requirement... </option>\n                <option v-for=\"requirement in remaining_requirements\"\n                        v-bind:value=\"requirement\"> {{ full_requirement_name(requirement) }}\n                </option>\n            </select>\n            <select v-if=\"sorted_requirements.length\" class=\"add-selector resource-picker\" v-model=\"selected.provider\">\n                <option value=\"\"> Add Competitor... </option>\n                <option v-for=\"provider in remaining_providers\"\n                        v-bind:value=\"provider\"> {{ provider.name }}\n                </option>\n            </select>\n        </div>\n\n        <!-- Comment Toggles -->\n        <div class=\"action-panel no-select\">\n            <div\n                title=\"Scores\"\n                class=\"action-button\"\n                :class=\"[selected.scores ? 'selected' : '']\"\n                @click=\"selected.scores = !selected.scores\">\n                    <i :class=\"['fa', 'fa-trophy']\"></i>\n                    Scores\n            </div>\n            <div\n                title=\"Action Plan\"\n                class=\"action-button\"\n                :class=\"[selected.action_plan ? 'selected' : '']\"\n                @click=\"selected.action_plan = !selected.action_plan\">\n                    <i :class=\"['fa', 'fa-bolt']\"></i>\n                    Action/Mitigation Plan\n            </div>\n            <div\n                title=\"Lobby Plan\"\n                class=\"action-button\"\n                :class=\"[selected.lobby_plan ? 'selected' : '']\"\n                @click=\"selected.lobby_plan = !selected.lobby_plan\">\n                    <i :class=\"['fa', 'fa-bank']\"></i>\n                    Lobby Plan\n            </div>\n            <div\n                title=\"Contacts\"\n                class=\"action-button\"\n                :class=\"[selected.contacts ? 'selected' : '']\"\n                @click=\"selected.contacts = !selected.contacts\">\n                    <i class=\"fa fa-users\"></i>\n                    Contacts\n            </div>\n        </div>\n\n        <!-- Score Legend -->\n        <div class=\"legend\">\n            <div class=\"legend-item score-one\">\n                1) Can not meet MIR\n            </div>\n            <div class=\"legend-item score-two\">\n                2) Development required\n            </div>\n            <div class=\"legend-item score-three\">\n                3) Meets MIR requirement\n            </div>\n            <div class=\"legend-item score-four\">\n                4) exceeds MIR requirement\n            </div>\n            <div class=\"legend-item score-five\">\n                5) MIR market leader\n            </div>\n        </div>\n\n        <!-- Main Score Table -->\n        <table class=\"grid-panel\">\n            <thead>\n                <tr class=\"header-row\">\n                    <th class=\"row-label corner-label\"\n                        v-bind:style=\"{ width: requirements_column_width + '%' }\">\n                            Requirements\n                    </th>\n                    <!-- Each Provider -->\n                    <th v-if=\"selected.scores\"\n                        class=\"column-label provider-cell\"\n                        v-bind:style=\"{ width: score_column_width + '%' }\"\n                        v-for=\"selected_provider in scorecard.providers\">\n                        {{ selected_provider.name }}\n                        <span class=\"delete fa fa-times\" @click=\"remove_provider(selected_provider)\"></span>\n                    </th>\n                    <!-- Comment Headings -->\n                    <th v-if=\"selected.action_plan\"\n                        v-bind:style=\"{ width: comment_column_width + '%' }\">\n                        Action/Mitigation Plan\n                    </th>\n                    <th v-if=\"selected.lobby_plan\"\n                        v-bind:style=\"{ width: comment_column_width + '%' }\">\n                        Lobby Plan\n                    </th>\n                    <th v-if=\"selected.contacts\"\n                        v-bind:style=\"{ width: comment_column_width + '%' }\">\n                        Contacts\n                    </th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr v-for=\"requirement in sorted_requirements\">\n                    <!-- Each Requirement -->\n                    <td class=\"row-label requirement-cell\">\n                        <span class=\"requirement-label\">\n                            {{ requirement.name }}\n                        </span>\n                        <span class=\"requirement-label\" v-if=\"requirement.unit\">\n                            ({{ requirement.unit }})\n                        </span>\n                        <span class=\"requirement-label delete fa fa-times\"\n                              @click=\"remove_requirement(requirement)\">\n                        </span>\n                    </td>\n\n                    <!-- Score -->\n                    <td class=\"score-cell\"\n                        v-if=\"selected.scores\"\n                        v-for=\"provider in sorted_providers\"\n                        v-bind:class=\"class_for(provider, requirement)\">\n\n                        <input  class=\"score-value u-full-width\"\n                                type='number'\n                                v-model='score_for(provider,requirement).score' number\n                                @click=\"selected_score($event)\"\n                                @keyup=\"save_scores | debounce 500\"/>\n                    </td>\n\n                    <!-- Comment Cells -->\n                    <td v-if=\"selected.action_plan\">\n                        <textarea\n                            class=\"comment-input\"\n                            type=\"text\"\n                            placeholder=\"action/mitigation plan comment...\"\n                            v-model=\"requirement.action_plan\"\n                            @keyup=\"save_comment(requirement.id, 'action_plan', requirement.action_plan) | debounce 500\">\n                        </textarea>\n                    </td>\n\n                    <td v-if=\"selected.lobby_plan\">\n                        <textarea\n                            class=\"comment-input\"\n                            type=\"text\"\n                            placeholder=\"lobby plan comment...\"\n                            v-model=\"requirement.lobby_plan\"\n                            @keyup=\"save_comment(requirement.id, 'lobby_plan', requirement.lobby_plan) | debounce 500\">\n                        </textarea>\n                    </td>\n\n                    <td v-if=\"selected.contacts\">\n                        <textarea\n                            class=\"comment-input\"\n                            type=\"text\"\n                            placeholder=\"contacts comment...\"\n                            v-model=\"requirement.contacts\"\n                            @keyup=\"save_comment(requirement.id, 'contacts', requirement.contacts) | debounce 500\">\n                        </textarea>\n                    </td>\n                </tr>\n\n                <!-- Totals -->\n                <tr v-if=\"selected.scores\" class=\"scoring-row\">\n                    <!-- Scoring Method Selector -->\n                    <td class=\"row-label scoring-method-cell\">\n                        <select class=\"scoring-options\" v-model=\"selected.scoring_method\">\n                            <option v-for=\"method in scoring_methods\" v-bind:value=\"method.value\"> {{ method.text }} </option>\n                        </select>\n                    </td>\n\n                    <!-- Score per Provider -->\n                    <td class=\"score-total-cell\" v-for=\"provider in sorted_providers\">\n                        <div class=\"total-value\" v-text=\"selected.scoring_method(provider) | round '2' \"></div>\n                    </td>\n\n                    <!-- Comment Placeholder -->\n                    <td v-if=\"selected.lobby_plan\">\n                        <span></span>\n                    </td>\n                    <td v-if=\"selected.action_plan\">\n                        <span></span>\n                    </td>\n                    <td v-if=\"selected.contacts\">\n                        <span></span>\n                    </td>\n                </tr>\n            </tbody>\n        </table>\n    </div>\n\n</div>\n";
 });
 
 _removeDefine();
 })();
-$__System.register('7c', ['7a', '7b', '4d'], function (_export) {
+$__System.register('7d', ['7b', '7c', '4d'], function (_export) {
     'use strict';
 
     var tmpl, Vue;
     return {
-        setters: [function (_a) {}, function (_b) {
-            tmpl = _b['default'];
+        setters: [function (_b) {}, function (_c) {
+            tmpl = _c['default'];
         }, function (_d) {
             Vue = _d['default'];
         }],
@@ -10704,7 +10732,7 @@ $__System.register('7c', ['7a', '7b', '4d'], function (_export) {
         }
     };
 });
-$__System.register("7d", [], function (_export) {
+$__System.register("7e", [], function (_export) {
   /*\
   |*|
   |*|  :: cookies.js ::
@@ -10789,7 +10817,7 @@ $__System.register("7d", [], function (_export) {
     }
   };
 });
-$__System.register("7e", ["51", "52", "7d"], function (_export) {
+$__System.register("7f", ["51", "52", "7e"], function (_export) {
 	var _createClass, _classCallCheck, docCookies, Connection;
 
 	return {
@@ -10797,8 +10825,8 @@ $__System.register("7e", ["51", "52", "7d"], function (_export) {
 			_createClass = _["default"];
 		}, function (_2) {
 			_classCallCheck = _2["default"];
-		}, function (_d) {
-			docCookies = _d["default"];
+		}, function (_e) {
+			docCookies = _e["default"];
 		}],
 		execute: function () {
 			"use strict";
@@ -10929,7 +10957,9 @@ $__System.register("7e", ["51", "52", "7d"], function (_export) {
 		}
 	};
 });
-$__System.register("1", ["5", "6", "7", "8", "72", "73", "76", "79", "4d", "7c", "7e"], function (_export) {
+$__System.register("1", ["5", "6", "7", "8", "72", "73", "74", "77", "4d", "7a", "7d", "7f"], function (_export) {
+
+	// Import utils
 
 	// -- Consts
 	"use strict";
@@ -10938,15 +10968,15 @@ $__System.register("1", ["5", "6", "7", "8", "72", "73", "76", "79", "4d", "7c",
 	return {
 		setters: [function (_) {}, function (_2) {}, function (_3) {}, function (_4) {}, function (_5) {
 			VueRouter = _5["default"];
-		}, function (_6) {
-			debug = _6.debug;
-			ws_url = _6.ws_url;
-		}, function (_7) {}, function (_8) {}, function (_d) {
+		}, function (_6) {}, function (_7) {
+			debug = _7.debug;
+			ws_url = _7.ws_url;
+		}, function (_8) {}, function (_d) {
 			Vue = _d["default"];
-		}, function (_c) {
-			ProjectGrid = _c["default"];
-		}, function (_e) {
-			Control = _e["default"];
+		}, function (_a) {}, function (_d2) {
+			ProjectGrid = _d2["default"];
+		}, function (_f) {
+			Control = _f["default"];
 		}],
 		execute: function () {
 
