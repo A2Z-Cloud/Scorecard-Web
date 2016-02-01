@@ -6,9 +6,50 @@
 }
 
 .ProjectGrid
+.header {
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    z-index: 1;
+
+    background: #FFF;
+    text-align: center;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.ProjectGrid
+.header .logo-container {
+    position: absolute;
+    height: 30px;
+}
+
+.ProjectGrid
+.header .logo-container
+.logo {
+    max-height: 100%;
+    vertical-align: middle;
+}
+
+.ProjectGrid
+.header .logo-container
+.page-title {
+    font-size: 18px;
+    line-height: 30px;
+    vertical-align: text-top;
+    color: #4A3A5D;
+}
+
+.ProjectGrid
 .not-found-notice {
 	text-align: center;
 	width: 100%;
+}
+
+.ProjectGrid
+.panel-container {
+    height: 100%;
+    overflow: auto;
 }
 
 .ProjectGrid
@@ -27,28 +68,39 @@ td,
 .ProjectGrid
 table
 th {
-	width: 200px;
+	width: 0;
 	text-align: center;
 }
 
 .ProjectGrid
+.project-title {
+    margin-bottom: 0px;
+
+    font-family: 'Source Sans Pro',sans-serif;
+    font-weight: 400;
+    font-size: 1.8em;
+}
+
+.ProjectGrid
 .project-header {
-	width: 100%;
-
-	padding-top: 16px;
-	padding-left: 16px;
-	padding-bottom: 32px;
-	box-sizing: border-box;
-
 	color: #0C2C2C;
-	background-color: #FFFFFC;
-	margin-bottom: 0;
+    margin: 0;
+}
+
+.ProjectGrid
+.save-status {
+    font-weight: bold;
+    color: #E0E0E0;
+    line-height: 30px;
+    vertical-align: text-top;
+    margin-left: 20px;
 }
 
 .ProjectGrid
 .grid-panel {
 	width: 100%;
 	background-color: #FFFFFC;
+    margin-bottom: 90px;
 }
 
 .ProjectGrid
@@ -92,7 +144,34 @@ input {
 }
 
 .ProjectGrid
+.header-row
+th {
+    border-bottom: 2px solid #6E5886;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.ProjectGrid
+.header-row
+th .project-title {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.ProjectGrid
+.header-row
+th.corner-label {
+    padding-left: 16px;
+}
+
+.ProjectGrid
 .row-label {
+    position: relative;
 	margin: 0px;
 	padding-left: 16px;
 	text-align: left;
@@ -106,9 +185,8 @@ input {
 
 .ProjectGrid
 .column-label {
+    position: relative;
 	margin: 0px;
-	background-color: #3A9A9A;
-	color: #fff;
 }
 
 .ProjectGrid
@@ -116,6 +194,51 @@ input {
 input {
 	background-color: #3A9A9A;
 	color: #fff;
+}
+
+.ProjectGrid
+.requirement-label {
+    display: inline-block;
+}
+
+.ProjectGrid
+.requirement-row
+td {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.ProjectGrid
+.requirement-cell,
+.ProjectGrid
+.scoring-method-cell {
+    width: 25%;
+}
+
+.ProjectGrid
+.provider-cell {}
+
+.ProjectGrid
+.provider-cell:hover {
+    overflow: visible;
+    white-space: inherit;
+}
+
+.ProjectGrid
+.provider-cell,
+.ProjectGrid
+.score-cell,
+.ProjectGrid
+.score-total-cell {
+    width: 66px;
+}
+
+.ProjectGrid
+.score-cell,
+.ProjectGrid
+.score-total-cell {
+    white-space: nowrap;
+    padding: 5px 0px;
 }
 
 .ProjectGrid
@@ -149,18 +272,41 @@ th {
 }
 
 .ProjectGrid
-.grid-footer
 .total-value {
 	font-size: 1.4em;
+    width: 60px;
+    height: 30px;
+    display: inline-block;
+}
+
+.ProjectGrid
+.resource-picker {
+	margin: 0px;
+    border: 0px;
+
+    color: #6E5886;
+    background: transparent;
+}
+
+.ProjectGrid
+.scoring-row {
+    margin-top: 16px;
+    background: #fff;
+}
+
+.ProjectGrid
+.scoring-row
+td {
+    border-top: 2px solid #6E5886;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .ProjectGrid
 .scoring-options {
-	margin: 0px;
     border: 0px;
-
-    color: #fff;
-    background: #3A9A9A;
+    width: 100%;
+    background-color: #fff;
 }
 
 .ProjectGrid
@@ -253,20 +399,73 @@ input {
 	color: red;
 }
 
+.ProjectGrid
+th:hover .delete,
+.ProjectGrid td:hover .delete {
+    visibility: visible;
+}
+
 .ProjectGrid .delete {
+    visibility: hidden;
+    color: #6E5886;
+
+    position: absolute;
+    top: 30%;
+    right: 0;
+
 	float: right;
 	padding-right: 8px;
 }
 
 .ProjectGrid
-.fa-times {
-	color: red;
+.delete:hover {
+    color: red;
+}
+
+.ProjectGrid
+.column-label .delete {
+    top: 25%;
+}
+
+.ProjectGrid
+.view-panel {
+    justify-content: space-between;
+    display: flex;
+    width: 100%;
+    height: 30px;
+
+    margin-top: 50px;
+    line-height: 30px;
+
+    background-color: #F1EBF7;
+    color: #6E5886;
+
+    border-bottom: 2px solid #6E5886;
 }
 
 .ProjectGrid
 .action-panel {
-	justify-content: space-between;
-	        display: flex;
+    position: absolute;
+    top: 0px;
+    right: 31%;
+    z-index: 2;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.action-selector {
+    width: 250px;
+    margin-right: 10px;
+
+    background: #F1EBF7;
+
+    -webkit-border-bottom-right-radius: 4px;
+    -webkit-border-bottom-left-radius:  4px;
+       -moz-border-radius-bottomright:  4px;
+       -moz-border-radius-bottomleft:   4px;
+            border-bottom-right-radius: 4px;
+            border-bottom-left-radius:  4px;
 }
 
 .ProjectGrid
@@ -279,29 +478,54 @@ input {
 }
 
 .ProjectGrid
+.action-button:hover {
+    background: #E5D9F1;
+}
+
+.ProjectGrid
+.action-button.selected {
+    color: #fff;
+    background: #6E5886;
+}
+
+.ProjectGrid
+.action-button.selected:hover {
+    background: #544465;
+}
+
+.ProjectGrid
+.totals-footer {
+    position: absolute;
+    bottom: 30px;
+    display: inherit;
+    width: 100%;
+}
+
+.ProjectGrid
 .legend {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 30px;
+
 	justify-content: space-between;
 	        display: flex;
 
 	background-color: white;
 	text-align: center;
-
-	padding-top: 16px;
-	padding-bottom: 16px;
 }
 
 .ProjectGrid
 .legend-item {
-	font-size: 18px;
+	font-size: 15px;
+    line-height: 30px;
 	cursor: pointer;
 	width: 100%;
 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
 	padding-left: 8px;
 	padding-right: 8px;
-}
-
-.ProjectGrid
-.action-button.selected {
-	background-color: darkgrey;
-	color: white;
 }

@@ -13,6 +13,7 @@ export default Vue.extend({
                 provider: "",
                 requirement: "",
                 scoring_method: this.total_for,
+                scores: true,
                 action_plan: false,
                 lobby_plan: false,
                 contacts: false,
@@ -196,6 +197,28 @@ export default Vue.extend({
         sorted_requirements() {
             // Sort scorecard requirements by id
             return this.scorecard.requirements ? this.scorecard.requirements.sort( (a,b) => a.sort_order - b.sort_order ) : []
+        },
+        requirements_column_width() {
+            // Any columns selected then 25%, else 100%
+            if ([this.selected.scores, this.selected.lobby_plan, this.selected.action_plan, this.selected.contacts].some(c => c == true)) {
+                return 25
+            }
+            return 100
+        },
+        score_column_width() {
+            let width = 75
+            if ([this.selected.lobby_plan, this.selected.action_plan, this.selected.contacts].some(c => c == true)) {
+                width = 25
+            }
+            return width / this.sorted_providers.length
+        },
+        comment_column_width() {
+            let width   = 75
+            let visible = [this.selected.lobby_plan, this.selected.action_plan, this.selected.contacts].filter(c => c == true)
+            if (this.selected.scores) {
+                width = 50
+            }
+            return width / visible.length
         }
     },
     watch: {
