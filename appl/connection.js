@@ -91,6 +91,12 @@ export default class Connection{
 		});
 	}
 
+    change_password(old_password, new_password, error_back) {
+        this.send('change_password', {old_password: old_password, new_password: new_password}, (request, response) => {
+            error_back(response.error)
+        })
+    }
+
 	logout(err_back){
 		this.send("logout",{},(request,response)=>{
 			if(response.error){
