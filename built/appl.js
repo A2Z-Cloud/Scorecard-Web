@@ -10322,7 +10322,7 @@ $__System.register("78", [], function() { return { setters: [], execute: functio
 (function() {
 var _removeDefine = $__System.get("@@amd-helpers").createDefine();
 define("79", [], function() {
-  return "<div class=\"LoginPanel\">\n    <div class=\"transition-container transition-base\" transition=\"top-slide\" :style=\"{top: offset + 'px'}\">\n        <div class=\"pane-content\" v-show=\"active\">\n            <div v-if=\"user\">\n                <form class=\"login-panel-form profile-form\" @submit.stop.prevent=\"save\">\n                    <button class=\"logout-button button pull-right\" type=\"button\" @click.stop.prevent=\"logout\">\n                        <span class=\"logout-text\">Logout</span> \n                        <i class=\"fa fa-sign-out\"></i>\n                    </button>\n\n                    <label>Email</label>\n                    <input class=\"u-full-width\" type=\"text\" name=\"email\" v-model=\"user.email\" readonly/>\n                </form>\n            </div>\n            <div v-else>\n                <form class=\"login-panel-form login-form\" @submit.stop.prevent=\"login\">\n                    <label>Email</label>\n                    <input class=\"u-full-width\" type=\"text\" placeholder=\"Your email address\" name=\"email\" v-model=\"email\" v-el:email_input/>\n\n                    <label>Password</label>\n                    <input class=\"u-full-width\" type=\"password\" name=\"password\" placeholder=\"Your account password\" v-model=\"password\" />\n\n                    <button class=\"button button-primary u-full-width\" type=\"submit\">Login</button>\n                </form>\n            </div>\n            <div class=\"error\" v-if=\"error\">\n                {{error}}\n            </div>\n        </div>\n        <div class=\"pane-footer\" v-el:footer>\n            <button class=\"button-tab button\" type=\"button\" @click.prevent=\"toggle\" v-el:toggle_btn>\n                <span>{{ active ? \"Close\" : user? \"Profile\" : \"Login\" }}</span>\n            </button>\n        </div>\n    </div>\n</div>\n";
+  return "<div class=\"LoginPanel\">\n    <div class=\"transition-container transition-base\" transition=\"top-slide\" :style=\"{top: offset + 'px'}\">\n        <div class=\"pane-content\" v-show=\"active\">\n            <div v-if=\"user\">\n                <form class=\"login-panel-form profile-form\" @submit.stop.prevent=\"save\">\n                    <button class=\"logout-button button pull-right\" type=\"button\" @click.stop.prevent=\"logout\">\n                        <span class=\"logout-text\">Logout</span>\n                        <i class=\"fa fa-sign-out\"></i>\n                    </button>\n\n                    <label>Email</label>\n                    <input class=\"u-full-width\" type=\"text\" name=\"email\" v-model=\"user.email\" readonly/>\n\n                    <label>Change Password</label>\n                    <input class=\"u-full-width\" type=\"password\" name=\"password\" v-model=\"password\" placeholder=\"current password\"/>\n                    <input class=\"u-full-width\" type=\"password\" name=\"password\" v-model=\"new_password\" placeholder=\"new password\"/>\n                    <input class=\"u-full-width\" type=\"password\" name=\"password\" v-model=\"new_password_conf\" placeholder=\"new password (confirmation)\"/>\n\n                    <button class=\"button button-primary u-full-width\" v-bind:disabled=\"!enable_change_password_button\" type=\"submit\">Change Password</button>\n                </form>\n            </div>\n            <div v-else>\n                <form class=\"login-panel-form login-form\" @submit.stop.prevent=\"login\">\n                    <label>Email</label>\n                    <input class=\"u-full-width\" type=\"text\" placeholder=\"email\" name=\"email\" v-model=\"email\" v-el:email_input/>\n\n                    <label>Password</label>\n                    <input class=\"u-full-width\" type=\"password\" name=\"password\" placeholder=\"password\" v-model=\"password\" />\n\n                    <button class=\"button button-primary u-full-width\" type=\"submit\">Login</button>\n                </form>\n            </div>\n            <div v-bind:class=\"[message.class]\" v-if=\"message.text\">\n                {{message.text}}\n            </div>\n        </div>\n        <div class=\"pane-footer\" v-el:footer>\n            <button class=\"button-tab button\" type=\"button\" @click.prevent=\"toggle\" v-el:toggle_btn>\n                <span>{{ active ? \"Close\" : user? \"Profile\" : \"Login\" }}</span>\n            </button>\n        </div>\n    </div>\n</div>\n";
 });
 
 _removeDefine();
@@ -10346,26 +10346,67 @@ $__System.register('7a', ['78', '79', '4d'], function (_export) {
                     return {
                         email: null,
                         password: null,
-                        error: null,
+                        message: {
+                            text: null,
+                            'class': '',
+                            timeout: null
+                        },
                         active: false,
-                        offset: 0
+                        offset: 0,
+                        new_password: null,
+                        new_password_conf: null
                     };
                 },
+                computed: {
+                    enable_change_password_button: function enable_change_password_button() {
+                        // TODO: move out into seprate functions that edit the input (red borders and hints etc)
+                        var input = (this.password != null || this.password != '') && (this.new_password != null || this.new_password != '') && (this.new_password_conf != null || this.new_password_conf != '');
+
+                        if (input && this.new_password && this.new_password.length < 8) {
+                            this.present_message('Passwords need to be atleast 8 characters long', false);
+                            return false;
+                        }
+
+                        if (input && this.new_password != this.new_password_conf) {
+                            this.present_message('New password and confirmation do not match', false);
+                            return false;
+                        }
+
+                        this.hide_message();
+                        return input;
+                    }
+                },
                 methods: {
+                    present_message: function present_message(message) {
+                        var success = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+                        var duration = arguments.length <= 2 || arguments[2] === undefined ? 10000 : arguments[2];
+
+                        this.message.text = message;
+                        this.message['class'] = success ? 'success' : 'error';
+
+                        clearTimeout(this.message.timeout);
+                        this.message.timeout = setTimeout(this.hide_message, duration);
+                    },
+                    hide_message: function hide_message() {
+                        this.message['class'] = '';
+                        this.message.text = null;
+                        this.message.timeout = null;
+                    },
                     login: function login() {
                         var _this = this;
 
-                        this.error = null;
+                        this.hide_message();
                         this.$root.control.login(this.email, this.password, function (err) {
-                            _this.error = err;
+                            _this.present_message(err, true);
+                            _this.password = null;
                         });
                     },
                     logout: function logout() {
                         var _this2 = this;
 
-                        this.error = null;
+                        this.hide_message();
                         this.$root.control.logout(function (err) {
-                            _this2.error = err;
+                            _this2.present_message(err, true);
                         });
                     },
                     toggle: function toggle() {
@@ -10388,7 +10429,20 @@ $__System.register('7a', ['78', '79', '4d'], function (_export) {
                     close: function close() {
                         this.active = false;
                     },
-                    save: function save() {}
+                    save: function save() {
+                        var _this4 = this;
+
+                        this.hide_message();
+                        this.$root.control.change_password(this.password, this.new_password, function (error) {
+                            _this4.password = _this4.new_password = _this4.new_password_conf = null;
+
+                            if (!error) {
+                                _this4.present_message('Password Changed');
+                            } else {
+                                _this4.present_message(error, false);
+                            }
+                        });
+                    }
                 },
                 ready: function ready() {
                     this.offset = this.$els.footer.clientHeight;
@@ -10953,6 +11007,13 @@ $__System.register("7f", ["51", "52", "7e"], function (_export) {
 							if (response.error && err_back) {
 								err_back(response.error);
 							}
+						});
+					}
+				}, {
+					key: "change_password",
+					value: function change_password(old_password, new_password, error_back) {
+						this.send('change_password', { old_password: old_password, new_password: new_password }, function (request, response) {
+							error_back(response.error);
 						});
 					}
 				}, {
