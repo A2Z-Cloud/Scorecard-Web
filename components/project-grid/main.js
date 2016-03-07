@@ -9,9 +9,10 @@ export default Vue.extend({
     ],
     data() {
         return {
+            competitor_query: '',
             selected: {
-                provider: "",
-                requirement: "",
+                provider: '',
+                requirement: '',
                 scoring_method: this.total_for,
                 scores: true,
                 action_plan: false,
@@ -31,6 +32,9 @@ export default Vue.extend({
         }
     },
     methods:{
+        autocompelte_competitors() {
+            console.log("doing it")
+        },
         score_for(provider, requirement) {
             var result = this.scorecard.scores.find( score => {
                 return score.requirement_id == requirement.requirement_id
@@ -153,17 +157,23 @@ export default Vue.extend({
     },
     computed: {
         remaining_providers() {
-            // All providers minus those already assigned to the scorecard
+            // All providers minus those already assigned to the scorecard and matches user's search
             if (this.scorecard.providers && this.store.providers) {
                 var selected_providers_ids = this.scorecard.providers.map(p => p.id)
-                return this.store.providers.filter(p => selected_providers_ids.indexOf(p.id) == -1)
+                return this.store.providers.filter(p => {
+                    let unused = (selected_providers_ids.indexOf(p.id) == -1)
+                    return (unused && p.name.toLowerCase().indexOf(this.competitor_query.toLowerCase().trim()) != -1)
+                })
             }
         },
         remaining_requirements() {
-            // All requirements minus those already assigned to the scorecard
+            // All requirements minus those already assigned to the scorecard and matching user's search
             if (this.scorecard.requirements && this.store.requirements) {
                 var selected_requirements_ids = this.scorecard.requirements.map(r => r.requirement_id)
-                return this.store.requirements.filter(r => selected_requirements_ids.indexOf(r.id) == -1 && r.active == true)
+                return this.store.requirements.filter(r => {
+                    let canditate = (selected_requirements_ids.indexOf(r.id) == -1 && r.active == true)
+                    return canditate && r.name
+                })
             }
         },
         scorecard() {

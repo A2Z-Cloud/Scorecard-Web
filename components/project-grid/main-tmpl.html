@@ -34,6 +34,13 @@
                     </option>
                 </select>
             </div>
+
+            <div class="query-container">
+                <input class="resource-query" type='text' v-model='competitor_query' @keyup='autocompelte_competitors' />
+                <ul class="resource-list">
+                    <li v-for="provider in remaining_providers">{{provider.name}}</li>
+                </ul>
+            </div>
         </div>
 
         <!-- Comment Toggles -->
