@@ -9,10 +9,11 @@ export default Vue.extend({
     ],
     data() {
         return {
-            competitor_query: '',
+            requirement_query: '',
+            provider_query: '',
             selected: {
-                provider: '',
-                requirement: '',
+                requirement_index: 0,
+                provider_index: 0,
                 scoring_method: this.total_for,
                 scores: true,
                 action_plan: false,
@@ -32,8 +33,23 @@ export default Vue.extend({
         }
     },
     methods:{
-        autocompelte_competitors() {
-            console.log("doing it")
+        requirement_selection(delta) {
+            let new_index = this.selected.requirement_index + delta
+            if (new_index >= this.remaining_requirements.length) {
+                new_index = 0
+            } else if (new_index < 0) {
+                new_index = this.remaining_requirements.length - 1
+            }
+            this.selected.requirement_index = new_index
+        },
+        provider_selection(delta) {
+            let new_index = this.selected.provider_index + delta
+            if (new_index >= this.remaining_providers.length) {
+                new_index = 0
+            } else if (new_index < 0) {
+                new_index = this.remaining_providers.length - 1
+            }
+            this.selected.provider_index = new_index
         },
         score_for(provider, requirement) {
             var result = this.scorecard.scores.find( score => {
@@ -50,39 +66,6 @@ export default Vue.extend({
                 }
             })
         },
-        // class_for(provider, requirement) {
-        //     // Get all scores for providers (keyed by provider id)
-        //     // As well as the passed providers score
-        //     var providers_scores = this.providers_scores_for(requirement)
-        //     var provider_score   = this.score_for(provider, requirement).score
-        //
-        //     var provider_count_by_scores = providers_scores.reduce( (carry, i) => {
-        //         // Add key if doesn't exist
-        //         if (carry[i.score] == undefined) {
-        //             carry[i.score] = 0
-        //         }
-        //         // Add provider id to score key
-        //         carry[i.score]++
-        //         return carry
-        //     }, {})
-        //
-        //     // Figure out placement
-        //     var decending_scores = Object.keys(provider_count_by_scores)  // Get all scores
-        //                                  .map (  k   => parseFloat(k))    // Make them floats
-        //                                  .sort((a,b) => a<b)              // Sort descending
-        //     var high_score       = decending_scores[0]
-        //     var winner           = (provider_score == high_score)
-        //     var multiple_winners = (provider_count_by_scores[high_score] > 1)
-        //
-        //     // Objective placement
-        //     if (winner && multiple_winners) {
-        //         return 'drew'
-        //     } else if (winner) {
-        //         return 'won'
-        //     } else {
-        //         return 'lost'
-        //     }
-        // },
         class_for(provider, requirement) {
             let provider_score = this.score_for(provider, requirement).score
             switch (provider_score) {
@@ -101,6 +84,19 @@ export default Vue.extend({
         },
         average_for(provider) {
             return this.total_for(provider) / this.scorecard.requirements.length
+        },
+        add_requirement(requirement) {
+            this.$root.control.send("add_requirement_to_project", {
+                project_id: this.scorecard.id,
+                requirement_id: requirement.id,
+                sort_order: 0
+            })
+        },
+        add_provider(provider) {
+            this.$root.control.send("add_provider_to_project", {
+                project_id: this.scorecard.id,
+                provider_id: provider.id
+            })
         },
         remove_requirement(requirement) {
             if (requirement) {
@@ -156,13 +152,23 @@ export default Vue.extend({
         }
     },
     computed: {
+        column_count() {
+            let count = 1
+            count += (this.selected.scores) ? this.scorecard.providers.length : 0
+            count += (this.selected.action_plan) ? 1 : 0
+            count += (this.selected.lobby_plan) ? 1 : 0
+            count += (this.selected.contacts) ? 1 : 0
+            return count
+        },
         remaining_providers() {
             // All providers minus those already assigned to the scorecard and matches user's search
+            this.selected.provider_index = 0
+
             if (this.scorecard.providers && this.store.providers) {
                 var selected_providers_ids = this.scorecard.providers.map(p => p.id)
                 return this.store.providers.filter(p => {
                     let unused = (selected_providers_ids.indexOf(p.id) == -1)
-                    return (unused && p.name.toLowerCase().indexOf(this.competitor_query.toLowerCase().trim()) != -1)
+                    return (unused && p.name.toLowerCase().indexOf(this.provider_query.toLowerCase().trim()) != -1)
                 })
             }
         },
@@ -171,9 +177,23 @@ export default Vue.extend({
             if (this.scorecard.requirements && this.store.requirements) {
                 var selected_requirements_ids = this.scorecard.requirements.map(r => r.requirement_id)
                 return this.store.requirements.filter(r => {
-                    let canditate = (selected_requirements_ids.indexOf(r.id) == -1 && r.active == true)
-                    return canditate && r.name
+                    let unused = (selected_requirements_ids.indexOf(r.id) == -1 && r.active == true)
+                    return (unused && r.name.toLowerCase().indexOf(this.requirement_query.toLowerCase().trim()) != -1)
                 })
+            }
+        },
+        selected_requirement() {
+            if (this.selected.requirement_index < this.remaining_requirements.length) {
+                return this.remaining_requirements[this.selected.requirement_index]
+            } else {
+                return null
+            }
+        },
+        selected_provider() {
+            if (this.selected.provider_index < this.remaining_providers.length) {
+                return this.remaining_providers[this.selected.provider_index]
+            } else {
+                return null
             }
         },
         scorecard() {
@@ -232,27 +252,7 @@ export default Vue.extend({
         }
     },
     watch: {
-        'selected.provider'(provider) {
-            if (provider) {
-                this.$root.control.send("add_provider_to_project", {
-                    project_id: this.scorecard.id,
-                    provider_id: provider.id
-                })
-                this.selected.provider = ""
-            }
-        },
-        'selected.requirement'(requirement) {
-            if (requirement) {
-                var requirements = this.scorecard.requirements
-                var sort_index   = requirements ? requirements.length : 0
-                this.$root.control.send("add_requirement_to_project", {
-                    project_id: this.scorecard.id,
-                    requirement_id: requirement.id,
-                    sort_order: 0
-                })
-                this.selected.requirement = ""
-            }
-        }
+
     },
     events: {
         insert_provider(provider) {

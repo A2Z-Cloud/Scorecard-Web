@@ -17,30 +17,28 @@
 
         <!-- Company and Requirements Selectors -->
         <div class="action-panel">
-            <div class="action-selector">
-                <select class="add-selector resource-picker" v-model="selected.requirement">
-                    <option value=""> Add Most Important Requirement... </option>
-                    <option v-for="requirement in remaining_requirements"
-                            v-bind:value="requirement"> {{ full_requirement_name(requirement) }}
-                    </option>
-                </select>
-            </div>
-
-            <div class="action-selector">
-                <select v-if="sorted_requirements.length" class="add-selector resource-picker" v-model="selected.provider">
-                    <option value=""> Add Competitor... </option>
-                    <option v-for="provider in remaining_providers"
-                            v-bind:value="provider"> {{ provider.name }}
-                    </option>
-                </select>
-            </div>
 
             <div class="query-container">
-                <input class="resource-query" type='text' v-model='competitor_query' @keyup='autocompelte_competitors' />
+                <input
+                    class="resource-query"
+                    type='text'
+                    v-model='provider_query'
+                    @keyup.up='provider_selection(-1)'
+                    @keyup.down='provider_selection(1)'
+                    @keyup.enter='add_provider(selected_provider)' />
+
                 <ul class="resource-list">
-                    <li v-for="provider in remaining_providers">{{provider.name}}</li>
+                    <li v-for="provider in remaining_providers">
+                        <div v-if="$index == selected.provider_index" @click='add_provider(provider)'>
+                            SELECTED: {{provider.name}}
+                        </div>
+                        <div v-else @click='add_provider(provider)'>
+                            {{provider.name}}
+                        </div>
+                    </li>
                 </ul>
             </div>
+
         </div>
 
         <!-- Comment Toggles -->
@@ -131,11 +129,12 @@
                         v-for="provider in sorted_providers"
                         v-bind:class="class_for(provider, requirement)">
 
-                        <input  class="score-value u-full-width"
-                                type='number'
-                                v-model='score_for(provider,requirement).score' number
-                                @click="selected_score($event)"
-                                @keyup="save_scores | debounce 500"/>
+                        <input
+                            class="score-value u-full-width"
+                            type='number'
+                            v-model='score_for(provider,requirement).score' number
+                            @click="selected_score($event)"
+                            @keyup="save_scores | debounce 500"/>
                     </td>
 
                     <!-- Comment Cells -->
@@ -167,6 +166,32 @@
                             v-model="requirement.contacts"
                             @keyup="save_comment(requirement.id, 'contacts', requirement.contacts) | debounce 500">
                         </textarea>
+                    </td>
+                </tr>
+                <tr class="requirement-row">
+                    <!-- Each Requirement -->
+                    <td class="row-label requirement-cell" :colspan="column_count">
+                        <div class="query-container">
+                            <input
+                                class="resource-query"
+                                type='text'
+                                v-model='requirement_query'
+                                placeholder="Add Requirement..."
+                                @keyup.up='requirement_selection(-1)'
+                                @keyup.down='requirement_selection(1)'
+                                @keyup.enter='add_requirement(selected_requirement)' />
+
+                            <ul class="resource-list">
+                                <li v-for="requirement in remaining_requirements">
+                                    <div v-if="$index == selected.requirement_index" @click='add_requirement(requirement)'>
+                                        SELECTED: {{requirement.name}}
+                                    </div>
+                                    <div v-else @click='add_requirement(requirement)'>
+                                        {{requirement.name}}
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
                     </td>
                 </tr>
             </tbody>
