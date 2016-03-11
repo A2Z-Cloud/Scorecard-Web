@@ -183,7 +183,10 @@
 
                             <ul class="resource-list">
                                 <li v-for="requirement in remaining_requirements">
-                                    <div :class="[selected.requirement_index == $index ? 'selected' : '']" @click='add_requirement(requirement)'>
+                                    <div v-if="$index == selected.requirement_index" @click='add_requirement(requirement)'>
+                                        SELECTED: {{requirement.name}}
+                                    </div>
+                                    <div v-else @click='add_requirement(requirement)'>
                                         {{requirement.name}}
                                     </div>
                                 </li>

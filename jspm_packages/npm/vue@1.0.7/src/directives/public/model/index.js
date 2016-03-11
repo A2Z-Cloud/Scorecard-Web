@@ -1,0 +1,58 @@
+/* */ 
+(function(process) {
+  var _ = require('../../../util/index');
+  var handlers = {
+    text: require('./text'),
+    radio: require('./radio'),
+    select: require('./select'),
+    checkbox: require('./checkbox')
+  };
+  module.exports = {
+    priority: 800,
+    twoWay: true,
+    handlers: handlers,
+    params: ['lazy', 'number', 'debounce'],
+    bind: function() {
+      this.checkFilters();
+      if (this.hasRead && !this.hasWrite) {
+        process.env.NODE_ENV !== 'production' && _.warn('It seems you are using a read-only filter with ' + 'v-model. You might want to use a two-way filter ' + 'to ensure correct behavior.');
+      }
+      var el = this.el;
+      var tag = el.tagName;
+      var handler;
+      if (tag === 'INPUT') {
+        handler = handlers[el.type] || handlers.text;
+      } else if (tag === 'SELECT') {
+        handler = handlers.select;
+      } else if (tag === 'TEXTAREA') {
+        handler = handlers.text;
+      } else {
+        process.env.NODE_ENV !== 'production' && _.warn('v-model does not support element type: ' + tag);
+        return;
+      }
+      el.__v_model = this;
+      handler.bind.call(this);
+      this.update = handler.update;
+      this._unbind = handler.unbind;
+    },
+    checkFilters: function() {
+      var filters = this.filters;
+      if (!filters)
+        return;
+      var i = filters.length;
+      while (i--) {
+        var filter = _.resolveAsset(this.vm.$options, 'filters', filters[i].name);
+        if (typeof filter === 'function' || filter.read) {
+          this.hasRead = true;
+        }
+        if (filter.write) {
+          this.hasWrite = true;
+        }
+      }
+    },
+    unbind: function() {
+      this.el.__v_model = null;
+      this._unbind && this._unbind();
+    }
+  };
+})(require('process'));
