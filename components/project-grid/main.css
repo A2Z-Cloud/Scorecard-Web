@@ -61,7 +61,7 @@
 .ProjectGrid
 .query-container {
     position: relative;
-    width: 200px;
+    width: 100%;
 }
 
 .ProjectGrid
@@ -116,8 +116,16 @@ li {
 
 .ProjectGrid
 .resource-list
+li
+div
+.selected {
+    background: #544465;
+}
+
+.ProjectGrid
+.resource-list
 li:hover {
-    background: #6E5886;
+    background: #E5D9F1;
     color: #FFF;
 }
 
@@ -243,6 +251,7 @@ th.corner-label {
     position: relative;
 	margin: 0px;
 	padding-left: 16px;
+    padding-right: 16px;
 	text-align: left;
 }
 

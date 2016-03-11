@@ -74,7 +74,7 @@ export default Vue.extend({
                  case 3: return 'score-three'
                  case 4: return 'score-four'
                  case 5: return 'score-five'
-                default: return ''
+                default: return 'score-zero'
             }
         },
         total_for(provider) {
