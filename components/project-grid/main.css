@@ -65,7 +65,16 @@
 }
 
 .ProjectGrid
-.resource-query:focus {
+.requirement-container {
+    position: relative;
+    width: 100%;
+}
+
+.ProjectGrid
+.resource-query:focus,
+.ProjectGrid
+.query-container:hover
+.resource-query {
     border-radius:  0;
 
     -webkit-border-top-left-radius:  4px;
@@ -101,8 +110,11 @@
 
 .ProjectGrid
 .resource-query:focus +
-.resource-list {
+.resource-list,
+.ProjectGrid
+.resource-list:hover{
     visibility: visible;
+    z-index: 100;
 }
 
 .ProjectGrid
@@ -252,6 +264,7 @@ th.corner-label {
     position: relative;
 	margin: 0px;
 	padding-left: 16px;
+    padding-right: 16px;
 	text-align: left;
 }
 
