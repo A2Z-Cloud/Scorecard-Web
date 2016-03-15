@@ -17,4 +17,4 @@ deploy-demo:
 	echo "Not Implemented"
 deploy-production:
 	aws s3 sync --profile a2zcloud built/ s3://com-a2zcloud-scorecard
-	# aws cloudfront --profile a2zcloud create-invalidation --distribution-id E16720FWT3HSR6 --paths /*
+	# aws cloudfront --profile a2zcloud create-invalidation --distribution-id E16720FWT3HSR6 --paths "/*"
