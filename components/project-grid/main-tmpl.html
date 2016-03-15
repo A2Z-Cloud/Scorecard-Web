@@ -17,23 +17,33 @@
 
         <!-- Company and Requirements Selectors -->
         <div class="action-panel">
-            <div class="action-selector">
-                <select class="add-selector resource-picker" v-model="selected.requirement">
-                    <option value=""> Add Most Important Requirement... </option>
-                    <option v-for="requirement in remaining_requirements"
-                            v-bind:value="requirement"> {{ full_requirement_name(requirement) }}
-                    </option>
-                </select>
+
+            <div v-if="scorecard.requirements.length" class="query-container">
+                <input
+                    v-el:provider_query
+                    class="resource-query"
+                    type='text'
+                    placeholder="Add Competitor..."
+                    v-model='provider_query'
+                    @keyup.up='provider_selection(-1)'
+                    @keyup.down='provider_selection(1)'
+                    @keyup.enter='add_provider(selected_provider)'
+                    @keyup.esc="provider_query ? provider_query = '' : $els.provider_query.blur()" />
+
+                <ul class="resource-list">
+                    <li
+                        v-for="provider in remaining_providers"
+                        :class="{ 'focused': ($index == selected.provider_index) }"
+                        @click='add_provider(provider)'>
+
+                        {{provider.name}}
+                    </li>
+                </ul>
+            </div>
+            <div v-else>
+                At least one reqirement must be added before a competitor can be added.
             </div>
 
-            <div class="action-selector">
-                <select v-if="sorted_requirements.length" class="add-selector resource-picker" v-model="selected.provider">
-                    <option value=""> Add Competitor... </option>
-                    <option v-for="provider in remaining_providers"
-                            v-bind:value="provider"> {{ provider.name }}
-                    </option>
-                </select>
-            </div>
         </div>
 
         <!-- Comment Toggles -->
@@ -124,11 +134,12 @@
                         v-for="provider in sorted_providers"
                         v-bind:class="class_for(provider, requirement)">
 
-                        <input  class="score-value u-full-width"
-                                type='number'
-                                v-model='score_for(provider,requirement).score' number
-                                @click="selected_score($event)"
-                                @keyup="save_scores | debounce 500"/>
+                        <input
+                            class="score-value u-full-width"
+                            type='number'
+                            v-model='score_for(provider,requirement).score' number
+                            @click="selected_score($event)"
+                            @keyup="save_scores | debounce 500"/>
                     </td>
 
                     <!-- Comment Cells -->
@@ -160,6 +171,33 @@
                             v-model="requirement.contacts"
                             @keyup="save_comment(requirement.id, 'contacts', requirement.contacts) | debounce 500">
                         </textarea>
+                    </td>
+                </tr>
+                <tr class="requirement-row">
+                    <!-- Each Requirement -->
+                    <td class="row-label requirement-cell" :colspan="column_count">
+                        <div class="query-container requirement-container">
+                            <input
+                                v-el:requirement_query
+                                class="resource-query"
+                                type='text'
+                                v-model='requirement_query'
+                                placeholder="Add Requirement..."
+                                @keyup.up='requirement_selection(-1)'
+                                @keyup.down='requirement_selection(1)'
+                                @keyup.enter='add_requirement(selected_requirement)'
+                                @keyup.esc="requirement_query ? requirement_query = '' : $els.requirement_query.blur()" />
+
+                            <ul class="resource-list">
+                                <li v-for="requirement in remaining_requirements"
+                                    :class="{ 'focused': ($index == selected.requirement_index) }"
+                                    @click='add_requirement(requirement)'>
+                                    <div>
+                                        {{requirement.name}}
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
                     </td>
                 </tr>
             </tbody>
