@@ -86,6 +86,9 @@ export default Vue.extend({
             return this.total_for(provider) / this.scorecard.requirements.length
         },
         add_requirement(requirement) {
+            this.requirement_query = ''
+            this.selected.requirement_index = 0
+
             this.$root.control.send("add_requirement_to_project", {
                 project_id: this.scorecard.id,
                 requirement_id: requirement.id,
@@ -93,6 +96,9 @@ export default Vue.extend({
             })
         },
         add_provider(provider) {
+            this.provider_query = ''
+            this.selected.provider_index = 0
+
             this.$root.control.send("add_provider_to_project", {
                 project_id: this.scorecard.id,
                 provider_id: provider.id

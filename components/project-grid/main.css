@@ -116,7 +116,16 @@ li {
 
 .ProjectGrid
 .resource-list
+.focused {
+    background: #F1EBF7;
+    color: #6E5886;
+}
+
+.ProjectGrid
+.resource-list
 li:hover {
+    cursor: pointer;
+
     background: #6E5886;
     color: #FFF;
 }

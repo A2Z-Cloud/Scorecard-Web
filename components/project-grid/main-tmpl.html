@@ -18,25 +18,30 @@
         <!-- Company and Requirements Selectors -->
         <div class="action-panel">
 
-            <div class="query-container">
+            <div v-if="scorecard.requirements.length" class="query-container">
                 <input
+                    v-el:provider_query
                     class="resource-query"
                     type='text'
+                    placeholder="Add Competitor..."
                     v-model='provider_query'
                     @keyup.up='provider_selection(-1)'
                     @keyup.down='provider_selection(1)'
-                    @keyup.enter='add_provider(selected_provider)' />
+                    @keyup.enter='add_provider(selected_provider)'
+                    @keyup.esc="provider_query ? provider_query = '' : $els.provider_query.blur()" />
 
                 <ul class="resource-list">
-                    <li v-for="provider in remaining_providers">
-                        <div v-if="$index == selected.provider_index" @click='add_provider(provider)'>
-                            SELECTED: {{provider.name}}
-                        </div>
-                        <div v-else @click='add_provider(provider)'>
-                            {{provider.name}}
-                        </div>
+                    <li
+                        v-for="provider in remaining_providers"
+                        :class="{ 'focused': ($index == selected.provider_index) }"
+                        @click='add_provider(provider)'>
+
+                        {{provider.name}}
                     </li>
                 </ul>
+            </div>
+            <div v-else>
+                At least one reqirement must be added before a competitor can be added.
             </div>
 
         </div>
@@ -173,20 +178,21 @@
                     <td class="row-label requirement-cell" :colspan="column_count">
                         <div class="query-container">
                             <input
+                                v-el:requirement_query
                                 class="resource-query"
                                 type='text'
                                 v-model='requirement_query'
                                 placeholder="Add Requirement..."
                                 @keyup.up='requirement_selection(-1)'
                                 @keyup.down='requirement_selection(1)'
-                                @keyup.enter='add_requirement(selected_requirement)' />
+                                @keyup.enter='add_requirement(selected_requirement)'
+                                @keyup.esc="requirement_query ? requirement_query = '' : $els.requirement_query.blur()" />
 
                             <ul class="resource-list">
-                                <li v-for="requirement in remaining_requirements">
-                                    <div v-if="$index == selected.requirement_index" @click='add_requirement(requirement)'>
-                                        SELECTED: {{requirement.name}}
-                                    </div>
-                                    <div v-else @click='add_requirement(requirement)'>
+                                <li v-for="requirement in remaining_requirements"
+                                    :class="{ 'focused': ($index == selected.requirement_index) }"
+                                    @click='add_requirement(requirement)'>
+                                    <div>
                                         {{requirement.name}}
                                     </div>
                                 </li>
