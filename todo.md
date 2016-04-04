@@ -8,7 +8,7 @@
  - [x] save scores
  - [x] perspective scoring
  - [x] comments
- - [ ] change to MIR Most Important Requirements
- - [ ] authenticated Zoho handler with company API token table
- - [ ] don't delete company or MIR when deleted from Zoho (set zoho_id to null or set retired flag)
- - [ ] UI touch up
+ - [x] change to MIR Most Important Requirements
+ - [x] authenticated Zoho handler with company API token table
+ - [x] UI touch up
+ - [ ] \@session behave like pytest fixtures e.g. \@session('user', 'broadcast_group', 'company', privilege='admin')

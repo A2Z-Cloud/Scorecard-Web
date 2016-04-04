@@ -4,27 +4,34 @@
             <div v-if="user">
                 <form class="login-panel-form profile-form" @submit.stop.prevent="save">
                     <button class="logout-button button pull-right" type="button" @click.stop.prevent="logout">
-                        <span class="logout-text">Logout</span> 
+                        <span class="logout-text">Logout</span>
                         <i class="fa fa-sign-out"></i>
                     </button>
 
                     <label>Email</label>
                     <input class="u-full-width" type="text" name="email" v-model="user.email" readonly/>
+
+                    <label>Change Password</label>
+                    <input class="u-full-width" type="password" name="password" v-model="password" placeholder="current password"/>
+                    <input class="u-full-width" type="password" name="password" v-model="new_password" placeholder="new password"/>
+                    <input class="u-full-width" type="password" name="password" v-model="new_password_conf" placeholder="new password (confirmation)"/>
+
+                    <button class="button button-primary u-full-width" v-bind:disabled="!enable_change_password_button" type="submit">Change Password</button>
                 </form>
             </div>
             <div v-else>
                 <form class="login-panel-form login-form" @submit.stop.prevent="login">
                     <label>Email</label>
-                    <input class="u-full-width" type="text" placeholder="Your email address" name="email" v-model="email" v-el:email_input/>
+                    <input class="u-full-width" type="text" placeholder="email" name="email" v-model="email" v-el:email_input/>
 
                     <label>Password</label>
-                    <input class="u-full-width" type="password" name="password" placeholder="Your account password" v-model="password" />
+                    <input class="u-full-width" type="password" name="password" placeholder="password" v-model="password" />
 
                     <button class="button button-primary u-full-width" type="submit">Login</button>
                 </form>
             </div>
-            <div class="error" v-if="error">
-                {{error}}
+            <div v-bind:class="[message.class]" v-if="message.text">
+                {{message.text}}
             </div>
         </div>
         <div class="pane-footer" v-el:footer>

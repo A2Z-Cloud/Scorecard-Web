@@ -2,7 +2,7 @@
 (function(process) {
   if (process.env.OBJECT_IMPL)
     global.TYPED_ARRAY_SUPPORT = false;
-  var B = require('../index').Buffer;
+  var B = require('../../buffer@3.5.4').Buffer;
   var test = require('tape');
   test('.get (deprecated)', function(t) {
     var b = new B([7, 42]);
