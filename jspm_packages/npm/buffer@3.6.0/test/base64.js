@@ -2,7 +2,7 @@
 (function(process) {
   if (process.env.OBJECT_IMPL)
     global.TYPED_ARRAY_SUPPORT = false;
-  var B = require('../../buffer@3.6.0').Buffer;
+  var B = require('../index').Buffer;
   var test = require('tape');
   test('base64: ignore whitespace', function(t) {
     var text = '\n   YW9ldQ==  ';

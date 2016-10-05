@@ -1,0 +1,56 @@
+MultipleErrors: C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/helpers.js:1:1: Unexpected reserved word export
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/helpers.js:1:8: Semi-colon expected
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/helpers.js:13:1: Unexpected reserved word export
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/helpers.js:13:8: Semi-colon expected
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/helpers.js:23:1: Unexpected reserved word export
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/helpers.js:23:8: Semi-colon expected
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/helpers.js:36:1: Unexpected reserved word export
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/helpers.js:36:8: Semi-colon expected
+
+MultipleErrors: C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/mixin.js:1:1: Unexpected reserved word export
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/mixin.js:1:8: Semi-colon expected
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/mixin.js:1:8: Unexpected reserved word default
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/mixin.js:1:16: Semi-colon expected
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/mixin.js:1:25: Unexpected token (
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/mixin.js:1:26: Unexpected token Vue
+
+MultipleErrors: C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/plugins/devtool.js:5:1: Unexpected reserved word export
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/plugins/devtool.js:5:8: Semi-colon expected
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/plugins/devtool.js:5:8: Unexpected reserved word default
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/plugins/devtool.js:5:16: Semi-colon expected
+
+MultipleErrors: C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/plugins/logger.js:3:1: Unexpected reserved word import
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/plugins/logger.js:3:8: Semi-colon expected
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/plugins/logger.js:3:26: Semi-colon expected
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/plugins/logger.js:5:1: Unexpected reserved word export
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/plugins/logger.js:5:8: Semi-colon expected
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/plugins/logger.js:5:8: Unexpected reserved word default
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/plugins/logger.js:5:16: Semi-colon expected
+
+MultipleErrors: C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/util.js:22:1: Unexpected reserved word export
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/util.js:22:8: Semi-colon expected
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/util.js:49:1: Unexpected reserved word export
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/util.js:49:8: Semi-colon expected
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/util.js:53:1: Unexpected reserved word export
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/util.js:53:8: Semi-colon expected
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/util.js:57:1: Unexpected reserved word export
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/util.js:57:8: Semi-colon expected
+
+MultipleErrors: C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/index.js:1:1: Unexpected reserved word import
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/index.js:1:8: Semi-colon expected
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/index.js:1:22: Semi-colon expected
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/index.js:1:27: Semi-colon expected
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/index.js:2:1: Unexpected reserved word import
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/index.js:2:8: Semi-colon expected
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/index.js:2:19: Semi-colon expected
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/index.js:2:24: Semi-colon expected
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/index.js:3:1: Unexpected reserved word import
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/index.js:3:8: Semi-colon expected
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/index.js:3:64: Semi-colon expected
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/index.js:4:1: Unexpected reserved word import
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/index.js:4:8: Semi-colon expected
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/index.js:4:45: Semi-colon expected
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/index.js:359:1: Unexpected reserved word export
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/index.js:359:8: Semi-colon expected
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/index.js:359:8: Unexpected reserved word default
+C:/Users/horan/AppData/Local/.jspm/packages/npm/vuex@2.0.0/src/index.js:359:16: Semi-colon expected

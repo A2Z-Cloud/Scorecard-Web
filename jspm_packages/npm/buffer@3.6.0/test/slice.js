@@ -2,7 +2,7 @@
 (function(process) {
   if (process.env.OBJECT_IMPL)
     global.TYPED_ARRAY_SUPPORT = false;
-  var B = require('../../buffer@3.6.0').Buffer;
+  var B = require('../index').Buffer;
   var test = require('tape');
   test('modifying buffer created by .slice() modifies original memory', function(t) {
     if (!B.TYPED_ARRAY_SUPPORT)
