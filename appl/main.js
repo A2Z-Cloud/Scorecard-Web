@@ -10,7 +10,7 @@ import VueRouter from 'vue-router'
 import 'appl/array_hipster'
 
 // -- Consts
-import {ws_url} from 'consts/local'
+import {debug, ws_url, hash_routing} from 'consts/local'
 
 import "components/menu-panel/main"
 import "components/login-panel/main"
@@ -19,7 +19,7 @@ import Control from "./connection"
 
 
 Vue.use(VueRouter)
-Vue.config.debug=true
+Vue.config.debug = debug
 
 Vue.filter('round', function(value, decimals) {
     if(!value || !decimals) {
@@ -32,7 +32,10 @@ Vue.filter('pretty_var', function(value) {
     return value.replace("_"," ")
 })
 
-const router = new VueRouter()
+const router = new VueRouter({
+    history: !hash_routing,
+    hashbang: hash_routing,
+})
 router.map({
     '/project': {
         name: 'Scorecard',
@@ -92,6 +95,7 @@ router.start({
         },
     },
     created() {
+        window.appl  = this
         this.control = new Control(this, ws_url)
     },
     ready() {
