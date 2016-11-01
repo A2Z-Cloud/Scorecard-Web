@@ -1,4 +1,2 @@
-
-*.sublime-project
-
-*.sublime-workspace
+jspm_packages
+node_modules

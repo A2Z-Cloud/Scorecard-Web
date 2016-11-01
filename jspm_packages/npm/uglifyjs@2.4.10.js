@@ -1,1 +1,1 @@
-module.exports = require("npm:uglifyjs@2.4.10/tools/node");
+module.exports = require("npm:uglifyjs@2.4.10/tools/node.js");

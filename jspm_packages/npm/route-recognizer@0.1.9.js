@@ -1,1 +1,1 @@
-module.exports = require("npm:route-recognizer@0.1.9/dist/route-recognizer");
+module.exports = require("npm:route-recognizer@0.1.9/dist/route-recognizer.js");
